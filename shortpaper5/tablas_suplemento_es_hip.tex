@@ -1,0 +1,19 @@
+\begin{table}[H]\centering\scriptsize
+\caption{Hipótesis, predicción, congelamiento y veredicto. La huella es la del protocolo congelado (SHA-256 global, primeros 8 caracteres); la fecha es la registrada por el propio proyecto, no por un tercero. Primera corrida: inicio de la primera corrida válida del bloque, según su registro (hora local, UTC$-$5, en la laptop; UTC en RunPod: H11, H12, H14 y H15).}\label{tab:s-hip}
+\resizebox{\textwidth}{!}{\begin{tabular}{@{}l p{6.3cm} l l l l p{3.2cm}@{}}\toprule
+Hip. & Predicción & Archivo & Versión y huella & Congelado & Primera corrida & Veredicto \\
+\midrule
+H1--H3 & V4 y V3 mejoran $\geq$2 pp a V1 en oclusión (H1, H2) y la mejora se transfiere a la real (H3) & \texttt{PROTOCOLO.md} & v1.0 \texttt{c5002ea5} & 2026-09-11 08:09 & 2026-09-11 08:47 & No se confirman (0 de 3 fuentes en H3) \\
+H4, H5 & Con siluetas la ganancia se transfiere (H4); menor ganancia sintética y menor brecha (H5) & \texttt{PROTOCOLO\_v2.md} & v2.0 \texttt{9915d90f} & 2026-09-12 12:51 & 2026-09-12 12:54 & H4 refutada (0 de 3); H5 parcial \\
+H6 & Sin transferencia al re-entrenar en CityPersons & \texttt{PREREGISTRO\_H6\_H7.md} & v3.0 \texttt{e971ab8b} & 2026-09-19 16:48 & 2026-09-19 16:48 & Se confirma \\
+H7 & Sin transferencia con 20\,000 imágenes nocturnas & \texttt{PREREGISTRO\_H6\_H7.md} & v3.1 \texttt{b0043c89} & 2026-09-25 20:58 & 2026-09-25 20:59 & Se confirma \\
+H8 & Sin transferencia con RT-DETR-l & \texttt{PREREGISTRO\_H8.md} & v3.2 \texttt{51c0a2d8} & 2026-09-26 18:52 & 2026-09-26 18:52 & Se confirma (0 de 3) \\
+H9 & Sin transferencia con oclusores por difusión & \texttt{PREREGISTRO\_H9.md} & v3.3b \texttt{243acffb} & 2026-10-03 01:29 & 2026-10-03 01:29 & Se confirma (1 de 3) \\
+H9b & Ídem con 30 épocas fijas & \texttt{PREREGISTRO\_H9b.md} & v3.4 \texttt{51786d9d} & 2026-10-06 09:01 & 2026-10-06 09:02 & Se confirma (0 de 3) \\
+H10 & Sin transferencia con la geometría de la oclusión real & \texttt{PREREGISTRO\_H10.md} & v3.5 \texttt{1489961a} & 2026-10-06 18:27 & 2026-10-07 05:03 & Se confirma (1 de 3) \\
+H11 & Ganancia $\geq$2 pp en visibilidad 0,20--0,50 de CityPersons con exposición igual & \texttt{PREREGISTRO\_H11.md} & v3.6b \texttt{bd2666fd} & 2026-10-13 14:38 & 2026-10-13 20:37 & No se confirma \\
+H12 & Sin transferencia con YOLOv11m (siluetas, H12a; difusión, H12b) & \texttt{PREREGISTRO\_H12.md} & v3.7b \texttt{ef6138c1} & 2026-10-13 21:06 & 2026-10-17 14:50 & Se confirma (0 de 3 y 0 de 3) \\
+H13 & AUC(parches) $>$ AUC(siluetas) $>$ AUC(difusión) con DINOv2 & \texttt{PREREGISTRO\_H13.md} & v3.8 \texttt{7ce00c9c} & 2026-10-17 09:48 & sin entrenamiento & Se confirma en parte \\
+H14 & Sin transferencia con orden de profundidad & \texttt{PREREGISTRO\_H14.md} & v3.9 \texttt{264ac449} & 2026-10-17 10:10 & 2026-10-17 16:33 & Se confirma (1 de 3) \\
+H15 & Sin transferencia con Faster R-CNN & \texttt{PREREGISTRO\_H15.md} & v3.10 \texttt{b7843b3a} & 2026-10-20 16:20 & --- & Refutada \\
+\bottomrule\end{tabular}}\end{table}

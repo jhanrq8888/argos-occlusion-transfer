@@ -1,0 +1,126 @@
+\documentclass[conference]{IEEEtran}
+\IEEEoverridecommandlockouts
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{mathptmx}
+\usepackage{cite}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{url}
+\newcommand{\pend}[1]{\textcolor{red}{[#1]}}
+\setlength{\textfloatsep}{8pt plus 2pt minus 2pt}
+\setlength{\intextsep}{8pt plus 2pt minus 2pt}
+
+\begin{document}
+
+\title{Gains on Synthetic Occlusion Do Not Anticipate\\Robustness to Real Occlusion in Person Detection}
+
+\author{\IEEEauthorblockN{Celia Patricia Apaza Hilasaca, Brayan Raul Condori Quispe, Jhan Logan Ramos Quispe}
+\IEEEauthorblockA{Universidad Peruana Uni\'on (UPeU), Juliaca, Peru}}
+
+\maketitle
+
+\begin{abstract}
+Synthetic occlusion augmentation is used to make person detectors robust to partial visibility, yet its benefit is usually measured on the same artificial occlusion used for training. We ask whether it transfers to real, human-annotated occlusion. We compare a baseline and an augmented model, with the same data and hyperparameters, in 15 blocks that vary the occluder (patches, silhouettes, diffusion, real geometry and depth order), the detector (YOLOv11 at two sizes, YOLO26s, RT-DETR-l and Faster R-CNN), the training domain and the amount of data (104 runs). Each block has a synthetic control and three real-occlusion sources, by day and by night, and its hypotheses and rules were fixed before training it. A cell passes if AP@0.5 improves by at least 2 points with a 95\,\% interval that excludes zero. With one-stage and transformer detectors, all 13 controls pass and 4 of 39 real cells pass, none both stable across seeds and specific to occluded people; 24 rule out a 2-point gain and, with equal training exposure, the mean effect is null. With the two-stage Faster R-CNN, NightOwls (+3.3) and CityPersons (+2.3) do pass, and only on CityPersons is the gain larger for occluded people. Nearly equal controls (+14.5 with YOLOv11m and +14.7 with Faster R-CNN) come with opposite real results: the synthetic gain does not anticipate the real one and is not enough to claim robustness to real occlusion.
+\end{abstract}
+
+\begin{IEEEkeywords}
+person detection, occlusion, data augmentation, transfer, low light, pre-specified hypotheses
+\end{IEEEkeywords}
+
+\section{Introduction}
+Person detection supports public safety, surveillance and mobile robotics, mostly with conventional RGB cameras. Occlusion, a major cause of pedestrian-detection failures~\cite{Dollar2012}, and low illumination~\cite{Loh2019} often coincide at night. In our data, a YOLOv11s fine-tuned on ExDark drops from 0.82 AP@0.5 on unoccluded people to 0.24 on severely occluded ones.
+
+A widespread remedy is \emph{synthetic occlusion augmentation}: during training, parts of the person are erased or covered~\cite{Zhong2020,Shang2018synthocc,Chi2020pedhunter}. Its benefit is usually measured on the same artificial occlusion or within the training set, and rarely on people \emph{really} occluded by a car, a pole or another person. If it does not reach real occlusion, synthetic benchmarks overstate robustness.
+
+\textbf{Gap.} In the literature reviewed (Section~II) we found no study that (i) measures transfer to annotated real occlusion with a synthetic control confirming that the augmentation was learned, (ii) does so on several independent real sources, (iii) tests alternative explanations (occluder, detector, domain, data volume, exposure) with controlled experiments and (iv) fixes hypotheses and rules before seeing results.
+
+\textbf{Objectives and contribution.} The objectives are to measure the degradation caused by occlusion (OE1), the effect of augmentation on synthetic and real occlusion by occluder (OE2), detector (OE3), and domain and data (OE4), and its mechanism (OE5)\footnote{The mapping of objectives, method, evidence and pending work, and all material cited as ``supplement'', are in the supplementary material.}. We contribute (1) controlled evidence in 15 blocks with five kinds of occluder and five detectors from three families, including the first case of transfer (Faster R-CNN); (2) a single count, with intervals and split by training exposure, showing that the synthetic gain does not anticipate the real one; and (3) a reusable evaluation protocol: synthetic control, several real sources, equal exposure and a rule fixed in advance.
+
+\section{Related Work and Explanatory Frame}
+\textbf{Detection under occlusion and low light.} Recent detectors tackle occlusion with architectural changes and report gains within one benchmark: PRNet++ refines anchors from visible parts and evaluates occlusion subsets on CityPersons, Caltech and ECP-night~\cite{Song2022prnet}; MLFFCSP fuses multi-level features with Random Erasing~\cite{Huan2023mlffcsp}. For night driving, a YOLOX with domain transfer (degraded daytime plus night data) raises mAP by 5.9 points without stratifying by occlusion~\cite{Yi2022yolox}; POP-YOLOv8~\cite{Liu2026pop} and BNE-DETR~\cite{Li2026bne} report aggregate metrics.
+
+\textbf{Augmentation as a training signal and as a test.} Random Erasing~\cite{Zhong2020} inspired pedestrian variants evaluated within CityPersons or CrowdHuman~\cite{Shang2018synthocc,Chi2020pedhunter}, and Copy-Paste pastes cut-out objects without modelling context~\cite{Ghiasi2021copypaste}, a direct antecedent of our depth-ordered occluders. Three works frame the contrast. Kassaw et al.\ find that synthetic occlusion \emph{ranks} already-trained classifiers much like real occlusion~\cite{Kassaw2026occl}: it is useful to compare models. Taori et al.\ show that robustness gained against synthetic shifts barely carries over to natural shifts, except with larger and more diverse data~\cite{Taori2020shifts}, and Pytel et al.\ that, in pose estimation, occlusion augmentation does not solve occlusion~\cite{Pytel2021tilting}. We ask whether the gain an occlusion augmentation produces in detection, measured on synthetic occlusion, anticipates its gain on real occlusion.
+
+\textbf{Structural alternatives and explanatory frame.} Compositional networks represent objects by parts and are more robust to partial occlusion than data augmentation~\cite{Kortylewski2020compnet,Wang2020compnet}; WALT learns amodal representations from real occlusion in fixed cameras~\cite{Reddy2022walt}, and domain adaptation attacks the night gap from the data side~\cite{Yi2022yolox,Song2022prnet}. Our study does not evaluate those routes: it is limited to pixel-level augmentation of RGB images for modal detection. As an explanatory frame we use shortcut learning~\cite{Geirhos2020shortcut}: a network can lower its loss by learning the features of the artificial occluder without learning to detect incomplete people, and pedestrian detectors already generalise poorly across datasets~\cite{Hasan2021elephant,Sukesh2024camped}. The review started from three Scopus searches exported on 13 Oct 2026 (155, 8 and 71 records; strings in the supplement), which yielded the five seed articles~\cite{Song2022prnet,Reddy2022walt,Huan2023mlffcsp,Sukesh2024camped,Yi2022yolox}, and was completed with targeted searches in Crossref and arXiv.
+
+\section{Method}
+\textbf{Design, hypotheses and rule.} This is a controlled experiment: in each block, the baseline (V1) and the augmented model (V3) share data, hyperparameters, base augmentation and machine; V3 adds occlusion augmentation in training only. All transfer hypotheses predict that the deficit persists (no transfer). The prediction is \emph{confirmed} if fewer than two of the three real sources \emph{pass}, i.e.\ improve AP@0.5 by at least +2 percentage points (pp, mean over seeds) with a 95\,\% image CI that excludes zero, while the synthetic control does pass; if the control fails, the block is inconclusive. H11 predicted the opposite (a gain on the most occluded people) and H13 an order of realism. The original design also included an attention module (variants V2 and V4; H1, H2 and H5), with no gain on real occlusion (supplement). Each hypothesis, its rule and its code were fixed with a SHA-256 cryptographic fingerprint before training its block and none was reworded; the fingerprint proves that nothing changed since the date recorded by the project, but there was no external registry. The table of hypotheses, fingerprints, dates and first runs is in the supplement. The question was reoriented after the first experiment and H9b--H15 were designed after seeing earlier results and reviews: the programme is adaptive.
+
+\textbf{Data.} ExDark~\cite{Loh2019}, with the split of Cui et al.~\cite{Cui2021}, has 2,658 images with people and 7,460 instances; 1,183 of those images are used for training. Real-occlusion sources: (1) NightOwls~\cite{Neumann2019}, at night, with its authors' occlusion attribute (530 occluded validation pedestrians; up to 20,000 training frames); (2) CityPersons~\cite{Zhang2017}, by day, official \emph{heavy} split (visibility 20--65\,\%, 733 instances); (3) an ExDark proxy that estimates occlusion between people from box overlap (101 severe instances), weakly correlated with annotated visibility (Spearman 0.24). Manual visual grading was discarded as ground truth ($\kappa$ 0.06--0.60). The three datasets are used under their non-commercial research licences and their images are not redistributed.
+
+\textbf{Augmentation and control.} Occluder families: opaque or textured patches; masked silhouettes of real objects and people; occluders painted by Stable Diffusion 1.5 with ten COCO objects~\cite{Rombach2022ldm}; silhouettes placed with real CityPersons visibility patterns; and object cut-outs placed in front of the person by the monocular depth of Depth Anything V2~\cite{Yang2024depthv2}. V3 occludes 1--3 people per image with coverage 0.30--0.85. Each family's \emph{control} applies the same generator to every person in ExDark test with coverage 0.70--1.00, using images and occluders not seen in training (disjoint cut-out banks or new generations). It measures whether the augmentation was learned; to check whether it measures more than the occluder itself, we evaluate each family on the controls of the others (cross-family matrix).
+
+\textbf{Detectors and exposure.} YOLOv11s, YOLOv11m~\cite{Ultralytics2024}, YOLO26s~\cite{Ultralytics2026yolo26} (SGD, lr 0.002, batch 16), RT-DETR-l~\cite{Zhao2024rtdetr} (AdamW, $10^{-4}$) and Faster R-CNN ResNet-50 FPN~\cite{Ren2017faster} (SGD, 0.01, batch 8), COCO-pretrained~\cite{Lin2014}, 640-px input, Ultralytics 8.4.143 (full recipe in the supplement). In the first blocks each variant was selected at its best validation epoch (patience 20, up to 100 epochs), which left \emph{unequal} exposure: in H4, H4-Y26, H6 and H8, V1 was selected at epochs 1--51 and V3 at 31--89. From H9b on, V1 and V3 train a fixed number of epochs and are evaluated with the last weights; those blocks are the primary evidence. Machines: a laptop with an NVIDIA GeForce RTX 5050 Laptop GPU (8 GB) and, for H11, H12, H14 and H15, a rented RTX 4090.
+
+\textbf{Evaluation.} AP@0.5 of class \emph{person} per occlusion stratum, with instances of other strata as \emph{ignore} regions, as in CityPersons~\cite{Zhang2017}. Percentile bootstrap CIs over images (1,000 replicates)~\cite{Efron1993} and, as sensitivity, hierarchical over seeds and images (2,000). The +2 pp threshold is the smallest effect of interest: it exceeds the between-seed SD of V1 AP on the real sources (median 1.5 pp). A cell \emph{rules out} a relevant gain if the upper limit of its CI is below +2 (one-sided non-superiority test~\cite{Lakens2017tost}). Miss rate MR$^{-2}$~\cite{Dollar2012} and AP@0.5:0.95 are secondary (supplement).
+
+\begin{table*}[t]
+\caption{Blocks, hypotheses and results: change in AP@0.5 (pp) of V3 versus V1, mean of 3 seeds. Exp.: training exposure, equal (E, fixed epochs), unequal (U, validation selection) or early in both (Y). NO: NightOwls occluded; CP: CityPersons \emph{heavy}; EX: ExDark proxy, severe. * passes (+2 pp with image CI $>0$). Confirmed: the no-transfer prediction is confirmed. Per-cell CIs in the supplement.}
+\label{tab:res}
+\centering
+\footnotesize
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{@{}llllcrrrrl@{}}
+\toprule
+\textbf{Block} & \textbf{Detector} & \textbf{Training} & \textbf{Occluder} & \textbf{Exp.} & \textbf{Control} & \textbf{NO} & \textbf{CP} & \textbf{EX} & \textbf{Verdict} \\
+\midrule
+H3 & YOLOv11s & ExDark & Patches & Y & $+60.92$* & $-3.17$ & $-0.36$ & $-3.25$ & Not confirmed (predicted gain) \\
+H4 & YOLOv11s & ExDark & Silhouettes & U & $+10.63$* & $-16.79$ & $-3.94$ & $-5.02$ & Refuted (predicted gain) \\
+H4-Y26 & YOLO26s & ExDark & Silhouettes & U & $+12.01$* & $-14.31$ & $-4.42$ & $-3.51$ & Same pattern \\
+H6 & YOLOv11s & CityPersons & Silhouettes & U & $+23.74$* & $-1.35$ & $+1.82$ & $+0.94$ & Confirmed (0 of 3) \\
+H7 & YOLOv11s & NightOwls 20,000 & Silhouettes & U & --- & $-1.43$ & $-3.94$ & $-9.15$ & Confirmed \\
+H8 & RT-DETR-l & ExDark & Silhouettes & U & $+10.97$* & $-6.98$ & $-3.47$ & $-2.21$ & Confirmed (0 of 3) \\
+H9 & YOLOv11s & ExDark & Diffusion & Y & $+2.60$* & $-1.93$ & $+1.23$ & $+2.82$* & Confirmed (1 of 3) \\
+H9b & YOLOv11s & ExDark & Diffusion & E & $+15.23$* & $+0.01$ & $+1.52$ & $-3.03$ & Confirmed (0 of 3) \\
+H10 & YOLOv11s & ExDark & Real geometry & E & $+18.39$* & $-2.05$ & $+2.37$* & $-4.88$ & Confirmed (1 of 3) \\
+H10-s & YOLOv11s & ExDark & Silhouettes & E & $+10.99$* & $-1.12$ & $+2.26$* & $-3.50$ & (comparison arm of H10) \\
+H11 & YOLOv11s & CityPersons & Silhouettes & E & $+24.66$* & $+1.95$ & $+1.31$ & $-2.44$ & Not confirmed (predicted gain) \\
+H12a & YOLOv11m & ExDark & Silhouettes & E & $+14.45$* & $-0.39$ & $+0.25$ & $+3.04$ & Confirmed (0 of 3) \\
+H12b & YOLOv11m & ExDark & Diffusion & E & $+19.04$* & $+0.78$ & $+1.11$ & $-0.56$ & Confirmed (0 of 3) \\
+H14 & YOLOv11s & ExDark & Depth order & E & $+7.42$* & $-1.50$ & $-0.16$ & $+5.49$* & Confirmed (1 of 3) \\
+H15 & Faster R-CNN & ExDark & Silhouettes & E & $+14.72$* & $+3.28$* & $+2.33$* & $-1.00$ & Refuted (2 of 3) \\
+\bottomrule
+\end{tabular}
+\end{table*}
+
+\section{Results}
+\textbf{Count.} All figures are V3$-$V1 in AP@0.5 (Table~\ref{tab:res}). In the 13 comparable blocks (all but H7, which has no control, and H15, added after the count), all 13 controls pass, from +2.6 to +60.9 pp. Of the 39 real cells, 4 pass: the ExDark proxy in H9 (+2.82) and H14 (+5.49), which do not survive the hierarchical interval, and CityPersons in H10 (+2.37) and its silhouette arm (+2.26), where unoccluded people gain more (+5.3). Another 24 cells rule out a +2 pp gain (19 with the hierarchical interval). Without the ExDark proxy, 2 of 26 cells pass and no block reaches two sources.
+
+\textbf{Exposure explains the harm, not the absence of gain.} With equal exposure (21 cells, H9b to H14) the mean effect is $+0.02$ pp, 3 cells pass and 3 are negative with CI; with unequal exposure (12 cells of H4, H4-Y26, H6 and H8) the mean effect is $-4.94$ pp and 6 are negative with CI. The large harm of silhouettes on NightOwls ($-16.8$ in H4) shrinks to $-1.12$ with fixed epochs (H10-s): it reflects domain overfitting induced by the selection rule. What holds in both cases is the absence of gain.
+
+\textbf{Detector, domain and data.} The pattern repeats with RT-DETR-l (H8), YOLO26s and YOLOv11m (H12), which learns the augmentation more strongly than YOLOv11s (controls +14.45 and +19.04) and transfers it to no source. With Faster R-CNN (H15), in contrast, the control rises +14.72 and NightOwls (+3.28 [+1.64; +4.79]) and CityPersons (+2.33 [+1.01; +3.69]) pass, both also with the hierarchical interval: H15 is refuted. On NightOwls unoccluded people improve more (+4.37) than occluded ones, but on CityPersons occluded people gain more (\emph{heavy} +2.33, \emph{partial} +2.57) than visible ones (\emph{bare} +0.88); on ExDark nothing changes, and the miss rate drops by less than 2 pp. Retraining on CityPersons (H6) removes the negative sign, but the control gains +23.74 and \emph{heavy} +1.82; with fixed epochs and new seeds, the gain on the most occluded people (visibility 0.20--0.50) is +1.44 [$-$0.64; +3.34]: H11 is not confirmed. With 20,000 NightOwls images (H7), $-1.43$ [$-$3.98; +1.00].
+
+\textbf{Occluder, geometry and depth.} Neither diffusion occluders (H9, H9b), nor real geometry (H10; against plain silhouettes $-0.93$, +0.10 and $-1.38$ pp), nor objects placed in front of the person by depth (H14) meet the rule. With five seeds, CityPersons \emph{heavy} with silhouettes survives the hierarchical interval (+2.06 [+0.26; +4.17]), but unoccluded people improve twice as much. In the cross-family matrix, each family also gains on the controls of the others: 13 of 20 cross cells pass (for example, silhouettes gain +15.8 on the geometry control and depth order +11.7), and only patches stay close to their own control (+0.8 to +3.0 on the rest). The control does not measure memory of specific occluders but a general adaptation to synthetic occlusion, which does not transfer to real occlusion either.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\columnwidth]{fig_dispersion.png}
+\caption{Gain on the synthetic control versus gain on each real source, with 95\,\% image CIs (13 blocks, 39 cells; H3, at +60.9 on the control, is off scale: NO $-3.17$, CP $-0.36$, EX $-3.25$). Grey band: $\pm2$ pp. Spearman $\rho$ with block-bootstrap CI: NO +0.41 [$-$0.18; +0.85], CP +0.30 [$-$0.26; +0.71], EX $-0.15$ [$-$0.67; +0.54].}
+\label{fig:disp}
+\end{figure}
+
+\textbf{Predictiveness and realism (post hoc).} Across blocks there is no reliable association between synthetic and real gain (Fig.~\ref{fig:disp}); in a mixed model with a random intercept per block, one SD of synthetic gain (14 pp) is associated with +0.11 pp of real gain [$-$1.74; +1.95]. With 13 blocks a moderate association on NightOwls cannot be ruled out. To measure realism (H13), a linear classifier on DINOv2 features~\cite{Oquab2024dinov2} separates 400 really occluded CityPersons pedestrians from those occluded with each family with AUC 0.935--0.993, and from the same people unoccluded with 0.876; CLIP~\cite{Radford2021clip} agrees. The kernel inception distance~\cite{Binkowski2018kid}, which compares distributions, puts silhouettes, geometry and diffusion slightly closer to real occlusion than unoccluded people (unnormalised DINOv2 features, 400 per set: 1.57, 1.42 and 1.33 versus 1.75), with overlapping intervals; measured on the occluded region only, no family comes close to real occluders (KID 2.5--3.4, versus 3.6 without an occluder and 0.01 between two halves of real occluders). What did help heavily occluded people was annotated in-domain data: training on CityPersons raises its \emph{heavy} subset to 0.59, against at most 0.24 without training there; OWLv2~\cite{Minderer2023owlv2} and Grounding DINO~\cite{Liu2024gdino} without fine-tuning do not match it.
+
+\textbf{Mechanism (exploratory).} With augmentation, recall on occluded NightOwls pedestrians falls in every block with diagnostics, and with silhouettes and diffusion false positives fall too: the models detect fewer occluded people, more confidently.
+
+\section{Discussion}
+The results agree with Taori et al.~\cite{Taori2020shifts} and Pytel et al.~\cite{Pytel2021tilting}: robustness gained against a synthetic perturbation does not carry over to the real one, and what helped most was real in-domain data. They do not contradict Kassaw et al.~\cite{Kassaw2026occl}: synthetic occlusion can rank already-trained models and still fail to anticipate how much an augmentation trained with it helps. They are consistent with a shortcut~\cite{Geirhos2020shortcut}: the model learns the artificial occluder, which remains distinguishable from real occlusion (H13), but that mechanism has not been tested confirmatorily. Faster R-CNN is the exception: with a control almost equal to that of YOLOv11m (+14.72 versus +14.45) it transfers on two sources, and on CityPersons in an occlusion-specific way; its region-based head may exploit partially covered people better, a hypothesis we have not tested. What the synthetic control does not allow is to know in advance which detector will transfer. The conclusion is limited to pixel-level RGB augmentation; it does not refute compositional architectures~\cite{Kortylewski2020compnet,Wang2020compnet}, amodal supervision~\cite{Reddy2022walt} or domain adaptation~\cite{Yi2022yolox}.
+
+\textbf{Limitations.} \emph{Architecture:} five detectors from three families, with YOLOv11 at two sizes; the only two-stage detector, the one that transfers, was tested with a single occluder family and a single training set. \emph{Data:} CityPersons is daytime and NightOwls uses a vehicle camera, so no source reproduces fixed surveillance in the dark; the ExDark proxy captures only occlusion between people and two of the four passing cells come from it; everything is AP@0.5 of one class. \emph{Evaluation protocol:} three seeds per cell (five in the extension); the 39 cells share baselines and test sets and are not independent tests, with no correction for multiplicity; the first blocks have unequal exposure; the fingerprint has no third-party timestamp, and realism was measured in feature spaces, not perceptually.
+
+\textbf{Future directions.} (1) Occlusion mined from real images and amodal supervision~\cite{Reddy2022walt}. (2) Domain adaptation for night~\cite{Yi2022yolox} and part-based architectures~\cite{Wang2020compnet}. (3) Repeating the protocol on real night surveillance video annotated by visibility. (4) Measuring speed on an embedded device. For practice: a synthetic occlusion benchmark is a control that an augmentation works, but claiming robustness requires a set, even a small one, of annotated real occlusion from the deployment domain.
+
+\section{Conclusion}
+In 15 blocks with five kinds of occluder, five detectors, three training domains and up to five seeds, synthetic occlusion augmentation always improved detection on synthetic occlusion. With one-stage and transformer detectors it produced no gain on real occlusion that was both stable and specific to occluded people, and with equal exposure its mean effect was null; with Faster R-CNN it did transfer on two sources. The synthetic gain did not anticipate which of the two cases would occur. Annotated in-domain data helped occluded people in that domain far more. Occlusion robustness should be evaluated on annotated real occlusion together with a synthetic control.
+
+\section*{Declarations}
+\textbf{Data and code.} Code, logs, fingerprints, sampling lists and the supplement at \url{https://github.com/jhanrq8888/argos-occlusion-transfer} (public); trained weights will be deposited with a DOI on Zenodo upon publication. \textbf{Funding:} none. \textbf{Competing interests:} none. \textbf{Contributions (CRediT):} J.~L. Ramos Quispe: conceptualization, methodology, software, formal analysis, investigation, data curation and writing of the original draft; C.~P. Apaza Hilasaca: conceptualization, methodology (design of the pre-specification), review and editing; B.~R. Condori Quispe: data curation, validation, visualization, review and editing. \textbf{Use of AI:} the authors used Scopus AI (Elsevier) to support the search for seed articles, and Claude (Anthropic) for the search, the analysis code and drafting and editing the text. They reviewed and verified the code, results, references and text, for which they take full responsibility.
+
+\bibliographystyle{IEEEtran}
+\bibliography{references}
+
+\end{document}

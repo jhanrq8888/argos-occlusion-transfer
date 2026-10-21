@@ -1,0 +1,28 @@
+# ARGOS-11 - entorno ejecutado (Python 3.13, Windows 11, RTX 5050 Laptop 8 GB)
+# PyTorch se instala desde el indice de CUDA 12.8:
+#   pip install torch==2.11.0 torchvision==0.26.0 --index-url https://download.pytorch.org/whl/cu128
+# onnxruntime-gpu para CUDA 12 viene del indice de Azure DevOps de aiinfra:
+#   pip install onnxruntime-gpu==1.29.0 --index-url https://aiinfra.pkgs.visualstudio.com/PublicPackages/_packaging/onnxruntime-cuda-12/pypi/simple/
+
+ultralytics==8.4.143
+torch==2.11.0
+torchvision==0.26.0
+numpy==2.5.3
+pandas==3.0.5
+scipy==1.18.1
+matplotlib==3.11.1
+opencv-python==5.0.0.93
+PyYAML==6.0.3
+onnx==1.22.0
+onnxslim==0.1.96
+onnxruntime-gpu==1.29.0
+thop==0.1.1.post2209072238
+
+# Usados en H9 (difusion), H13 (realismo), H14 (profundidad), la referencia de vocabulario abierto y los analisis de la revision
+diffusers==0.40.0
+transformers==5.18.0
+accelerate==1.15.0
+safetensors==0.8.0
+scikit-learn==1.7.2
+statsmodels==0.15.0
+pillow==12.3.0

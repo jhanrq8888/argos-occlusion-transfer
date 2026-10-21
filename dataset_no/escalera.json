@@ -1,0 +1,43 @@
+{
+ "fuente": "NightOwls (Neumann et al. 2019), nightowls_training.json oficial",
+ "clase_etiquetada": "pedestrian (category_id 1)",
+ "no_etiquetadas": "bicycledriver, motorbikedriver, ignore areas",
+ "semilla_escalera": 0,
+ "peldanos": {
+  "2000": {
+   "imagenes": 2000,
+   "peatones": 3296,
+   "epocas": 100,
+   "paciencia": 20,
+   "presentaciones": 200000
+  },
+  "5000": {
+   "imagenes": 5000,
+   "peatones": 8372,
+   "epocas": 40,
+   "paciencia": 8,
+   "presentaciones": 200000
+  },
+  "10000": {
+   "imagenes": 10000,
+   "peatones": 16569,
+   "epocas": 20,
+   "paciencia": 4,
+   "presentaciones": 200000
+  },
+  "20000": {
+   "imagenes": 20000,
+   "peatones": 33274,
+   "epocas": 10,
+   "paciencia": 2,
+   "presentaciones": 200000
+  }
+ },
+ "presupuesto_presentaciones": 200000,
+ "val_interno": {
+  "imagenes": 1000,
+  "peatones": 1619,
+  "semilla": 1,
+  "disjunto_de": "las 2 000 imagenes de evaluacion (muestra.json)"
+ }
+}

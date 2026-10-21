@@ -1,0 +1,295 @@
+{
+ "veredicto_H13": "Parcialmente confirmada",
+ "auc": [
+  {
+   "extractor": "dinov2",
+   "conjunto": "base",
+   "AUC": 0.8758,
+   "IC_lo": 0.8516,
+   "IC_hi": 0.8973
+  },
+  {
+   "extractor": "dinov2",
+   "conjunto": "parches",
+   "AUC": 0.993,
+   "IC_lo": 0.9894,
+   "IC_hi": 0.996
+  },
+  {
+   "extractor": "dinov2",
+   "conjunto": "siluetas",
+   "AUC": 0.9503,
+   "IC_lo": 0.9359,
+   "IC_hi": 0.9626
+  },
+  {
+   "extractor": "dinov2",
+   "conjunto": "geometria",
+   "AUC": 0.9525,
+   "IC_lo": 0.9379,
+   "IC_hi": 0.9657
+  },
+  {
+   "extractor": "dinov2",
+   "conjunto": "generativa",
+   "AUC": 0.9355,
+   "IC_lo": 0.9186,
+   "IC_hi": 0.9504
+  },
+  {
+   "extractor": "clip",
+   "conjunto": "base",
+   "AUC": 0.8307,
+   "IC_lo": 0.8028,
+   "IC_hi": 0.859
+  },
+  {
+   "extractor": "clip",
+   "conjunto": "parches",
+   "AUC": 0.9928,
+   "IC_lo": 0.9881,
+   "IC_hi": 0.9967
+  },
+  {
+   "extractor": "clip",
+   "conjunto": "siluetas",
+   "AUC": 0.9163,
+   "IC_lo": 0.8963,
+   "IC_hi": 0.9343
+  },
+  {
+   "extractor": "clip",
+   "conjunto": "geometria",
+   "AUC": 0.9232,
+   "IC_lo": 0.9038,
+   "IC_hi": 0.94
+  },
+  {
+   "extractor": "clip",
+   "conjunto": "generativa",
+   "AUC": 0.9248,
+   "IC_lo": 0.9074,
+   "IC_hi": 0.941
+  }
+ ],
+ "diferencias": [
+  {
+   "extractor": "dinov2",
+   "contraste": "parches - siluetas",
+   "dif_AUC": 0.0428,
+   "IC_lo": 0.0308,
+   "IC_hi": 0.0566
+  },
+  {
+   "extractor": "dinov2",
+   "contraste": "siluetas - generativa",
+   "dif_AUC": 0.0148,
+   "IC_lo": -0.0026,
+   "IC_hi": 0.0335
+  },
+  {
+   "extractor": "dinov2",
+   "contraste": "parches - generativa",
+   "dif_AUC": 0.0575,
+   "IC_lo": 0.0435,
+   "IC_hi": 0.074
+  },
+  {
+   "extractor": "dinov2",
+   "contraste": "siluetas - geometria",
+   "dif_AUC": -0.0022,
+   "IC_lo": -0.0184,
+   "IC_hi": 0.0125
+  },
+  {
+   "extractor": "dinov2",
+   "contraste": "geometria - generativa",
+   "dif_AUC": 0.017,
+   "IC_lo": 0.0009,
+   "IC_hi": 0.0326
+  },
+  {
+   "extractor": "dinov2",
+   "contraste": "base - parches",
+   "dif_AUC": -0.1172,
+   "IC_lo": -0.1417,
+   "IC_hi": -0.0956
+  },
+  {
+   "extractor": "dinov2",
+   "contraste": "base - siluetas",
+   "dif_AUC": -0.0745,
+   "IC_lo": -0.0994,
+   "IC_hi": -0.0489
+  },
+  {
+   "extractor": "dinov2",
+   "contraste": "base - geometria",
+   "dif_AUC": -0.0767,
+   "IC_lo": -0.1002,
+   "IC_hi": -0.0538
+  },
+  {
+   "extractor": "dinov2",
+   "contraste": "base - generativa",
+   "dif_AUC": -0.0597,
+   "IC_lo": -0.0788,
+   "IC_hi": -0.0407
+  },
+  {
+   "extractor": "clip",
+   "contraste": "parches - siluetas",
+   "dif_AUC": 0.0765,
+   "IC_lo": 0.0593,
+   "IC_hi": 0.0958
+  },
+  {
+   "extractor": "clip",
+   "contraste": "siluetas - generativa",
+   "dif_AUC": -0.0085,
+   "IC_lo": -0.0309,
+   "IC_hi": 0.014
+  },
+  {
+   "extractor": "clip",
+   "contraste": "parches - generativa",
+   "dif_AUC": 0.068,
+   "IC_lo": 0.0518,
+   "IC_hi": 0.0847
+  },
+  {
+   "extractor": "clip",
+   "contraste": "siluetas - geometria",
+   "dif_AUC": -0.0069,
+   "IC_lo": -0.0286,
+   "IC_hi": 0.0156
+  },
+  {
+   "extractor": "clip",
+   "contraste": "geometria - generativa",
+   "dif_AUC": -0.0016,
+   "IC_lo": -0.0237,
+   "IC_hi": 0.0189
+  },
+  {
+   "extractor": "clip",
+   "contraste": "base - parches",
+   "dif_AUC": -0.1621,
+   "IC_lo": -0.1904,
+   "IC_hi": -0.1332
+  },
+  {
+   "extractor": "clip",
+   "contraste": "base - siluetas",
+   "dif_AUC": -0.0856,
+   "IC_lo": -0.1148,
+   "IC_hi": -0.0536
+  },
+  {
+   "extractor": "clip",
+   "contraste": "base - geometria",
+   "dif_AUC": -0.0925,
+   "IC_lo": -0.1227,
+   "IC_hi": -0.0607
+  },
+  {
+   "extractor": "clip",
+   "contraste": "base - generativa",
+   "dif_AUC": -0.0941,
+   "IC_lo": -0.1185,
+   "IC_hi": -0.0689
+  }
+ ],
+ "kid": [
+  {
+   "extractor": "dinov2",
+   "conjunto": "base",
+   "KID": 1.74533,
+   "IC_lo": 1.21138,
+   "IC_hi": 2.25494
+  },
+  {
+   "extractor": "dinov2",
+   "conjunto": "parches",
+   "KID": 1.79031,
+   "IC_lo": 1.53046,
+   "IC_hi": 2.06989
+  },
+  {
+   "extractor": "dinov2",
+   "conjunto": "siluetas",
+   "KID": 1.57219,
+   "IC_lo": 1.24644,
+   "IC_hi": 1.96682
+  },
+  {
+   "extractor": "dinov2",
+   "conjunto": "geometria",
+   "KID": 1.42007,
+   "IC_lo": 1.05888,
+   "IC_hi": 1.76359
+  },
+  {
+   "extractor": "dinov2",
+   "conjunto": "generativa",
+   "KID": 1.32802,
+   "IC_lo": 0.97986,
+   "IC_hi": 1.64252
+  },
+  {
+   "extractor": "clip",
+   "conjunto": "base",
+   "KID": 0.02864,
+   "IC_lo": 0.0197,
+   "IC_hi": 0.03873
+  },
+  {
+   "extractor": "clip",
+   "conjunto": "parches",
+   "KID": 0.04129,
+   "IC_lo": 0.032,
+   "IC_hi": 0.04843
+  },
+  {
+   "extractor": "clip",
+   "conjunto": "siluetas",
+   "KID": 0.01515,
+   "IC_lo": 0.01077,
+   "IC_hi": 0.02045
+  },
+  {
+   "extractor": "clip",
+   "conjunto": "geometria",
+   "KID": 0.01487,
+   "IC_lo": 0.01051,
+   "IC_hi": 0.02187
+  },
+  {
+   "extractor": "clip",
+   "conjunto": "generativa",
+   "KID": 0.01807,
+   "IC_lo": 0.01144,
+   "IC_hi": 0.02384
+  }
+ ],
+ "AUC_solo_altura_real_vs_base": 0.6189,
+ "cobertura": {
+  "parches": {
+   "cobertura_media": 0.56,
+   "sin_oclusion": 0
+  },
+  "siluetas": {
+   "cobertura_media": 0.541,
+   "sin_oclusion": 1
+  },
+  "geometria": {
+   "cobertura_media": 0.465,
+   "sin_oclusion": 0
+  },
+  "generativa": {
+   "cobertura_media": 0.319,
+   "sin_oclusion": 146
+  }
+ },
+ "oclusion_real_media": 0.552
+}

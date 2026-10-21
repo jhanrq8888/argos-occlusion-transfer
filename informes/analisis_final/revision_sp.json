@@ -1,0 +1,149 @@
+{
+ "bloques_con_control": 13,
+ "controles_pasan": 13,
+ "celdas_reales": 39,
+ "pasan": 4,
+ "pasan_lista": [
+  [
+   "H9",
+   "EX",
+   2.82,
+   0.37,
+   5.99,
+   -1.23,
+   7.4
+  ],
+  [
+   "H10",
+   "CP",
+   2.37,
+   1.52,
+   3.52,
+   0.63,
+   4.61
+  ],
+  [
+   "H10-s",
+   "CP",
+   2.26,
+   1.44,
+   3.47,
+   0.72,
+   4.04
+  ],
+  [
+   "H14",
+   "EX",
+   5.49,
+   1.63,
+   9.3,
+   -0.35,
+   11.14
+  ]
+ ],
+ "pasan_jer": 2,
+ "negativas": 24,
+ "negativas_ic": 12,
+ "descartan_2pp": 24,
+ "descartan_2pp_jer": 19,
+ "por_exposicion": {
+  "desigual (seleccion por validacion)": {
+   "bloques": [
+    "H4",
+    "H4-Y26",
+    "H6",
+    "H8"
+   ],
+   "celdas": 12,
+   "pasan": 0,
+   "negativas": 10,
+   "negativas_ic": 6,
+   "descartan_2pp": 10,
+   "media_delta": -4.94
+  },
+  "igual (epocas fijas)": {
+   "bloques": [
+    "H10",
+    "H10-s",
+    "H11",
+    "H12a",
+    "H12b",
+    "H14",
+    "H9b"
+   ],
+   "celdas": 21,
+   "pasan": 3,
+   "negativas": 10,
+   "negativas_ic": 3,
+   "descartan_2pp": 10,
+   "media_delta": 0.02
+  },
+  "seleccion temprana en ambas": {
+   "bloques": [
+    "H3",
+    "H9"
+   ],
+   "celdas": 6,
+   "pasan": 1,
+   "negativas": 4,
+   "negativas_ic": 3,
+   "descartan_2pp": 4,
+   "media_delta": -0.78
+  }
+ },
+ "sin_indicador_exdark": {
+  "celdas": 26,
+  "pasan": 2,
+  "bloques_con_2_de_2": []
+ },
+ "sd_semillas_V1": {
+  "n": 26,
+  "mediana_pp": 1.53,
+  "max_pp": 4.1,
+  "por_fuente": {
+   "CP": 1.66,
+   "EX": 1.76,
+   "NO": 1.07
+  }
+ },
+ "rho_ic_bloques": {
+  "NO": {
+   "rho": 0.41,
+   "IC95": [
+    -0.18,
+    0.85
+   ]
+  },
+  "CP": {
+   "rho": 0.3,
+   "IC95": [
+    -0.26,
+    0.71
+   ]
+  },
+  "EX": {
+   "rho": -0.15,
+   "IC95": [
+    -0.67,
+    0.54
+   ]
+  }
+ },
+ "modelo_mixto": {
+  "pendiente_pp_por_DE": 0.11,
+  "IC95": [
+   -1.74,
+   1.95
+  ],
+  "p": 0.909,
+  "DE_sintetico_pp": 13.99
+ },
+ "modelo_mixto_sin_H3": {
+  "pendiente_pp_por_DE": 0.66,
+  "IC95": [
+   -1.31,
+   2.64
+  ],
+  "p": 0.511
+ }
+}

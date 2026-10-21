@@ -1,0 +1,144 @@
+\documentclass[10pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{mathptmx}
+\usepackage[spanish,es-nodecimaldot,es-noshorthands,es-tabla]{babel}
+\usepackage[margin=1.8cm]{geometry}
+\usepackage{graphicx,booktabs,xcolor,url,array,tikz,caption,float}
+\usetikzlibrary{arrows.meta,positioning}
+\newcommand{\pend}[1]{\textcolor{red}{[#1]}}
+\renewcommand{\thetable}{S\arabic{table}}
+\renewcommand{\thefigure}{S\arabic{figure}}
+\captionsetup{font=small}
+\title{Material suplementario\\[2pt]\large Las ganancias sobre oclusión sintética no anticipan la robustez a la oclusión real en la detección de personas}
+\author{Apaza Hilasaca, Condori Quispe, Ramos Quispe (UPeU, Juliaca)}
+\date{20 de octubre de 2026}
+\begin{document}
+\maketitle
+\noindent Todas las tablas de este suplemento las genera \texttt{shortpaper5/suplemento\_tablas.py} a partir de los ficheros de resultados del proyecto (\texttt{informes/analisis\_final/}); ninguna cifra se escribe a mano. Los análisis marcados como posteriores se declararon después de ver los resultados y no deciden ninguna hipótesis.
+
+\section{Objetivos, método y evidencia}
+\begin{table}[H]\centering\small
+\caption{Correspondencia entre objetivos específicos, método, evidencia y pendientes.}
+\begin{tabular}{@{}p{3.3cm}p{4.6cm}p{5.4cm}p{2.6cm}@{}}\toprule
+\textbf{Objetivo} & \textbf{Método} & \textbf{Evidencia} & \textbf{Pendiente} \\\midrule
+OE1. Degradación con la oclusión & AP@0.5 estratificado con regiones \emph{ignore}, tres fuentes & 0,82 (sin oclusión) a 0,24 (severa), YOLOv11s en ExDark & --- \\
+OE2. Efecto del aumento según el oclusor & V3 frente a V1, control y 3 fuentes reales; parches, siluetas, difusión, geometría real y profundidad & 13 de 13 controles; 4 de 39 celdas reales, ninguna estable y propia de la oclusión; efecto medio nulo con exposición igual & Oclusión tomada de imágenes reales \\
+OE3. Dependencia del detector & YOLOv11s, YOLOv11m, YOLO26s, RT-DETR-l, Faster R-CNN & Mismo patrón en los cuatro primeros; Faster R-CNN transfiere en NightOwls y CityPersons (H15 refutada) & --- \\
+OE4. Dominio y volumen de datos & Re-entrenar en CityPersons (H6, H11); NightOwls de 2\,000 a 20\,000 imágenes (H7) & El déficit persiste; la ganancia dentro del dominio no se confirmó (H11) & --- \\
+OE5. Mecanismo & \emph{Recall}, falsos positivos, confianza; visibilidad; realismo (H13); matriz cruzada & Los ocluidos sintéticamente siguen siendo distinguibles de los reales; menos \emph{recall} con más confianza & Prueba confirmatoria del mecanismo \\
+OE6--OE7. Módulo de atención; fiabilidad de la anotación & FPS y parámetros; $\kappa$ entre anotadores & Sin ganancia del módulo (H1, H2) y FPS al 82\,\%; $\kappa$ 0,06--0,60 & Prueba en dispositivo embebido \\
+\bottomrule\end{tabular}\end{table}
+
+\noindent\textbf{Variantes del planteamiento original.} El experimento 1 tenía cuatro variantes: V1 (base), V2 (módulo de atención CBAM en el cuello), V3 (aumento de oclusión) y V4 (ambos). H1 (V4 mejora a V1) y H2 (V3 mejora más que V2) no se confirmaron, y H5 (las siluetas reducen la brecha) solo en parte, porque la brecha se cerró por empeorar lo real. El módulo de atención redujo los FPS al 82\,\% (161--184 frente a 144--157) sin ganancia en oclusión real. Desde la iteración 2 la pregunta es la transferencia y solo se comparan V1 y V3.
+
+\section{Hipótesis y prerregistro}
+La huella SHA-256 global del protocolo prueba que ningún fichero congelado cambió después del congelamiento, pero la fecha la registra el propio proyecto (\texttt{CAMBIOS\_PROTOCOLO.md}) y no un tercero. La columna «primera corrida» sale del registro de cada corrida y permite comprobar que el congelamiento es anterior al entrenamiento. Todas las fechas son de 2026.
+
+\input{tablas_suplemento_es_hip.tex}
+
+\section{Registro de corridas y recetas}
+Las 104 corridas válidas son: 14 del experimento 1 (12 de V1--V4 y dos controles, sin aumento de oclusión y sin preentrenamiento), 12 de la iteración 2 (V1--V4), 6 de YOLO26s, 6 de H6, 12 de H7 (dos por peldaño de 2\,000, 5\,000 y 10\,000 con la semilla 0, y seis en 20\,000), 6 de H8 y 3 de H9 (su V1 es la de la iteración 2): 59 en los siete primeros bloques; después, 6 de H9b, 6 de H10 (su V1 es la de H9b), 6 de H11, 9 de H12, 6 de la extensión de semillas, 6 de H14 y 6 de H15. Versiones: Ultralytics 8.4.143; PyTorch 2.11 con CUDA 12.8 en la laptop y 2.8 con CUDA 12.8 en RunPod; torchvision para Faster R-CNN.
+
+\input{tablas_suplemento_es_reg.tex}
+
+\begin{table}[H]\centering\small
+\caption{Receta de entrenamiento por detector. El aumento base (idéntico en V1 y V3) son los valores de Ultralytics 8.4 fijados en \texttt{config/aumento\_base.yaml}: HSV (0,015; 0,7; 0,4), traslación 0,1, escala 0,5, volteo horizontal 0,5, mosaico 1,0 sin mosaico en las 10 últimas épocas.}
+\begin{tabular}{@{}p{2.6cm}p{2.2cm}p{2.6cm}p{1.9cm}p{1.6cm}p{1.6cm}p{2.6cm}@{}}\toprule
+Detector & Optimizador & Tasa (final) & Calentamiento & Decaimiento & Lote & Épocas \\\midrule
+YOLOv11s/m, YOLO26s & SGD, momento 0,937 & 0,002 (lineal a 1\,\%) & 3 épocas & $5\cdot10^{-4}$ & 16 & hasta 100 (pac. 20) o 30/60 fijas \\
+RT-DETR-l & AdamW, $\beta_1$ 0,9 & $10^{-4}$ (lineal a 1\,\%) & 3 épocas, sesgo 0 & $10^{-4}$ & 8 (acum. a 64) & hasta 100 (pac. 20) \\
+Faster R-CNN R50-FPN v2 & SGD, momento 0,9 & 0,01, $\times$0,1 en 20 y 27 & 500 iteraciones & $10^{-4}$ & 8 & 30 fijas \\
+\bottomrule\end{tabular}\end{table}
+
+\section{Aumento y control de cada familia}
+\begin{table}[H]\centering\small
+\caption{Parámetros del aumento (entrenamiento) y del control (prueba). El control siempre usa las 841 imágenes de ExDark test y todas sus personas válidas, con cobertura de 0,70 a 1,00, y oclusores que el modelo no vio al entrenar.}
+\begin{tabular}{@{}p{2.2cm}p{7.0cm}p{6.6cm}@{}}\toprule
+Familia & Entrenamiento (V3) & Control \\\midrule
+Parches & Rectángulos de textura (0,4), recortes de objetos (0,5) u opacos (0,1); $p=0{,}5$ por imagen, 1--3 personas, cobertura 0,30--0,85; banco de recortes de \emph{train} & \texttt{opaco\_severa}: banda de borde opaca; banco de recortes de \emph{test}, disjunto del de \emph{train} \\
+Siluetas & Siluetas con máscara de objetos y personas reales (persona con prob. 0,5), ajuste de luminancia; mismos $p$, número y cobertura; banco \texttt{siluetas\_train} & \texttt{silueta\_severa}: banco \texttt{siluetas\_test} (imágenes disjuntas) \\
+Difusión & Stable Diffusion 1.5 \emph{inpainting}, 20 pasos, guía 7,5, diez objetos de COCO («a parked car», «a bicycle»…) con el sufijo «at night, low light, realistic photo»; dos versiones por imagen generadas de antemano y sustituidas con $p=0{,}15$ (con mosaico) o 0,5 (sin él); control de calidad con YOLOv11s-seg (se rechaza si $>$30\,\% de la máscara sigue siendo persona) & \texttt{generativa\_severa}: mismas indicaciones y modelo, generadas de nuevo sobre las imágenes de prueba con otras semillas (96,2\,\% aceptadas) \\
+Geometría real & Siluetas colocadas sobre la región oculta de patrones de visibilidad reales de CityPersons \emph{train}, cobertura 0,40--0,95 & \texttt{geometria\_severa}: patrones de la validación interna y banco de \emph{test} (IoU medio recorte--región oculta 0,61) \\
+Profundidad & Recortes de objetos apoyados en el suelo delante de la persona y compuestos solo donde la escena está más lejos (Depth Anything V2 Small); 2 versiones por imagen, misma sustitución que difusión & \texttt{profundidad\_severa}: banco \texttt{siluetas\_test} \\
+\bottomrule\end{tabular}\end{table}
+
+\begin{figure}[H]\centering
+\includegraphics[width=0.92\textwidth]{fig_cualitativa_es.png}
+\caption{Arriba: oclusión real anotada en las tres fuentes (caja naranja: persona evaluada). Abajo: la misma persona de ExDark test en el control de cada familia sintética (caja verde).}
+\end{figure}
+
+\begin{figure}[H]\centering
+\begin{tikzpicture}[n/.style={draw,rounded corners,align=center,font=\footnotesize,minimum height=0.9cm,text width=2.5cm},a/.style={-Stealth}]
+\node[n] (d) {ExDark train\\(1\,183 imágenes)};
+\node[n,right=0.5cm of d] (b) {Aumento base\\(igual en V1 y V3)};
+\node[n,right=0.5cm of b] (o) {Oclusión sintética\\(solo V3; 5 familias)};
+\node[n,right=0.5cm of o] (t) {Entrenamiento\\(épocas fijas o selección)};
+\node[n,below=0.6cm of t] (e) {Evaluación AP@0.5\\con regiones \emph{ignore}};
+\node[n,left=0.5cm of e] (c) {Control sintético\\(oclusores no vistos)};
+\node[n,left=0.5cm of c] (r) {3 fuentes reales\\NO, CP, EX};
+\node[n,left=0.5cm of r] (v) {IC por imágenes y jerárquico; regla 2 de 3};
+\draw[a] (d)--(b); \draw[a] (b)--(o); \draw[a] (o)--(t); \draw[a] (t)--(e); \draw[a] (c)--(e); \draw[a] (r) to[bend left=20] (e); \draw[a] (e) to[bend left=25] (v);
+\end{tikzpicture}
+\caption{Tubería de cada bloque. La oclusión se aplica sobre la imagen RGB, después del aumento base y antes del formateo, solo en entrenamiento; la validación y la prueba nunca se ocluyen salvo en el control.}
+\end{figure}
+
+\section{Todas las celdas y análisis estadístico}
+\input{tablas_suplemento_es_celdas.tex}
+
+\begin{figure}[H]\centering
+\includegraphics[width=\textwidth]{fig_gap_ic_es.png}
+\caption{Control sintético (barras) y fuentes reales (marcadores) por bloque, con IC del 95\,\% por imágenes. La barra de H3 se corta en +30 (+60,9).}
+\end{figure}
+
+\input{tablas_suplemento_es_estad.tex}
+
+\section{Matriz cruzada de controles}
+Si el control solo midiera la memoria del oclusor concreto, un modelo ganaría en su propio control y no en el de las demás familias. La tabla~\ref{tab:s-cruzada} evalúa cada familia en el control de todas. Pasan 13 de las 20 celdas fuera de la diagonal (también 13 con el IC jerárquico): el aumento se transfiere de una oclusión sintética a otra, pero no a la real (4 de 39). Solo los parches del experimento 1 se quedan casi en su propio control.
+
+\input{tablas_suplemento_es_cruzada.tex}
+
+\section{Análisis secundarios}
+\input{tablas_suplemento_es_extra.tex}
+
+\input{tablas_suplemento_es_vis.tex}
+
+\noindent\textbf{Realismo (H13).} Cobertura media conseguida: parches 0,56, siluetas 0,54, geometría 0,47 y difusión 0,32 (el control de calidad dejó sin ocluir a 146 de 400 personas), frente a 0,55 de la oclusión real. No hay máscaras de oclusor reales en CityPersons (solo la caja visible y la completa), por lo que no se puede calcular el IoU entre máscaras sintéticas y reales; la familia de geometría real reproduce por construcción la región oculta de patrones reales (IoU medio 0,61 entre recorte y región oculta) y tampoco se transfiere (H10).
+
+\noindent\textbf{KID sobre la región del oclusor (análisis posterior).} Con DINOv2 sobre la parte ocluida (real: franja de la caja completa fuera de la caja visible anotada; sintética: rectángulo de los píxeles que cambian respecto de la misma persona sin ocluir), la distancia al oclusor real es 2,56 [2,08; 3,17] con parches, 3,39 [2,63; 4,23] con siluetas, 2,75 [1,91; 3,51] con geometría y 2,50 [1,87; 3,02] con difusión (248 regiones; el control de calidad dejó 152 sin ocluir), frente a 3,63 [2,77; 4,34] de la misma región sin oclusor y 0,01 [$-$0,08; 0,10] entre dos mitades de oclusores reales. Los oclusores sintéticos se parecen algo más al oclusor real que una región sin oclusor, pero ninguno se le acerca (\path{informes/kid_oclusor.py}).
+
+\section{Búsqueda bibliográfica}
+Tres búsquedas en Scopus exportadas el 13/10/2026: ecuación principal (A y B, más al menos uno de C, D o E; 155 registros), dos ecuaciones complementarias (8) y oclusión sintética frente a real sin limitarse a personas (71). De ellas salieron los cinco artículos semilla (PRNet++, WALT, MLFFCSP, CamPed y el YOLOX con transferencia de dominio); la búsqueda se apoyó en Scopus AI y en Claude, y la selección la hicieron los autores leyendo los artículos. Cadenas exactas, copiadas del historial de búsquedas de Scopus:
+
+\noindent\textbf{Ecuación principal (155 registros)}\\
+{\ttfamily\footnotesize\raggedright TITLE-ABS-KEY ( ( ( pedestrian* or person or persons or people or human or humans ) W/4 detect* ) AND ( occlu* OR "partially visible" OR "partial visibility" OR "crowded scene" ) AND ( ( occlu* W/5 ( augment* or synthetic* or simulat* or artificial* or generat* or inpaint* or diffusion or paste or pasted or pasting or erasing ) ) OR "random erasing" OR cutout OR "copy paste" OR "low light" OR "low illumination" OR "poor illumination" OR "poor lighting" OR "dim light" OR "dark scene" OR "dark environment" OR "dark image" OR darkness OR night* OR nocturnal OR exdark OR nightowls OR "cross-dataset" OR "cross-domain" OR "domain gap" OR "domain shift" OR "dataset bias" OR "domain generali{?}ation" OR "out-of-distribution" OR "sim-to-real" OR "synthetic-to-real" OR "real occlusion" OR "natural occlusion" OR "real-world occlusion" OR ( generali{?}ation W/5 ( dataset* or domain* ) ) ) ) AND PUBYEAR > 2021 AND PUBYEAR < 2027 AND ( DOCTYPE ( ar ) OR DOCTYPE ( cp ) OR DOCTYPE ( re ) ) AND LANGUAGE ( english ) AND ( subjarea ( COMP ) OR subjarea ( ENGI ) ) AND NOT TITLE ( thermal OR infrared OR multispectral OR lidar OR radar OR "point cloud" )\par}
+
+\noindent\textbf{Ecuación complementaria (8 registros)}\\
+{\ttfamily\footnotesize\raggedright TITLE-ABS-KEY ( ( ( pedestrian* or person or persons or people or human or humans ) W/4 detect* ) AND ( ( occlu* W/5 ( augment* or synthetic* or simulat* or artificial* or generat* or inpaint* or diffusion or paste or pasted or pasting or erasing ) ) OR "random erasing" OR cutout OR "copy paste" ) AND ( "low light" OR "low illumination" OR "poor illumination" OR night* OR nocturnal OR exdark OR nightowls OR "cross-dataset" OR "cross-domain" OR "domain gap" OR "domain shift" OR "real occlusion" OR "natural occlusion" OR "real-world occlusion" ) ) AND ( DOCTYPE ( ar ) OR DOCTYPE ( cp ) OR DOCTYPE ( re ) ) AND LANGUAGE ( english )\par}
+
+\noindent\textbf{Oclusión sintética frente a real (71 registros)}\\
+{\ttfamily\footnotesize\raggedright TITLE-ABS-KEY ( ( occlu* W/5 ( synthetic* or simulat* or artificial* ) ) AND ( "real occlusion" OR "natural occlusion" OR "real-world occlusion" OR "naturally occluded" OR "real occluded" ) ) AND ( DOCTYPE ( ar ) OR DOCTYPE ( cp ) OR DOCTYPE ( re ) ) AND LANGUAGE ( english )\par}
+
+\noindent  Después de dos revisiones (20/10/2026) se añadieron, por búsqueda dirigida y tras leer su resumen o su texto, Taori et al. (2020), Pytel et al. (2021), Kortylewski et al. (2020), Wang et al. (2020), Ghiasi et al. (2021) y Geirhos et al. (2020). Todas las referencias se verificaron en Crossref o arXiv.
+
+\section{Licencias, datos y cumplimiento}
+\noindent\textbf{Licencias.} ExDark: imágenes bajo sus términos de uso para investigación académica no comercial (\url{https://github.com/cs-chan/Exclusively-Dark-Image-Dataset}). CityPersons (imágenes de Cityscapes): uso no comercial, citar el conjunto, sin redistribuir (\url{https://www.cityscapes-dataset.com/license/}). NightOwls: uso no comercial, citar el conjunto, sin redistribuir; se permiten derivados abstractos como modelos entrenados (\url{https://www.nightowls-dataset.org}). El proyecto no redistribuye imágenes; publica identificadores, anotaciones derivadas, códigos y pesos.
+
+\noindent\textbf{Material del repositorio.} \path{PREREGISTRO_*.md}, \path{CAMBIOS_PROTOCOLO.md} y \path{protocolo_congelado.json} (hipótesis y huellas); \path{informes/analisis_final/registro_corridas.csv} (corridas); \path{celdas_completas.csv}, \path{bootstrap*.csv}, \path{miss_rate*.csv} y \path{revision_sp.json} (cifras e intervalos); \path{config/} y \path{argos_lib/} (aumento y control); \path{16_oclusion_proxy.py} y \path{gt_test_proxy.json} (indicador de ExDark); \path{17_fiabilidad_anotacion.py} (estudio de $\kappa$, sin nombres de anotadores); \path{31_realismo.py} (H13).
+
+\begin{table}[H]\centering\small
+\caption{Lista REFORMS (Kapoor et al., 2024) resumida: dónde se atiende cada bloque.}
+\begin{tabular}{@{}p{5.2cm}p{11cm}@{}}\toprule
+Bloque & Dónde \\\midrule
+Objetivos y afirmaciones & Introducción; tabla~I del artículo; tabla~\ref{tab:s-hip} \\
+Reproducibilidad computacional & Repositorio público \url{https://github.com/jhanrq8888/argos-occlusion-transfer}; pesos con DOI en Zenodo al publicarse; versiones en la sección 3 \\
+Datos y preprocesamiento & Sección Datos del artículo; tabla de aumento y control; licencias \\
+Separación entrenamiento--prueba & Control con imágenes y oclusores no vistos; validación nunca ocluida salvo \texttt{val\_ocluido} para seleccionar \\
+Selección de modelos & Tabla~\ref{tab:s-registro} (época evaluada de cada corrida); bloques de exposición fija como evidencia primaria \\
+Métricas e incertidumbre & Tablas~\ref{tab:s-celdas} y~\ref{tab:s-estad}; MR$^{-2}$ en la tabla~\ref{tab:s-extra}; AP@0.5:0.95 en \path{informes/analisis_final/ap_estricto.csv} (ninguna de las 21 celdas de los siete primeros bloques supera el umbral) \\
+Generalización y limitaciones & Discusión del artículo (tres categorías) \\
+\bottomrule\end{tabular}\end{table}
+
+\noindent\textbf{Guía práctica.} (1) Un banco de oclusión sintética sirve como control positivo de que un aumento está bien implementado, no como prueba de robustez. (2) Para afirmar robustez a la oclusión hace falta un conjunto de oclusión real anotada del dominio de uso, aunque sea pequeño, y comparar con la misma exposición al entrenamiento. (3) Si se dispone de presupuesto para anotar, anotar datos del dominio ayudó mucho más que cualquier aumento (0,59 frente a 0,24 en CityPersons \emph{heavy}). (4) Reportar siempre la época de los pesos de V1 y V3.
+
+\end{document}

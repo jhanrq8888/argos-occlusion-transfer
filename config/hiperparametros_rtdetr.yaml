@@ -1,0 +1,23 @@
+# ARGOS-11 - Hiperparametros de H8 (replica con RT-DETR-l, familia transformer).
+# Identicos a config/hiperparametros.yaml SALVO el optimizador, que sigue la receta
+# de referencia de ajuste fino de RT-DETR (Zhao et al., 2024: AdamW, lr 1e-4,
+# weight decay 1e-4). Motivo: imponer a un detector tipo DETR el SGD ajustado para
+# YOLO sesgaria la comparacion en su contra. La misma receta se usa en V1 y V3,
+# de modo que el contraste V3-V1 no depende de esta eleccion.
+optimizer: AdamW
+lr0: 0.0001
+lrf: 0.01
+momentum: 0.9          # beta1 de AdamW
+weight_decay: 0.0001
+warmup_epochs: 3.0
+warmup_bias_lr: 0.0    # con AdamW, el 0,1 por defecto (pensado para SGD) destroza los pesos preentrenados;
+                       # Ultralytics usa 0,0 cuando elige Adam por si mismo ("no higher than 0.01 for Adam")
+epochs: 100
+patience: 20
+batch: 8               # lote 16 ocupa 12,3 GB (> 8 GB de la RTX 5050) y desborda a RAM; con lote 8 = 6,6 GB.
+                       # Ultralytics acumula gradientes hasta nbs=64: el lote efectivo es el mismo que con 16.
+imgsz: 640
+cos_lr: false
+amp: true
+deterministic: true
+workers: 8

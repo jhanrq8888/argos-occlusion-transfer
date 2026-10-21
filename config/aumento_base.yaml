@@ -1,0 +1,21 @@
+# ARGOS-11 - Aumento base (identico en V1-V4). Forma parte del protocolo
+# congelado (Seccion 2.9). Son los valores por defecto de Ultralytics 8.4
+# para deteccion, fijados explicitamente para que no dependan de la version.
+# El UNICO aumento que varia entre celdas es el de oclusion (V3 y V4), que
+# no esta aqui: lo aplica argos_lib.oclusion.OclusionEntrenamiento.
+hsv_h: 0.015      # jitter de tono (fraccion)
+hsv_s: 0.7        # jitter de saturacion (fraccion)
+hsv_v: 0.4        # jitter de valor/brillo (fraccion)
+degrees: 0.0      # rotacion (grados)
+translate: 0.1    # traslacion (fraccion)
+scale: 0.5        # escalado (ganancia)
+shear: 0.0
+perspective: 0.0
+flipud: 0.0
+fliplr: 0.5       # volteo horizontal (probabilidad)
+bgr: 0.0
+mosaic: 1.0       # mosaico (probabilidad)
+mixup: 0.0
+cutmix: 0.0
+copy_paste: 0.0
+close_mosaic: 10  # ultimas epocas sin mosaico

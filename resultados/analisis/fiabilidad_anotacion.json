@@ -1,0 +1,369 @@
+{
+  "distribucion": {
+    "Anotador A (piloto)": {
+      "severa": 16,
+      "sin": 14,
+      "moderada": 7,
+      "ligera": 11,
+      "no_evaluable": 2
+    },
+    "Anotador B (piloto)": {
+      "moderada": 10,
+      "ligera": 11,
+      "severa": 12,
+      "sin": 17
+    },
+    "anotador C v1 (330, un paso)": {
+      "ligera": 90,
+      "moderada": 148,
+      "no_evaluable": 16,
+      "severa": 75,
+      "sin": 1
+    },
+    "anotador C v2 (50, calibracion)": {
+      "severa": 12,
+      "moderada": 18,
+      "ligera": 20
+    },
+    "anotador C v3 (330, dos pasos)": {
+      "sin": 184,
+      "ligera": 29,
+      "moderada": 85,
+      "no_evaluable": 24,
+      "severa": 8
+    }
+  },
+  "parejas": [
+    {
+      "a": "Anotador A (piloto)",
+      "b": "Anotador B (piloto)",
+      "n": 48,
+      "kappa_ponderado": 0.8219584569732938,
+      "acuerdo_exacto": 0.6666666666666666,
+      "matriz(filas=a,cols=b; sin/lig/mod/sev)": [
+        [
+          11,
+          3,
+          0,
+          0
+        ],
+        [
+          4,
+          6,
+          1,
+          0
+        ],
+        [
+          2,
+          1,
+          4,
+          0
+        ],
+        [
+          0,
+          1,
+          4,
+          11
+        ]
+      ]
+    },
+    {
+      "a": "Anotador A (piloto)",
+      "b": "anotador C v1 (330, un paso)",
+      "n": 42,
+      "kappa_ponderado": 0.5207265952491853,
+      "acuerdo_exacto": 0.40476190476190477,
+      "matriz(filas=a,cols=b; sin/lig/mod/sev)": [
+        [
+          0,
+          8,
+          5,
+          0
+        ],
+        [
+          0,
+          3,
+          6,
+          2
+        ],
+        [
+          0,
+          1,
+          4,
+          2
+        ],
+        [
+          0,
+          1,
+          0,
+          10
+        ]
+      ]
+    },
+    {
+      "a": "Anotador A (piloto)",
+      "b": "anotador C v2 (50, calibracion)",
+      "n": 48,
+      "kappa_ponderado": 0.6014234875444842,
+      "acuerdo_exacto": 0.4375,
+      "matriz(filas=a,cols=b; sin/lig/mod/sev)": [
+        [
+          0,
+          11,
+          3,
+          0
+        ],
+        [
+          0,
+          6,
+          4,
+          1
+        ],
+        [
+          0,
+          2,
+          5,
+          0
+        ],
+        [
+          0,
+          1,
+          5,
+          10
+        ]
+      ]
+    },
+    {
+      "a": "Anotador A (piloto)",
+      "b": "anotador C v3 (330, dos pasos)",
+      "n": 45,
+      "kappa_ponderado": 0.182093571188152,
+      "acuerdo_exacto": 0.37777777777777777,
+      "matriz(filas=a,cols=b; sin/lig/mod/sev)": [
+        [
+          11,
+          2,
+          1,
+          0
+        ],
+        [
+          7,
+          3,
+          0,
+          1
+        ],
+        [
+          4,
+          1,
+          2,
+          0
+        ],
+        [
+          7,
+          2,
+          3,
+          1
+        ]
+      ]
+    },
+    {
+      "a": "Anotador B (piloto)",
+      "b": "anotador C v1 (330, un paso)",
+      "n": 42,
+      "kappa_ponderado": 0.5073313782991203,
+      "acuerdo_exacto": 0.30952380952380953,
+      "matriz(filas=a,cols=b; sin/lig/mod/sev)": [
+        [
+          0,
+          10,
+          7,
+          0
+        ],
+        [
+          0,
+          2,
+          5,
+          2
+        ],
+        [
+          0,
+          1,
+          3,
+          4
+        ],
+        [
+          0,
+          0,
+          0,
+          8
+        ]
+      ]
+    },
+    {
+      "a": "Anotador B (piloto)",
+      "b": "anotador C v2 (50, calibracion)",
+      "n": 50,
+      "kappa_ponderado": 0.5819992885094273,
+      "acuerdo_exacto": 0.36,
+      "matriz(filas=a,cols=b; sin/lig/mod/sev)": [
+        [
+          0,
+          13,
+          4,
+          0
+        ],
+        [
+          0,
+          5,
+          5,
+          1
+        ],
+        [
+          0,
+          2,
+          5,
+          3
+        ],
+        [
+          0,
+          0,
+          4,
+          8
+        ]
+      ]
+    },
+    {
+      "a": "Anotador B (piloto)",
+      "b": "anotador C v3 (330, dos pasos)",
+      "n": 47,
+      "kappa_ponderado": 0.15486238532110055,
+      "acuerdo_exacto": 0.3829787234042553,
+      "matriz(filas=a,cols=b; sin/lig/mod/sev)": [
+        [
+          12,
+          3,
+          1,
+          1
+        ],
+        [
+          7,
+          2,
+          2,
+          0
+        ],
+        [
+          5,
+          2,
+          3,
+          0
+        ],
+        [
+          5,
+          1,
+          2,
+          1
+        ]
+      ]
+    },
+    {
+      "a": "anotador C v1 (330, un paso)",
+      "b": "anotador C v2 (50, calibracion)",
+      "n": 42,
+      "kappa_ponderado": 0.5430643699002711,
+      "acuerdo_exacto": 0.5714285714285714,
+      "matriz(filas=a,cols=b; sin/lig/mod/sev)": [
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          10,
+          2,
+          1
+        ],
+        [
+          0,
+          7,
+          8,
+          0
+        ],
+        [
+          0,
+          1,
+          7,
+          6
+        ]
+      ]
+    },
+    {
+      "a": "anotador C v1 (330, un paso)",
+      "b": "anotador C v3 (330, dos pasos)",
+      "n": 296,
+      "kappa_ponderado": 0.061612680909717825,
+      "acuerdo_exacto": 0.19932432432432431,
+      "matriz(filas=a,cols=b; sin/lig/mod/sev)": [
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          62,
+          11,
+          15,
+          1
+        ],
+        [
+          85,
+          11,
+          46,
+          5
+        ],
+        [
+          34,
+          5,
+          19,
+          2
+        ]
+      ]
+    },
+    {
+      "a": "anotador C v2 (50, calibracion)",
+      "b": "anotador C v3 (330, dos pasos)",
+      "n": 47,
+      "kappa_ponderado": 0.12829675004253868,
+      "acuerdo_exacto": 0.1702127659574468,
+      "matriz(filas=a,cols=b; sin/lig/mod/sev)": [
+        [
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          16,
+          2,
+          2,
+          0
+        ],
+        [
+          8,
+          4,
+          5,
+          1
+        ],
+        [
+          5,
+          2,
+          1,
+          1
+        ]
+      ]
+    }
+  ],
+  "conclusion": "El acuerdo entre pasadas y anotadores oscila entre 0,16 y 0,60 (solo el piloto A-B alcanza 0,82), con desacuerdos sistematicos en la decision 'sin oclusion' frente a 'ligera' (oscuridad, borde de imagen o ropa oscura interpretados como oclusion) y, tras corregir eso, en sentido contrario. El grado de oclusion en baja iluminacion no es anotable de forma fiable a ojo; por ello el analisis en dominio usa el proxy objetivo por solapamiento de cajas (16_oclusion_proxy.py) y la anotacion manual se reporta como estudio de fiabilidad."
+}

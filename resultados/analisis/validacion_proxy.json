@@ -1,0 +1,106 @@
+{
+  "orden": {
+    "citypersons": {
+      "n": 3157,
+      "corr_pearson": 0.262255789165448,
+      "corr_spearman": 0.23831793471806834,
+      "kappa_ponderado_estratos": 0.2352749800799009,
+      "matriz_confusion(filas=proxy,cols=real)": [
+        [
+          726,
+          609,
+          484,
+          214
+        ],
+        [
+          69,
+          81,
+          62,
+          21
+        ],
+        [
+          82,
+          150,
+          162,
+          55
+        ],
+        [
+          49,
+          68,
+          218,
+          107
+        ]
+      ],
+      "proxy>=30%: n": 891,
+      "proxy>=30%: fraccion realmente >=30%": 0.6083052749719416,
+      "proxy>=30%: cobertura real media": 0.41102940516273856,
+      "proxy<10%: fraccion realmente <10%": 0.3536645351697,
+      "cobertura real media por estrato proxy": {
+        "sin": 0.2704013280865715,
+        "ligera": 0.2729824034334764,
+        "moderada": 0.3426886414253898,
+        "severa": 0.4804524886877828
+      },
+      "cobertura_media_real_de_todas": 0.31028127969591385
+    },
+    "nightowls": {
+      "n": 3293,
+      "prevalencia_ocluida": 0.16094746431825083,
+      "proxy>=10%: precision": 0.41346153846153844,
+      "proxy>=10%: recall": 0.16226415094339622,
+      "nota": "NightOwls incluye oclusion por objetos; el proxy solo ve personas -> recall limitado"
+    }
+  },
+  "union": {
+    "citypersons": {
+      "n": 3157,
+      "corr_pearson": 0.16634625660809352,
+      "corr_spearman": 0.16277779168851655,
+      "kappa_ponderado_estratos": 0.15203486289781185,
+      "matriz_confusion(filas=proxy,cols=real)": [
+        [
+          460,
+          341,
+          329,
+          155
+        ],
+        [
+          134,
+          147,
+          86,
+          37
+        ],
+        [
+          194,
+          241,
+          206,
+          72
+        ],
+        [
+          138,
+          179,
+          305,
+          133
+        ]
+      ],
+      "proxy>=30%: n": 1468,
+      "proxy>=30%: fraccion realmente >=30%": 0.4877384196185286,
+      "proxy>=30%: cobertura real media": 0.34631314713896455,
+      "proxy<10%: fraccion realmente <10%": 0.35669781931464173,
+      "cobertura real media por estrato proxy": {
+        "sin": 0.2865758754863813,
+        "ligera": 0.2547532178217822,
+        "moderada": 0.2954259467040673,
+        "severa": 0.3943695364238411
+      },
+      "cobertura_media_real_de_todas": 0.31028127969591385
+    },
+    "nightowls": {
+      "n": 3293,
+      "prevalencia_ocluida": 0.16094746431825083,
+      "proxy>=10%: precision": 0.2921615201900237,
+      "proxy>=10%: recall": 0.2320754716981132,
+      "nota": "NightOwls incluye oclusion por objetos; el proxy solo ve personas -> recall limitado"
+    }
+  }
+}

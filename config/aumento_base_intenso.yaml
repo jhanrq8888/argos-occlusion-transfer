@@ -1,0 +1,23 @@
+# ARGOS-11 - Control opcional V1+ (Seccion 2.1): intensificacion documentada
+# del aumento base SIN borrado dentro del bounding box. Sirve para separar el
+# efecto especifico de la oclusion sintetica del efecto generico de "mas
+# variabilidad". Cambios respecto a aumento_base.yaml:
+#   hsv_s 0.7->0.9, hsv_v 0.4->0.6, translate 0.1->0.2, scale 0.5->0.7,
+#   mixup 0.0->0.15, copy_paste 0.0->0.3 (pega instancias completas, no
+#   parches: no simula oclusion).
+hsv_h: 0.015
+hsv_s: 0.9
+hsv_v: 0.6
+degrees: 0.0
+translate: 0.2
+scale: 0.7
+shear: 0.0
+perspective: 0.0
+flipud: 0.0
+fliplr: 0.5
+bgr: 0.0
+mosaic: 1.0
+mixup: 0.15
+cutmix: 0.0
+copy_paste: 0.3
+close_mosaic: 10

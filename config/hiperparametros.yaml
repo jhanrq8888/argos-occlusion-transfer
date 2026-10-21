@@ -1,0 +1,18 @@
+# ARGOS-11 - Hiperparametros comunes a todas las corridas (Tabla 2 del PPI).
+# Forma parte del protocolo congelado. Replican el protocolo de ELS-YOLO
+# salvo las epocas, que se fijan a partir de la corrida piloto de S1
+# (64 s/epoca en RTX 5050 Laptop -> 100 epocas con parada temprana).
+optimizer: SGD
+lr0: 0.002        # ver CAMBIOS_PROTOCOLO.md (2026-09-11): 0.01 colapsa el ajuste fino desde COCO
+lrf: 0.01
+momentum: 0.937
+weight_decay: 0.0005
+warmup_epochs: 3.0
+epochs: 100
+patience: 20        # parada temprana (epocas sin mejora en val)
+batch: 16
+imgsz: 640
+cos_lr: false
+amp: true
+deterministic: true
+workers: 8
