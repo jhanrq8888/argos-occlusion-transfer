@@ -68,6 +68,8 @@ PATRONES = [
     "PREREGISTRO_H14.md", "dataset/profundidad_train/indice.json", "dataset/test_sintetico/profundidad_*/gt_*.json",
     # v3.10 (H15: E12, Faster R-CNN de torchvision, pesos COCO oficiales)
     "PREREGISTRO_H15.md", "fasterrcnn_resnet50_fpn_v2_coco.pth",
+    # v3.11 (H16 y H17: E13, Faster R-CNN con las familias generativa y de profundidad; RetinaNet con siluetas)
+    "PREREGISTRO_H16_H17.md", "retinanet_resnet50_fpn_v2_coco.pth",
     "argos_lib/*.py", "0?_*.py", "1?_*.py", "2?_*.py", "3?_*.py",
 ]
 SALIDA = "protocolo_congelado.json"

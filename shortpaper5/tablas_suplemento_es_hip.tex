@@ -1,5 +1,5 @@
 \begin{table}[H]\centering\scriptsize
-\caption{Hipótesis, predicción, congelamiento y veredicto. La huella es la del protocolo congelado (SHA-256 global, primeros 8 caracteres); la fecha es la registrada por el propio proyecto, no por un tercero. Primera corrida: inicio de la primera corrida válida del bloque, según su registro (hora local, UTC$-$5, en la laptop; UTC en RunPod: H11, H12, H14 y H15).}\label{tab:s-hip}
+\caption{Hipótesis, predicción, congelamiento y veredicto. La huella es la del protocolo congelado (SHA-256 global, primeros 8 caracteres); la fecha es la registrada por el propio proyecto, no por un tercero. Primera corrida: inicio de la primera corrida válida del bloque, según su registro (hora local, UTC$-$5, en la laptop; UTC en RunPod: H11, H12 y H14--H17).}\label{tab:s-hip}
 \resizebox{\textwidth}{!}{\begin{tabular}{@{}l p{6.3cm} l l l l p{3.2cm}@{}}\toprule
 Hip. & Predicción & Archivo & Versión y huella & Congelado & Primera corrida & Veredicto \\
 \midrule
@@ -15,5 +15,7 @@ H11 & Ganancia $\geq$2 pp en visibilidad 0,20--0,50 de CityPersons con exposici�
 H12 & Sin transferencia con YOLOv11m (siluetas, H12a; difusión, H12b) & \texttt{PREREGISTRO\_H12.md} & v3.7b \texttt{ef6138c1} & 2026-10-13 21:06 & 2026-10-17 14:50 & Se confirma (0 de 3 y 0 de 3) \\
 H13 & AUC(parches) $>$ AUC(siluetas) $>$ AUC(difusión) con DINOv2 & \texttt{PREREGISTRO\_H13.md} & v3.8 \texttt{7ce00c9c} & 2026-10-17 09:48 & sin entrenamiento & Se confirma en parte \\
 H14 & Sin transferencia con orden de profundidad & \texttt{PREREGISTRO\_H14.md} & v3.9 \texttt{264ac449} & 2026-10-17 10:10 & 2026-10-17 16:33 & Se confirma (1 de 3) \\
-H15 & Sin transferencia con Faster R-CNN & \texttt{PREREGISTRO\_H15.md} & v3.10 \texttt{b7843b3a} & 2026-10-20 16:20 & --- & Refutada \\
+H15 & Sin transferencia con Faster R-CNN & \texttt{PREREGISTRO\_H15.md} & v3.10 \texttt{b7843b3a} & 2026-10-20 16:20 & 2026-10-21 13:31 & Refutada \\
+H16a, H16b & Con Faster R-CNN se transfiere también con difusión (H16a) y con orden de profundidad (H16b) & \texttt{PREREGISTRO\_H16\_H17.md} & v3.11 \texttt{e9b85aee} & 2026-10-22 07:50 & 2026-10-22 13:57 & Refutadas (0 de 3 y 0 de 3) \\
+H17 & Sin transferencia con RetinaNet (una etapa, misma red base y receta que H15) & \texttt{PREREGISTRO\_H16\_H17.md} & v3.11 \texttt{e9b85aee} & 2026-10-22 07:50 & 2026-10-22 13:08 & Se confirma (0 de 3) \\
 \bottomrule\end{tabular}}\end{table}

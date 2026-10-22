@@ -21,5 +21,9 @@ H12 (YOLOv11m) & YOLOv11m & 9 & 30 / 30 & 30 / 30 & 30 épocas fijas & RTX 4090 
 Extensión de semillas & YOLOv11s & 6 & 30 / 30 & 30 / 30 & 30 épocas fijas & RTX 4090 & 0{,}5 \\
 H14 (profundidad, 30 ep.) & YOLOv11s & 6 & 30 / 30 & 30 / 30 & 30 épocas fijas & RTX 4090 & 0{,}5 \\
 H15 (Faster R-CNN, 30 ep.) & Faster R-CNN R50-FPN v2 & 6 & 30 / 30 & 30 / 30 & 30 épocas fijas & RTX 4090 & 2{,}6 \\
-\midrule Total & & 104 & & & & & 92{,}9 \\
+H16a (Faster R-CNN, generativa) & Faster R-CNN R50-FPN v2 & 3 & --- & 30 / 30 & 30 épocas fijas & RTX 4090 & 1{,}9 \\
+H16b (Faster R-CNN, profundidad) & Faster R-CNN R50-FPN v2 & 3 & --- & 30 / 30 & 30 épocas fijas & RTX 4090 & 1{,}9 \\
+H17 (RetinaNet, 30 ep.) & RetinaNet R50-FPN v2 & 6 & 30 / 30 & 30 / 30 & 30 épocas fijas & RTX 4090 & 2{,}5 \\
+Réplica de V1 entre pods & Faster R-CNN R50-FPN v2 & 1 & 30 / 30 & --- & 30 épocas fijas & RTX 4090 & 0{,}2 \\
+\midrule Total & & 117 & & & & & 99{,}3 \\
 \bottomrule\end{tabular}}\end{table}

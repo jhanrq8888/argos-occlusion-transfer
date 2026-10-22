@@ -34,7 +34,9 @@ SEL, FIJA, TEMP = "desigual (seleccion por validacion)", "igual (epocas fijas)",
 # clave, etiqueta del short paper, exposicion, semillas
 BLOQUES = [("exp1", "H3", TEMP), ("iter2", "H4", SEL), ("yolo26s", "H4-Y26", SEL), ("h6", "H6", SEL), ("h7", "H7", SEL),
            ("h8", "H8", SEL), ("h9", "H9", TEMP), ("h9b", "H9b", FIJA), ("h10g", "H10", FIJA), ("h10s", "H10-s", FIJA),
-           ("h11", "H11", FIJA), ("h12a", "H12a", FIJA), ("h12b", "H12b", FIJA), ("h14", "H14", FIJA), ("h15", "H15", FIJA)]
+           ("h11", "H11", FIJA), ("h12a", "H12a", FIJA), ("h12b", "H12b", FIJA), ("h14", "H14", FIJA), ("h15", "H15", FIJA),
+           ("h16a", "H16a", FIJA), ("h16b", "H16b", FIJA), ("h17", "H17", FIJA)]
+TORCHVISION = ("h15", "h16a", "h16b", "h17")   # anadidos despues del recuento de 13 bloques; se informan aparte
 
 
 def _mod(nombre, archivo):
@@ -92,7 +94,10 @@ def celdas():
     for clave, ruta, b in (("h12a", "resultados_h12/analisis/contrastes_h12.json", "H12a"),
                            ("h12b", "resultados_h12/analisis/contrastes_h12.json", "H12b"),
                            ("h14", "resultados_h14/analisis/contrastes_h14.json", "H14"),
-                           ("h15", "resultados_h15/analisis/contrastes_h15.json", "H15")):
+                           ("h15", "resultados_h15/analisis/contrastes_h15.json", "H15"),
+                           ("h16a", "resultados_h16/analisis/contrastes_h16_h17.json", "H16a"),
+                           ("h16b", "resultados_h16/analisis/contrastes_h16_h17.json", "H16b"),
+                           ("h17", "resultados_h16/analisis/contrastes_h16_h17.json", "H17")):
         if not os.path.exists(os.path.join(RAIZ, ruta)):
             continue
         for f in json.load(open(os.path.join(RAIZ, ruta), encoding="utf-8")):
@@ -117,7 +122,7 @@ def main():
     d = celdas()
     d.to_csv(os.path.join(AF, "celdas_completas.csv"), index=False)
     con = d[d.bloque != "h7"]
-    base = con[con.bloque != "h15"]
+    base = con[~con.bloque.isin(TORCHVISION)]
     reales = base[base.tipo == "real"]
     res = {"bloques_con_control": int(base.bloque.nunique()), "controles_pasan": int(base[base.tipo == "control"].pasa.sum()),
            "celdas_reales": len(reales), "pasan": int(reales.pasa.sum()),
@@ -153,7 +158,7 @@ def main():
     piv = con[con.tipo == "control"][["bloque", "delta"]].rename(columns={"delta": "sint"}).set_index("bloque")
     for _, _, s in REALES:
         piv[s] = con[(con.fuente == s)].set_index("bloque").delta
-    piv13 = piv.drop(index=[b for b in piv.index if b == "h15"])
+    piv13 = piv.drop(index=[b for b in piv.index if b in TORCHVISION])
     rnd = np.random.RandomState(0)
     rho = {}
     for s in ("NO", "CP", "EX"):

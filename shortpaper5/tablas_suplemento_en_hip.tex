@@ -1,5 +1,5 @@
 \begin{table}[H]\centering\scriptsize
-\caption{Hypotheses, prediction, freeze and verdict. The fingerprint is that of the frozen protocol (global SHA-256, first 8 characters); the date is self-recorded by the project, not by a third party. First run: start of the first valid run of the block, from its log (local time, UTC$-$5, on the laptop; UTC on RunPod: H11, H12, H14 and H15).}\label{tab:s-hip}
+\caption{Hypotheses, prediction, freeze and verdict. The fingerprint is that of the frozen protocol (global SHA-256, first 8 characters); the date is self-recorded by the project, not by a third party. First run: start of the first valid run of the block, from its log (local time, UTC$-$5, on the laptop; UTC on RunPod: H11, H12 and H14--H17).}\label{tab:s-hip}
 \resizebox{\textwidth}{!}{\begin{tabular}{@{}l p{6.3cm} l l l l p{3.2cm}@{}}\toprule
 Hyp. & Prediction & File & Version and fingerprint & Frozen & First run & Verdict \\
 \midrule
@@ -15,5 +15,7 @@ H11 & Gain $\geq$2 pp at CityPersons visibility 0.20--0.50 with equal exposure &
 H12 & No transfer with YOLOv11m (silhouettes, H12a; diffusion, H12b) & \texttt{PREREGISTRO\_H12.md} & v3.7b \texttt{ef6138c1} & 2026-10-13 21:06 & 2026-10-17 14:50 & Confirmed (0 of 3 and 0 of 3) \\
 H13 & AUC(patches) $>$ AUC(silhouettes) $>$ AUC(diffusion) with DINOv2 & \texttt{PREREGISTRO\_H13.md} & v3.8 \texttt{7ce00c9c} & 2026-10-17 09:48 & no training & Partially confirmed \\
 H14 & No transfer with depth order & \texttt{PREREGISTRO\_H14.md} & v3.9 \texttt{264ac449} & 2026-10-17 10:10 & 2026-10-17 16:33 & Confirmed (1 of 3) \\
-H15 & No transfer with Faster R-CNN & \texttt{PREREGISTRO\_H15.md} & v3.10 \texttt{b7843b3a} & 2026-10-20 16:20 & --- & Refuted \\
+H15 & No transfer with Faster R-CNN & \texttt{PREREGISTRO\_H15.md} & v3.10 \texttt{b7843b3a} & 2026-10-20 16:20 & 2026-10-21 13:31 & Refuted \\
+H16a, H16b & With Faster R-CNN transfer also occurs with diffusion (H16a) and depth order (H16b) & \texttt{PREREGISTRO\_H16\_H17.md} & v3.11 \texttt{e9b85aee} & 2026-10-22 07:50 & 2026-10-22 13:57 & Refuted (0 of 3 and 0 of 3) \\
+H17 & No transfer with RetinaNet (one-stage, same backbone and recipe as H15) & \texttt{PREREGISTRO\_H16\_H17.md} & v3.11 \texttt{e9b85aee} & 2026-10-22 07:50 & 2026-10-22 13:08 & Confirmed (0 of 3) \\
 \bottomrule\end{tabular}}\end{table}

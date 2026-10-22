@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-ARGOS-11 - Tasa de perdida MR-2 de los bloques con exposicion fija posteriores a H9b (H10, H12, H14 y, si existe, H15).
+ARGOS-11 - Tasa de perdida MR-2 de los bloques con exposicion fija posteriores a H9b (H10, H12, H14 y, si existen, H15-H17).
 Era un analisis secundario declarado en PREREGISTRO_H12.md y PREREGISTRO_H14.md que no se habia calculado; se calcula
 el 20/10/2026 con el mismo codigo (24_miss_rate.analizar), las mismas detecciones cacheadas y el mismo bootstrap.
 No decide ninguna hipotesis. Salida: informes/analisis_final/miss_rate_recientes.csv
@@ -38,6 +38,10 @@ BLOQUES = [
     ("h12b", "resultados_h12m", dict(excluir_prefijo="yolo11m_V3sil"), ("generativa_severa", "severa")),
     ("h14", "resultados_h14", {}, ("profundidad_severa", "severa")),
     ("h15", "resultados_h15", {}, ("silueta_severa", "severa")),
+    # H16: las V1 son las de H15; h16_h17_evaluar.bat copia su cache y su eval a resultados_h16 (la replica V1rep no entra)
+    ("h16a", "resultados_h16", dict(excluir_prefijo=("V3prof", "V1rep")), ("generativa_severa", "severa")),
+    ("h16b", "resultados_h16", dict(excluir_prefijo=("V3gen", "V1rep")), ("profundidad_severa", "severa")),
+    ("h17", "resultados_h17", {}, ("silueta_severa", "severa")),
 ]
 
 

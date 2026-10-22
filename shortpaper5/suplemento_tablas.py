@@ -45,7 +45,13 @@ VERSIONES = {  # hipotesis -> (archivo, version, hash del congelamiento, carpeta
     "H13": ("PREREGISTRO\\_H13.md", "v3.8", "7ce00c9c", []),
     "H14": ("PREREGISTRO\\_H14.md", "v3.9", "264ac449", ["argos_prof"]),
     "H15": ("PREREGISTRO\\_H15.md", "v3.10", "b7843b3a", ["argos_frcnn"]),
+    "H16a, H16b": ("PREREGISTRO\\_H16\\_H17.md", "v3.11", "e9b85aee", ["argos_frcnn_gen", "argos_frcnn_prof"]),
+    "H17": ("PREREGISTRO\\_H16\\_H17.md", "v3.11", "e9b85aee", ["argos_retina"]),
 }
+# Los entrenamientos de torchvision (35_dos_etapas.py) no guardan la fecha en registro_argos.json: la primera corrida se
+# lee del registro del pod (UTC). Hipotesis -> (registro, patron de la linea de inicio)
+INICIO_POD = {"H15": ("runpod_h15/h15.log", r"inicio H15"), "H16a, H16b": ("runpod_h16/h16.log", r"lanzada (gen|prof)_"),
+              "H17": ("runpod_h16/h16.log", r"lanzada retina_")}
 PRED = {  # predicción con dirección y veredicto (es, en)
     "H1--H3": ("V4 y V3 mejoran $\\geq$2 pp a V1 en oclusión (H1, H2) y la mejora se transfiere a la real (H3)",
                "V4 and V3 improve occluded AP by $\\geq$2 pp over V1 (H1, H2) and the gain transfers to real occlusion (H3)",
@@ -67,6 +73,11 @@ PRED = {  # predicción con dirección y veredicto (es, en)
             "Se confirma en parte", "Partially confirmed"),
     "H14": ("Sin transferencia con orden de profundidad", "No transfer with depth order", "Se confirma (1 de 3)", "Confirmed (1 of 3)"),
     "H15": ("Sin transferencia con Faster R-CNN", "No transfer with Faster R-CNN", None, None),
+    "H16a, H16b": ("Con Faster R-CNN se transfiere también con difusión (H16a) y con orden de profundidad (H16b)",
+                   "With Faster R-CNN transfer also occurs with diffusion (H16a) and depth order (H16b)",
+                   "Refutadas (0 de 3 y 0 de 3)", "Refuted (0 of 3 and 0 of 3)"),
+    "H17": ("Sin transferencia con RetinaNet (una etapa, misma red base y receta que H15)",
+            "No transfer with RetinaNet (one-stage, same backbone and recipe as H15)", "Se confirma (0 de 3)", "Confirmed (0 of 3)"),
 }
 
 
@@ -94,18 +105,30 @@ def primera_corrida(carpetas):
     return min(ini).strftime("%Y-%m-%d %H:%M") if ini else None
 
 
+def inicio_pod(h):
+    if h not in INICIO_POD:
+        return None
+    ruta = os.path.join(os.path.dirname(RAIZ), INICIO_POD[h][0])
+    if not os.path.exists(ruta):
+        return None
+    for l in open(ruta, encoding="utf-8"):
+        if re.search(INICIO_POD[h][1], l):
+            return l[:16]
+    return None
+
+
 def tabla_hipotesis(es, veredicto_h15):
     fc = fechas_congelamiento()
     L = ["\\begin{table}[H]\\centering\\scriptsize",
-         "\\caption{%s}\\label{tab:s-hip}" % ("Hipótesis, predicción, congelamiento y veredicto. La huella es la del protocolo congelado (SHA-256 global, primeros 8 caracteres); la fecha es la registrada por el propio proyecto, no por un tercero. Primera corrida: inicio de la primera corrida válida del bloque, según su registro (hora local, UTC$-$5, en la laptop; UTC en RunPod: H11, H12, H14 y H15)." if es else
-                                          "Hypotheses, prediction, freeze and verdict. The fingerprint is that of the frozen protocol (global SHA-256, first 8 characters); the date is self-recorded by the project, not by a third party. First run: start of the first valid run of the block, from its log (local time, UTC$-$5, on the laptop; UTC on RunPod: H11, H12, H14 and H15)."),
+         "\\caption{%s}\\label{tab:s-hip}" % ("Hipótesis, predicción, congelamiento y veredicto. La huella es la del protocolo congelado (SHA-256 global, primeros 8 caracteres); la fecha es la registrada por el propio proyecto, no por un tercero. Primera corrida: inicio de la primera corrida válida del bloque, según su registro (hora local, UTC$-$5, en la laptop; UTC en RunPod: H11, H12 y H14--H17)." if es else
+                                          "Hypotheses, prediction, freeze and verdict. The fingerprint is that of the frozen protocol (global SHA-256, first 8 characters); the date is self-recorded by the project, not by a third party. First run: start of the first valid run of the block, from its log (local time, UTC$-$5, on the laptop; UTC on RunPod: H11, H12 and H14--H17)."),
          "\\resizebox{\\textwidth}{!}{\\begin{tabular}{@{}l p{6.3cm} l l l l p{3.2cm}@{}}\\toprule",
          ("Hip. & Predicción & Archivo & Versión y huella & Congelado & Primera corrida & Veredicto \\\\" if es else
           "Hyp. & Prediction & File & Version and fingerprint & Frozen & First run & Verdict \\\\"), "\\midrule"]
     for h, (arch, ver, hsh, carp) in VERSIONES.items():
         p = PRED[h]
         v = (p[2] if es else p[3]) or veredicto_h15 or ("pendiente" if es else "pending")
-        pc = primera_corrida(carp) or ("sin entrenamiento" if es and h == "H13" else "no training" if h == "H13" else "---")
+        pc = primera_corrida(carp) or inicio_pod(h) or ("sin entrenamiento" if es and h == "H13" else "no training" if h == "H13" else "---")
         L.append("%s & %s & \\texttt{%s} & %s \\texttt{%s} & %s & %s & %s \\\\" % (h, p[0] if es else p[1], arch, ver, hsh, fc.get(hsh, "---"), pc, v))
     L += ["\\bottomrule\\end{tabular}}\\end{table}"]
     return "\n".join(L)
@@ -221,7 +244,7 @@ def tabla_extra(es):
     mr = pd.concat([pd.read_csv(os.path.join(AF, f)) for f in ("miss_rate.csv", "miss_rate_secundarios.csv", "miss_rate_recientes.csv")
                     if os.path.exists(os.path.join(AF, f))] + [pd.read_csv(os.path.join(RAIZ, "resultados_h11", "analisis", "descriptivos_h11_miss_rate.csv"))])
     etq = {"exp1": "H3", "iter2": "H4", "yolo26s": "H4-Y26", "h6": "H6", "h7": "H7", "h8": "H8", "h9": "H9", "h9b": "H9b", "h10_geometria": "H10",
-           "h10_siluetas": "H10-s", "h11": "H11", "h12a": "H12a", "h12b": "H12b", "h14": "H14", "h15": "H15"}
+           "h10_siluetas": "H10-s", "h11": "H11", "h12a": "H12a", "h12b": "H12b", "h14": "H14", "h15": "H15", "h16a": "H16a", "h16b": "H16b", "h17": "H17"}
     mr = mr[(mr.tipo == "real")]
     for b in etq:
         g = mr[mr.bloque == b]
@@ -283,7 +306,7 @@ def figura_ic(es):
     import matplotlib.pyplot as plt
     d = pd.read_csv(os.path.join(AF, "celdas_completas.csv"))
     d = d[d.bloque != "h7"]
-    orden = [e for e in ["H3", "H4", "H4-Y26", "H6", "H8", "H9", "H9b", "H10", "H10-s", "H11", "H12a", "H12b", "H14", "H15"] if e in set(d.etiqueta)]
+    orden = [e for e in ["H3", "H4", "H4-Y26", "H6", "H8", "H9", "H9b", "H10", "H10-s", "H11", "H12a", "H12b", "H14", "H15", "H16a", "H16b", "H17"] if e in set(d.etiqueta)]
     fig, ax = plt.subplots(figsize=(7.0, 2.6), dpi=300)
     col = {"NO": "#1f4e9c", "CP": "#e08a00", "EX": "#2e7d32"}
     mk = {"NO": "s", "CP": "^", "EX": "D"}

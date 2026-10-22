@@ -22,8 +22,8 @@
 \begin{tabular}{@{}p{3.3cm}p{4.6cm}p{5.4cm}p{2.6cm}@{}}\toprule
 \textbf{Objective} & \textbf{Method} & \textbf{Evidence} & \textbf{Pending} \\\midrule
 OE1. Degradation under occlusion & Stratified AP@0.5 with \emph{ignore} regions, three sources & 0.82 (unoccluded) to 0.24 (severe), YOLOv11s on ExDark & --- \\
-OE2. Effect of augmentation by occluder & V3 vs.\ V1, control and 3 real sources; patches, silhouettes, diffusion, real geometry and depth & 13 of 13 controls; 4 of 39 real cells, none stable and occlusion-specific; null mean effect with equal exposure & Occlusion mined from real images \\
-OE3. Dependence on the detector & YOLOv11s, YOLOv11m, YOLO26s, RT-DETR-l, Faster R-CNN & Same pattern in the first four; Faster R-CNN transfers on NightOwls and CityPersons (H15 refuted) & --- \\
+OE2. Effect of augmentation by occluder & V3 vs.\ V1, control and 3 real sources; patches, silhouettes, diffusion, real geometry and depth & 13 of 13 controls; 4 of 39 real cells, none stable and occlusion-specific; null mean effect with equal exposure (with the four torchvision blocks: 17 of 17 and 6 of 51) & Occlusion mined from real images \\
+OE3. Dependence on the detector & YOLOv11s, YOLOv11m, YOLO26s, RT-DETR-l, RetinaNet, Faster R-CNN & Same pattern in the first five; Faster R-CNN transfers with silhouettes on NightOwls and CityPersons (H15 refuted), but not with diffusion or depth (H16a and H16b refuted), and RetinaNet with silhouettes does not transfer (H17) & Another two-stage detector or backbone \\
 OE4. Domain and data volume & Retraining on CityPersons (H6, H11); NightOwls from 2,000 to 20,000 images (H7) & The deficit persists; the in-domain gain was not confirmed (H11) & --- \\
 OE5. Mechanism & Recall, false positives, confidence; visibility; realism (H13); cross-family matrix & Synthetically occluded people remain distinguishable from real ones; lower recall with higher confidence & Confirmatory test of the mechanism \\
 OE6--OE7. Attention module; annotation reliability & FPS and parameters; inter-annotator $\kappa$ & No gain from the module (H1, H2), FPS at 82\,\%; $\kappa$ 0.06--0.60 & Embedded-device test \\
@@ -37,7 +37,7 @@ The global SHA-256 fingerprint of the protocol proves that no frozen file change
 \input{tablas_suplemento_en_hip.tex}
 
 \section{Run log and recipes}
-The 104 valid runs are: 14 in experiment 1 (12 of V1--V4 and two controls, without occlusion augmentation and without pre-training), 12 in iteration 2 (V1--V4), 6 with YOLO26s, 6 in H6, 12 in H7 (two per rung of 2,000, 5,000 and 10,000 with seed 0, and six at 20,000), 6 in H8 and 3 in H9 (its V1 is that of iteration 2): 59 in the first seven blocks; then 6 in H9b, 6 in H10 (its V1 is that of H9b), 6 in H11, 9 in H12, 6 in the seed extension, 6 in H14 and 6 in H15. Versions: Ultralytics 8.4.143; PyTorch 2.11 with CUDA 12.8 on the laptop and 2.8 with CUDA 12.8 on RunPod; torchvision for Faster R-CNN.
+The 104 valid runs are: 14 in experiment 1 (12 of V1--V4 and two controls, without occlusion augmentation and without pre-training), 12 in iteration 2 (V1--V4), 6 with YOLO26s, 6 in H6, 12 in H7 (two per rung of 2,000, 5,000 and 10,000 with seed 0, and six at 20,000), 6 in H8 and 3 in H9 (its V1 is that of iteration 2): 59 in the first seven blocks; then 6 in H9b, 6 in H10 (its V1 is that of H9b), 6 in H11, 9 in H12, 6 in the seed extension, 6 in H14, 6 in H15, 6 in H16 (V3 with diffusion and with depth; its V1 is that of H15), 6 in H17 and 1 replicate of the H15 V1 seed 0 on another machine: 117 in total. Versions: Ultralytics 8.4.143; PyTorch 2.11 with CUDA 12.8 on the laptop and 2.8 with CUDA 12.8 on RunPod; torchvision 0.23 for Faster R-CNN and RetinaNet. The V1 replicate differs from the original by $-0.87$ (NightOwls), $-1.92$ (CityPersons) and $+3.42$ pp (ExDark, 101 instances), above the 2 pp threshold declared in the pre-registration: the variation between machines is of the order of the H15 gains.
 
 \input{tablas_suplemento_en_reg.tex}
 
@@ -48,6 +48,7 @@ Detector & Optimizer & LR (final) & Warm-up & Weight decay & Batch & Epochs \\\m
 YOLOv11s/m, YOLO26s & SGD, momentum 0.937 & 0.002 (linear to 1\,\%) & 3 epochs & $5\cdot10^{-4}$ & 16 & up to 100 (pat. 20) or 30/60 fixed \\
 RT-DETR-l & AdamW, $\beta_1$ 0.9 & $10^{-4}$ (linear to 1\,\%) & 3 epochs, bias 0 & $10^{-4}$ & 8 (acc.\ to 64) & up to 100 (pat. 20) \\
 Faster R-CNN R50-FPN v2 & SGD, momentum 0.9 & 0.01, $\times$0.1 at 20 and 27 & 500 iterations & $10^{-4}$ & 8 & 30 fixed \\
+RetinaNet R50-FPN v2 & SGD, momentum 0.9 & 0.005, $\times$0.1 at 20 and 27 & 500 iterations & $10^{-4}$ & 8 & 30 fixed \\
 \bottomrule\end{tabular}\end{table}
 
 \section{Augmentation and control of each family}

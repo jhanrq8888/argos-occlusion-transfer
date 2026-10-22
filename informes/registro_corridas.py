@@ -35,14 +35,20 @@ BLOQUES = [
     ("argos_sil_fijo_s34", "Extension de semillas", "H10 (sec.)", "last", "30 epocas fijas", NUBE, None),
     ("argos_prof", "H14 (profundidad, 30 ep.)", "H14", "last", "30 epocas fijas", NUBE, None),
     ("argos_frcnn", "H15 (Faster R-CNN, 30 ep.)", "H15", "last", "30 epocas fijas", NUBE, None),
+    ("argos_frcnn_gen", "H16a (Faster R-CNN, generativa)", "H16a", "last", "30 epocas fijas", NUBE, None),
+    ("argos_frcnn_prof", "H16b (Faster R-CNN, profundidad)", "H16b", "last", "30 epocas fijas", NUBE, None),
+    ("argos_retina", "H17 (RetinaNet, 30 ep.)", "H17", "last", "30 epocas fijas", NUBE, None),
+    ("argos_frcnn_rep", "Replica de V1 entre pods", "H16 (sec.)", "last", "30 epocas fijas", NUBE, None),
 ]
 
 
 def detector(nombre, carpeta):
     if carpeta == "argos_rtdetr":
         return "RT-DETR-l"
-    if carpeta == "argos_frcnn":
+    if carpeta.startswith("argos_frcnn"):
         return "Faster R-CNN R50-FPN v2"
+    if carpeta == "argos_retina":
+        return "RetinaNet R50-FPN v2"
     if nombre.startswith("yolo26s_"):
         return "YOLO26s"
     if nombre.startswith("yolo11m_") or carpeta.startswith("argos_m_"):
