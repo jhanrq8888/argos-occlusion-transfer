@@ -1,25 +1,25 @@
 # argos-occlusion-transfer
 
-**Gains on synthetic occlusion do not anticipate robustness to real occlusion in person detection.** Replication package of ARGOS-11: controlled experiments with pre-specified hypotheses (Universidad Peruana Unión, Juliaca, Peru). [Versión en español](README.es.md).
+**Gains on synthetic occlusion are not enough: occlusion augmentation and real occlusion in person detection.** Replication package of ARGOS-11: controlled experiments with pre-specified hypotheses (Universidad Peruana Unión, Juliaca, Peru). [Versión en español](README.es.md).
 
-Synthetic occlusion augmentation (pasting patches, silhouettes or generated objects over people during training) is a common remedy for occluded person detection, and its benefit is usually measured on the same kind of artificial occlusion. This repository tests whether that benefit reaches **real, human-annotated occlusion**. In every block a baseline (V1) and an augmented model (V3) share data, hyperparameters, base augmentation and machine. Each block has a synthetic control and three real-occlusion sources (NightOwls occluded pedestrians, CityPersons *heavy* and an ExDark occlusion proxy). Its hypothesis, decision rule and code were frozen with a SHA-256 fingerprint before training.
+Synthetic occlusion augmentation (pasting patches, silhouettes or generated objects over people during training) is a common remedy for occluded person detection, and its benefit is usually measured on the same kind of artificial occlusion. This repository tests whether that benefit reaches **real, human-annotated occlusion**. In every block a baseline (V1) and an augmented model (V3) share data, hyperparameters, base augmentation and machine (except H16, whose V1 come from H15 on another machine). Every block but one has a synthetic control and three real-occlusion sources (NightOwls occluded pedestrians, CityPersons *heavy* and an ExDark occlusion proxy). Its hypothesis, decision rule and code were frozen with a SHA-256 fingerprint before training.
 
 ## Main results
 
 | | Result |
 |---|---|
-| Synthetic controls that pass (+2 pp AP@0.5 with 95 % CI > 0), one-stage and transformer detectors | **13 of 13** (+2.6 to +60.9 pp) |
-| Real-occlusion cells that pass, same detectors | **4 of 39**, none both stable across seeds and specific to occluded people (with the four torchvision blocks: 6 of 51) |
-| Real cells that rule out a +2 pp gain (one-sided) | 24 of 39 (29 of 51) |
-| Mean real effect with equal training exposure (21 cells; 33 with torchvision) | **+0.02 pp** (+0.01) |
-| Synthetic-to-synthetic transfer (cross-family control matrix) | 13 of 20 cells pass |
-| Association between synthetic and real gain (Spearman, 13 blocks) | NO +0.41 [−0.18; +0.85], CP +0.30 [−0.26; +0.71], EX −0.15 [−0.67; +0.54] |
-| Faster R-CNN with silhouettes (H15) | **Transfers on 2 of 3 sources**: NightOwls +3.28 [+1.64; +4.79], CityPersons +2.33 [+1.01; +3.69] (both also with the hierarchical CI); on CityPersons the gain is larger for occluded people, on NightOwls it is not |
-| Faster R-CNN with diffusion / depth occluders (H16a / H16b) | **0 of 3** in both, although the controls rise +20.35 and +9.63 |
-| RetinaNet with silhouettes (H17; one-stage, same backbone and recipe as H15) | **0 of 3** (control +6.60; every real stratum drops) |
-| Same Faster R-CNN V1 retrained on another machine | differs by up to 3.42 pp on a real source, of the order of the H15 gains |
+| Synthetic controls that pass (+2 pp AP@0.5 with 95 % CI > 0) | **17 of 17** (+2.6 to +60.9 pp) |
+| Primary count: equal training exposure, 11 blocks, 33 real cells | **5 pass** (4 with the hierarchical CI), 15 rule out +2 pp, 13 inconclusive |
+| Mean real gain with equal exposure (block-bootstrap CI) | CityPersons **+0.96** [+0.34; +1.56], NightOwls +0.01 [−0.92; +0.97], ExDark −0.94 [−2.55; +0.94] |
+| All 17 blocks with a control | 6 of 51 real cells pass, 29 rule out +2 pp; without the ExDark proxy 4 of 34 |
+| Specificity (gain on occluded minus gain on unoccluded people, post hoc) | of the 6 passing cells, only the two from the ExDark proxy are occlusion-specific, and none with the hierarchical CI |
+| CityPersons *heavy* scored with the visible box (post hoc) | the gain falls in almost every block and exceeds +1.3 pp in none |
+| Faster R-CNN with silhouettes (H15) | meets the pre-registered rule on NightOwls (+3.28) and CityPersons (+2.33), but with between-seed variance its CIs include zero, it is not occlusion-specific, and with the visible box CityPersons falls to +0.74 |
+| Faster R-CNN with diffusion / depth (H16a / H16b); RetinaNet with silhouettes (H17) | **0 of 3** each, although the controls rise +20.35, +9.63 and +6.60 |
+| Silhouettes pasted on CityPersons images, models trained on ExDark (post hoc) | 9 of 15 blocks pass (median +2.4) versus a median of +0.25 on the real occlusion of the same images |
+| Control with coverage 0.35–0.70, like CityPersons *heavy* (post hoc) | 15 of 15 pass (+2.1 to +33.6), with no association with the real gain |
 
-The augmentation is always learned and transfers from one synthetic occlusion to another, but only one of the 18 blocks (Faster R-CNN with silhouettes) reaches real occlusion, on two sources. The same detector with other occluders and RetinaNet with silhouettes do not, and within Faster R-CNN the largest synthetic control (+20.4, diffusion) does not transfer while a smaller one (+14.7, silhouettes) does: the synthetic gain does not anticipate the real one. Annotated in-domain data helped heavily occluded people far more than any augmentation. The full write-up is in `shortpaper5/` (short paper and supplement, English and Spanish).
+The augmentation is always learned and transfers from one synthetic occlusion to another, but passing a synthetic control is not enough to claim robustness to real occlusion. The only block that meets the rule does not withstand between-seed variance, specificity or the visible box, and the deficit is not only a domain shift. The full write-up is in `shortpaper5/` (short paper and supplement, English and Spanish), and the response to the review panel of 22 October is in `informes/revision_panel_analisis.py` and `informes/controles_extra.py`.
 
 ## Repository map
 
@@ -32,7 +32,7 @@ The augmentation is always learned and transfers from one synthetic occlusion to
 | `CAMBIOS_PROTOCOLO.md`, `protocolo_congelado.json` | Log of every freeze (date, global SHA-256, reason) and per-file hashes of the current freeze |
 | `runs/<block>/<run>/` | `results.csv`, `args.yaml` and `registro_argos.json` of each of the 117 valid runs (weights are not versioned) |
 | `resultados*/` | Per-run evaluation (`eval/`), AP summaries and bootstrap analyses of each block |
-| `informes/` | Verdicts (`veredicto_*.md`), reports (`reporte_*.md`), consolidated tables (`analisis_final/`) and the scripts that produce them |
+| `informes/` | Verdicts (`veredicto_*.md`), reports (`reporte_*.md`), consolidated tables (`analisis_final/`) and the scripts that produce them, including the post hoc analyses of the review of 22 October (`revision_panel_analisis.py`, `controles_extra.py`) |
 | `dataset/splits`, `dataset_cp/`, `dataset_no/` | Image identifiers of every split and sample (no images) |
 | `anotacion_anotador_*.csv`, `consenso.csv` | Manual occlusion grading used in the reliability study (pseudonymised annotators) |
 | `shortpaper5/` | Short paper and supplement (LaTeX, PDF and the scripts that generate every table and figure) |

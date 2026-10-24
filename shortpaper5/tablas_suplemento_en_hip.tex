@@ -4,18 +4,18 @@
 Hyp. & Prediction & File & Version and fingerprint & Frozen & First run & Verdict \\
 \midrule
 H1--H3 & V4 and V3 improve occluded AP by $\geq$2 pp over V1 (H1, H2) and the gain transfers to real occlusion (H3) & \texttt{PROTOCOLO.md} & v1.0 \texttt{c5002ea5} & 2026-09-11 08:09 & 2026-09-11 08:47 & Not confirmed (0 of 3 sources in H3) \\
-H4, H5 & With silhouettes the gain transfers (H4); smaller synthetic gain and gap (H5) & \texttt{PROTOCOLO\_v2.md} & v2.0 \texttt{9915d90f} & 2026-09-12 12:51 & 2026-09-12 12:54 & H4 refuted (0 of 3); H5 partial \\
-H6 & No transfer when retraining on CityPersons & \texttt{PREREGISTRO\_H6\_H7.md} & v3.0 \texttt{e971ab8b} & 2026-09-19 16:48 & 2026-09-19 16:48 & Confirmed \\
-H7 & No transfer with 20,000 night images & \texttt{PREREGISTRO\_H6\_H7.md} & v3.1 \texttt{b0043c89} & 2026-09-25 20:58 & 2026-09-25 20:59 & Confirmed \\
-H8 & No transfer with RT-DETR-l & \texttt{PREREGISTRO\_H8.md} & v3.2 \texttt{51c0a2d8} & 2026-09-26 18:52 & 2026-09-26 18:52 & Confirmed (0 of 3) \\
-H9 & No transfer with diffusion occluders & \texttt{PREREGISTRO\_H9.md} & v3.3b \texttt{243acffb} & 2026-10-03 01:29 & 2026-10-03 01:29 & Confirmed (1 of 3) \\
-H9b & Same with 30 fixed epochs & \texttt{PREREGISTRO\_H9b.md} & v3.4 \texttt{51786d9d} & 2026-10-06 09:01 & 2026-10-06 09:02 & Confirmed (0 of 3) \\
-H10 & No transfer with real-occlusion geometry & \texttt{PREREGISTRO\_H10.md} & v3.5 \texttt{1489961a} & 2026-10-06 18:27 & 2026-10-07 05:03 & Confirmed (1 of 3) \\
+H4, H5 & With silhouettes the gain transfers (H4); smaller synthetic gain and gap (H5) & \texttt{PROTOCOLO\_v2.md} & v2.0 \texttt{9915d90f} & 2026-09-12 12:51 & 2026-09-12 12:54 & H4 not confirmed (0 of 3); H5 partial \\
+H6 & No transfer when retraining on CityPersons & \texttt{PREREGISTRO\_H6\_H7.md} & v3.0 \texttt{e971ab8b} & 2026-09-19 16:48 & 2026-09-19 16:48 & Not detected (0 of 3) \\
+H7 & No transfer with 20,000 night images & \texttt{PREREGISTRO\_H6\_H7.md} & v3.1 \texttt{b0043c89} & 2026-09-25 20:58 & 2026-09-25 20:59 & Not detected (no control) \\
+H8 & No transfer with RT-DETR-l & \texttt{PREREGISTRO\_H8.md} & v3.2 \texttt{51c0a2d8} & 2026-09-26 18:52 & 2026-09-26 18:52 & Not detected (0 of 3) \\
+H9 & No transfer with diffusion occluders & \texttt{PREREGISTRO\_H9.md} & v3.3b \texttt{243acffb} & 2026-10-03 01:29 & 2026-10-03 01:29 & Not detected (1 of 3) \\
+H9b & Same with 30 fixed epochs & \texttt{PREREGISTRO\_H9b.md} & v3.4 \texttt{51786d9d} & 2026-10-06 09:01 & 2026-10-06 09:02 & Not detected (0 of 3) \\
+H10 & No transfer with real-occlusion geometry & \texttt{PREREGISTRO\_H10.md} & v3.5 \texttt{1489961a} & 2026-10-06 18:27 & 2026-10-07 05:03 & Not detected (1 of 3) \\
 H11 & Gain $\geq$2 pp at CityPersons visibility 0.20--0.50 with equal exposure & \texttt{PREREGISTRO\_H11.md} & v3.6b \texttt{bd2666fd} & 2026-10-13 14:38 & 2026-10-13 20:37 & Not confirmed \\
-H12 & No transfer with YOLOv11m (silhouettes, H12a; diffusion, H12b) & \texttt{PREREGISTRO\_H12.md} & v3.7b \texttt{ef6138c1} & 2026-10-13 21:06 & 2026-10-17 14:50 & Confirmed (0 of 3 and 0 of 3) \\
+H12 & No transfer with YOLOv11m (silhouettes, H12a; diffusion, H12b) & \texttt{PREREGISTRO\_H12.md} & v3.7b \texttt{ef6138c1} & 2026-10-13 21:06 & 2026-10-17 14:50 & Not detected (0 of 3 and 0 of 3) \\
 H13 & AUC(patches) $>$ AUC(silhouettes) $>$ AUC(diffusion) with DINOv2 & \texttt{PREREGISTRO\_H13.md} & v3.8 \texttt{7ce00c9c} & 2026-10-17 09:48 & no training & Partially confirmed \\
-H14 & No transfer with depth order & \texttt{PREREGISTRO\_H14.md} & v3.9 \texttt{264ac449} & 2026-10-17 10:10 & 2026-10-17 16:33 & Confirmed (1 of 3) \\
-H15 & No transfer with Faster R-CNN & \texttt{PREREGISTRO\_H15.md} & v3.10 \texttt{b7843b3a} & 2026-10-20 16:20 & 2026-10-21 13:31 & Refuted \\
+H14 & No transfer with depth order & \texttt{PREREGISTRO\_H14.md} & v3.9 \texttt{264ac449} & 2026-10-17 10:10 & 2026-10-17 16:33 & Not detected (1 of 3) \\
+H15 & No transfer with Faster R-CNN & \texttt{PREREGISTRO\_H15.md} & v3.10 \texttt{b7843b3a} & 2026-10-20 16:20 & 2026-10-21 13:31 & Passes the rule (2 of 3) \\
 H16a, H16b & With Faster R-CNN transfer also occurs with diffusion (H16a) and depth order (H16b) & \texttt{PREREGISTRO\_H16\_H17.md} & v3.11 \texttt{e9b85aee} & 2026-10-22 07:50 & 2026-10-22 13:57 & Refuted (0 of 3 and 0 of 3) \\
-H17 & No transfer with RetinaNet (one-stage, same backbone and recipe as H15) & \texttt{PREREGISTRO\_H16\_H17.md} & v3.11 \texttt{e9b85aee} & 2026-10-22 07:50 & 2026-10-22 13:08 & Confirmed (0 of 3) \\
+H17 & No transfer with RetinaNet (one-stage, same backbone as H15, its own reference recipe) & \texttt{PREREGISTRO\_H16\_H17.md} & v3.11 \texttt{e9b85aee} & 2026-10-22 07:50 & 2026-10-22 13:08 & Not detected (0 of 3) \\
 \bottomrule\end{tabular}}\end{table}

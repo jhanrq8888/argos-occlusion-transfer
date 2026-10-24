@@ -2,6 +2,8 @@
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage{mathptmx}
+\renewcommand{\ttdefault}{pcr}
+\setlength{\emergencystretch}{3em}
 \usepackage[spanish,es-nodecimaldot,es-noshorthands,es-tabla]{babel}
 \usepackage[margin=1.8cm]{geometry}
 \usepackage{graphicx,booktabs,xcolor,url,array,tikz,caption,float}
@@ -10,9 +12,9 @@
 \renewcommand{\thetable}{S\arabic{table}}
 \renewcommand{\thefigure}{S\arabic{figure}}
 \captionsetup{font=small}
-\title{Material suplementario\\[2pt]\large Las ganancias sobre oclusión sintética no anticipan la robustez a la oclusión real en la detección de personas}
+\title{Material suplementario\\[2pt]\large Mejorar sobre oclusión sintética no basta: aumento de oclusión y oclusión real en la detección de personas}
 \author{Apaza Hilasaca, Condori Quispe, Ramos Quispe (UPeU, Juliaca)}
-\date{20 de octubre de 2026}
+\date{20 de octubre de 2026; revisado el 24 de octubre de 2026}
 \begin{document}
 \maketitle
 \noindent Todas las tablas de este suplemento las genera \texttt{shortpaper5/suplemento\_tablas.py} a partir de los ficheros de resultados del proyecto (\texttt{informes/analisis\_final/}); ninguna cifra se escribe a mano. Los análisis marcados como posteriores se declararon después de ver los resultados y no deciden ninguna hipótesis.
@@ -23,7 +25,7 @@
 \begin{tabular}{@{}p{3.3cm}p{4.6cm}p{5.4cm}p{2.6cm}@{}}\toprule
 \textbf{Objetivo} & \textbf{Método} & \textbf{Evidencia} & \textbf{Pendiente} \\\midrule
 OE1. Degradación con la oclusión & AP@0.5 estratificado con regiones \emph{ignore}, tres fuentes & 0,82 (sin oclusión) a 0,24 (severa), YOLOv11s en ExDark & --- \\
-OE2. Efecto del aumento según el oclusor & V3 frente a V1, control y 3 fuentes reales; parches, siluetas, difusión, geometría real y profundidad & 13 de 13 controles; 4 de 39 celdas reales, ninguna estable y propia de la oclusión; efecto medio nulo con exposición igual (con los cuatro bloques de torchvision: 17 de 17 y 6 de 51) & Oclusión tomada de imágenes reales \\
+OE2. Efecto del aumento según el oclusor & V3 frente a V1, control y 3 fuentes reales; parches, siluetas, difusión, geometría real y profundidad & 17 de 17 controles; recuento primario (exposición igual, 33 celdas): pasan 5, 15 descartan +2 pp y 13 no son concluyentes; media +0,96 en CityPersons, +0,01 en NightOwls y $-0{,}94$ en ExDark & Oclusión tomada de imágenes reales \\
 OE3. Dependencia del detector & YOLOv11s, YOLOv11m, YOLO26s, RT-DETR-l, RetinaNet, Faster R-CNN & Mismo patrón en los cinco primeros; Faster R-CNN transfiere con siluetas en NightOwls y CityPersons (H15 refutada), pero no con difusión ni profundidad (H16a y H16b refutadas), y RetinaNet con siluetas no transfiere (H17) & Otro detector de dos etapas u otra red base \\
 OE4. Dominio y volumen de datos & Re-entrenar en CityPersons (H6, H11); NightOwls de 2\,000 a 20\,000 imágenes (H7) & El déficit persiste; la ganancia dentro del dominio no se confirmó (H11) & --- \\
 OE5. Mecanismo & \emph{Recall}, falsos positivos, confianza; visibilidad; realismo (H13); matriz cruzada & Los ocluidos sintéticamente siguen siendo distinguibles de los reales; menos \emph{recall} con más confianza & Prueba confirmatoria del mecanismo \\
@@ -38,7 +40,7 @@ La huella SHA-256 global del protocolo prueba que ningún fichero congelado camb
 \input{tablas_suplemento_es_hip.tex}
 
 \section{Registro de corridas y recetas}
-Las 104 corridas válidas son: 14 del experimento 1 (12 de V1--V4 y dos controles, sin aumento de oclusión y sin preentrenamiento), 12 de la iteración 2 (V1--V4), 6 de YOLO26s, 6 de H6, 12 de H7 (dos por peldaño de 2\,000, 5\,000 y 10\,000 con la semilla 0, y seis en 20\,000), 6 de H8 y 3 de H9 (su V1 es la de la iteración 2): 59 en los siete primeros bloques; después, 6 de H9b, 6 de H10 (su V1 es la de H9b), 6 de H11, 9 de H12, 6 de la extensión de semillas, 6 de H14, 6 de H15, 6 de H16 (V3 con difusión y con profundidad; su V1 es la de H15), 6 de H17 y 1 réplica de la V1 semilla 0 de H15 en otra máquina: 117 en total. Versiones: Ultralytics 8.4.143; PyTorch 2.11 con CUDA 12.8 en la laptop y 2.8 con CUDA 12.8 en RunPod; torchvision 0.23 para Faster R-CNN y RetinaNet. La réplica de V1 difiere de la original en $-0{,}87$ (NightOwls), $-1{,}92$ (CityPersons) y $+3{,}42$ pp (ExDark, 101 instancias), por encima del umbral de 2 pp declarado en el prerregistro: la variación entre máquinas es del orden de las ganancias de H15.
+Las corridas válidas son: 14 del experimento 1 (12 de V1--V4 y dos controles, sin aumento de oclusión y sin preentrenamiento), 12 de la iteración 2 (V1--V4), 6 de YOLO26s, 6 de H6, 12 de H7 (dos por peldaño de 2\,000, 5\,000 y 10\,000 con la semilla 0, y seis en 20\,000), 6 de H8 y 3 de H9 (su V1 es la de la iteración 2): 59 en los siete primeros bloques; después, 6 de H9b, 6 de H10 (su V1 es la de H9b), 6 de H11, 9 de H12, 6 de la extensión de semillas, 6 de H14, 6 de H15, 6 de H16 (V3 con difusión y con profundidad; su V1 es la de H15), 6 de H17 y 1 réplica de la V1 semilla 0 de H15 en otra máquina: 117 en total. Versiones: Ultralytics 8.4.143; PyTorch 2.11 con CUDA 12.8 en la laptop y 2.8 con CUDA 12.8 en RunPod; torchvision 0.23 para Faster R-CNN y RetinaNet. La réplica de V1 difiere de la original en $-0{,}87$ (NightOwls), $-1{,}92$ (CityPersons) y $+3{,}42$ pp (ExDark, 101 instancias), por encima del umbral de 2 pp declarado en el prerregistro: limita la comparación de H16, cuyas V1 son las de H15, entrenadas en otra máquina (en los demás bloques V1 y V3 comparten máquina, incluido H12, entrenado en un solo pod).
 
 \input{tablas_suplemento_es_reg.tex}
 
@@ -54,7 +56,7 @@ RetinaNet R50-FPN v2 & SGD, momento 0,9 & 0,005, $\times$0,1 en 20 y 27 & 500 it
 
 \section{Aumento y control de cada familia}
 \begin{table}[H]\centering\small
-\caption{Parámetros del aumento (entrenamiento) y del control (prueba). El control siempre usa las 841 imágenes de ExDark test y todas sus personas válidas, con cobertura de 0,70 a 1,00, y oclusores que el modelo no vio al entrenar.}
+\caption{Parámetros del aumento (entrenamiento) y del control (prueba). El control usa las imágenes de prueba del dominio de entrenamiento y todas sus personas válidas (las 841 de ExDark test; CityPersons val en H6 y H11, \texttt{cp\_silueta\_severa}), con cobertura de 0,70 a 1,00 y oclusores que el modelo no vio al entrenar.}
 \begin{tabular}{@{}p{2.2cm}p{7.0cm}p{6.6cm}@{}}\toprule
 Familia & Entrenamiento (V3) & Control \\\midrule
 Parches & Rectángulos de textura (0,4), recortes de objetos (0,5) u opacos (0,1); $p=0{,}5$ por imagen, 1--3 personas, cobertura 0,30--0,85; banco de recortes de \emph{train} & \texttt{opaco\_severa}: banda de borde opaca; banco de recortes de \emph{test}, disjunto del de \emph{train} \\
@@ -94,8 +96,10 @@ Profundidad & Recortes de objetos apoyados en el suelo delante de la persona y c
 
 \input{tablas_suplemento_es_estad.tex}
 
+\noindent\textbf{Por qué +2 pp (revisión del 22/10).} Además de superar la desviación típica entre semillas del AP de V1 (mediana 1,5 pp), +2 pp es relevante en la práctica: sobre el AP@0.5 mediano de V1 en las personas ocluidas (0,17 en NightOwls, 0,15 en CityPersons \emph{heavy} y 0,26 en el indicador de ExDark) equivale a una mejora relativa del 12\,\%, 13\,\% y 8\,\%. Y es detectable: el error típico mediano de una diferencia V3$-$V1 es 0,78 pp (0,68 en NightOwls, 0,52 en CityPersons y 1,98 en ExDark), así que, salvo en el indicador de ExDark, un efecto de +2 pp queda a más de 2,5 errores típicos del cero.
+
 \section{Matriz cruzada de controles}
-Si el control solo midiera la memoria del oclusor concreto, un modelo ganaría en su propio control y no en el de las demás familias. La tabla~\ref{tab:s-cruzada} evalúa cada familia en el control de todas. Pasan 13 de las 20 celdas fuera de la diagonal (también 13 con el IC jerárquico): el aumento se transfiere de una oclusión sintética a otra, pero no a la real (4 de 39). Solo los parches del experimento 1 se quedan casi en su propio control.
+Si el control solo midiera la memoria del oclusor concreto, un modelo ganaría en su propio control y no en el de las demás familias. La tabla~\ref{tab:s-cruzada} evalúa cada familia en el control de todas. Pasan 13 de las 20 celdas fuera de la diagonal (también 13 con el IC jerárquico): el aumento se transfiere de una oclusión sintética a otra, pero no a la real (recuento primario: 5 de 33). Los parches del experimento 1 y la difusión se quedan casi en su propio control.
 
 \input{tablas_suplemento_es_cruzada.tex}
 
@@ -104,9 +108,16 @@ Si el control solo midiera la memoria del oclusor concreto, un modelo ganaría e
 
 \input{tablas_suplemento_es_vis.tex}
 
+\noindent\textbf{Referencia con modelos de fundación.} OWLv2~(Minderer et al., NeurIPS 2023) y Grounding DINO~(Liu et al., ECCV 2024) sin ajuste no superan a los detectores de COCO en NightOwls ocluida ni en CityPersons \emph{heavy}, que entrenar en CityPersons lleva a 0,58--0,59 (\texttt{informes/reporte\_referencia\_fundacion.md}).
+
 \noindent\textbf{Realismo (H13).} Cobertura media conseguida: parches 0,56, siluetas 0,54, geometría 0,47 y difusión 0,32 (el control de calidad dejó sin ocluir a 146 de 400 personas), frente a 0,55 de la oclusión real. No hay máscaras de oclusor reales en CityPersons (solo la caja visible y la completa), por lo que no se puede calcular el IoU entre máscaras sintéticas y reales; la familia de geometría real reproduce por construcción la región oculta de patrones reales (IoU medio 0,61 entre recorte y región oculta) y tampoco se transfiere (H10).
 
 \noindent\textbf{KID sobre la región del oclusor (análisis posterior).} Con DINOv2 sobre la parte ocluida (real: franja de la caja completa fuera de la caja visible anotada; sintética: rectángulo de los píxeles que cambian respecto de la misma persona sin ocluir), la distancia al oclusor real es 2,56 [2,08; 3,17] con parches, 3,39 [2,63; 4,23] con siluetas, 2,75 [1,91; 3,51] con geometría y 2,50 [1,87; 3,02] con difusión (248 regiones; el control de calidad dejó 152 sin ocluir), frente a 3,63 [2,77; 4,34] de la misma región sin oclusor y 0,01 [$-$0,08; 0,10] entre dos mitades de oclusores reales. Los oclusores sintéticos se parecen algo más al oclusor real que una región sin oclusor, pero ninguno se le acerca (\path{informes/kid_oclusor.py}).
+
+\section{Análisis posteriores pedidos por la revisión del 22/10}
+Estos análisis se declararon después de ver los resultados y no cambian ninguna regla ni ningún veredicto prerregistrado. La especificidad compara, en la misma fuente, el cambio en las personas ocluidas con el cambio en las personas sin oclusión; un valor positivo puede deberse a que las visibles empeoran más, por lo que se lee junto al cambio en las ocluidas (tabla~I del artículo). La caja visible separa ver a la persona parcialmente oculta de estimar su extensión completa. La réplica de V1 en otra máquina (una sola semilla) solo acota la variación entre máquinas.
+
+\input{tablas_suplemento_es_panel.tex}
 
 \section{Búsqueda bibliográfica}
 Tres búsquedas en Scopus exportadas el 13/10/2026: ecuación principal (A y B, más al menos uno de C, D o E; 155 registros), dos ecuaciones complementarias (8) y oclusión sintética frente a real sin limitarse a personas (71). De ellas salieron los cinco artículos semilla (PRNet++, WALT, MLFFCSP, CamPed y el YOLOX con transferencia de dominio); la búsqueda se apoyó en Scopus AI y en Claude, y la selección la hicieron los autores leyendo los artículos. Cadenas exactas, copiadas del historial de búsquedas de Scopus:
@@ -140,6 +151,6 @@ Métricas e incertidumbre & Tablas~\ref{tab:s-celdas} y~\ref{tab:s-estad}; MR$^{
 Generalización y limitaciones & Discusión del artículo (tres categorías) \\
 \bottomrule\end{tabular}\end{table}
 
-\noindent\textbf{Guía práctica.} (1) Un banco de oclusión sintética sirve como control positivo de que un aumento está bien implementado, no como prueba de robustez. (2) Para afirmar robustez a la oclusión hace falta un conjunto de oclusión real anotada del dominio de uso, aunque sea pequeño, y comparar con la misma exposición al entrenamiento. (3) Si se dispone de presupuesto para anotar, anotar datos del dominio ayudó mucho más que cualquier aumento (0,59 frente a 0,24 en CityPersons \emph{heavy}). (4) Reportar siempre la época de los pesos de V1 y V3.
+\noindent\textbf{Guía práctica.} (1) Un banco de oclusión sintética sirve como control positivo de que un aumento está bien implementado, no como prueba de robustez. (2) Para afirmar robustez a la oclusión hace falta un conjunto de oclusión real anotada del dominio de uso, aunque sea pequeño, y comparar con la misma exposición al entrenamiento. (3) En una comparación descriptiva, no controlada, entrenar con datos anotados del dominio dio mucho más que cualquier aumento (0,59 frente a 0,24 en CityPersons \emph{heavy}); compararlo con el mismo presupuesto queda pendiente. (4) Reportar siempre la época de los pesos de V1 y V3.
 
 \end{document}

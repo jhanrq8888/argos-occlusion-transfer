@@ -1,0 +1,85 @@
+\begin{table}[H]\centering\scriptsize
+\caption{Specificity and box convention (post hoc analyses, review of 22 October). Specificity: [V3$-$V1] on occluded people minus [V3$-$V1] on unoccluded people of the same source (NO: occluded $-$ none; CP: \emph{heavy} $-$ \emph{bare}; EX: severe $-$ none), with the same images resampled for both strata (1,000 replicates). * CI $>0$ (the gain is larger for occluded people); $^-$ CI $<0$. CP \emph{heavy}: V3$-$V1 scored with the full box (CityPersons protocol) and with the visible box (\texttt{bboxVis} from \texttt{anno\_val.mat}), IoU $\geq$ 0.5.}\label{tab:s-especificidad}
+\setlength{\tabcolsep}{3pt}\begin{tabular}{@{}l lll rr@{}}\toprule
+Block & Specificity NO & Specificity CP & Specificity EX & CP full box & CP visible box \\
+\midrule
+H3 & $-$2.15$^-$ [$-$3.34; $-$0.94] & $-$2.02$^-$ [$-$2.95; $-$1.06] & $-$1.92 [$-$4.56; +0.88] & $-$0.36 & +0.00 [$-$0.44; +0.47] \\
+H4 & +1.62 [$-$1.10; +4.28] & +8.00* [+5.28; +10.89] & $-$3.06 [$-$8.41; +1.99] & $-$3.94 & $-$4.12 [$-$5.74; $-$2.99] \\
+H4-Y26 & $-$1.56 [$-$4.42; +1.17] & +5.49* [+3.20; +7.95] & $-$5.03$^-$ [$-$10.04; $-$0.61] & $-$4.42 & $-$3.92 [$-$4.96; $-$2.72] \\
+H6 & +3.92* [+2.45; +5.50] & +1.41 [$-$0.19; +2.93] & +0.39 [$-$3.33; +4.11] & +1.82 & +0.70 [$-$0.56; +2.01] \\
+H7 & +0.35 [$-$2.06; +2.67] & +11.67* [+9.36; +14.05] & +8.53* [+3.54; +12.51] & $-$3.94 & $-$4.61 [$-$5.97; $-$3.17] \\
+H8 & +1.23 [$-$0.46; +3.16] & +3.74* [+2.17; +5.44] & $-$0.97 [$-$4.69; +2.75] & $-$3.47 & $-$3.81 [$-$4.93; $-$2.69] \\
+H9 & $-$0.79 [$-$1.67; +0.09] & $-$0.85 [$-$2.00; +0.19] & +2.76* [+0.31; +5.81] & +1.23 & $-$0.20 [$-$0.81; +0.44] \\
+H9b & $-$1.17 [$-$2.23; +0.13] & $-$3.72$^-$ [$-$5.13; $-$2.24] & $-$2.03 [$-$5.74; +1.63] & +1.52 & +0.29 [$-$0.13; +1.10] \\
+H10 & $-$2.11$^-$ [$-$3.17; $-$0.95] & $-$2.88$^-$ [$-$4.28; $-$1.31] & $-$5.36$^-$ [$-$9.57; $-$1.24] & +2.37 & +0.05 [$-$0.35; +0.70] \\
+H10-s & $-$2.94$^-$ [$-$3.75; $-$1.65] & $-$3.71$^-$ [$-$5.08; $-$2.20] & $-$3.35 [$-$7.80; +0.35] & +2.26 & +0.63 [+0.11; +1.37] \\
+H11 & $-$1.39 [$-$2.63; +0.00] & +0.59 [$-$0.97; +2.21] & $-$10.08$^-$ [$-$14.18; $-$5.42] & +1.31 & +0.99 [$-$0.02; +1.77] \\
+H12a & $-$0.22 [$-$1.24; +1.06] & $-$0.78 [$-$1.98; +0.54] & +2.70 [$-$1.56; +6.60] & +0.25 & +0.37 [$-$0.25; +0.79] \\
+H12b & $-$1.86$^-$ [$-$3.10; $-$0.42] & $-$3.84$^-$ [$-$5.29; $-$2.31] & +0.01 [$-$3.61; +3.45] & +1.11 & +1.25 [+0.55; +1.70] \\
+H14 & $-$2.57$^-$ [$-$3.73; $-$1.42] & $-$0.98 [$-$2.46; +0.24] & +5.27* [+1.67; +8.69] & $-$0.16 & $-$0.22 [$-$0.84; +0.33] \\
+H15 & $-$1.09 [$-$2.49; +0.23] & +1.45 [$-$0.04; +3.08] & $-$0.69 [$-$5.33; +3.55] & +2.33 & +0.74 [+0.04; +1.41] \\
+H16a & +2.85* [+1.54; +4.10] & +2.58* [+1.24; +4.16] & +1.53 [$-$3.01; +5.47] & $-$0.76 & $-$0.76 [$-$1.69; +0.04] \\
+H16b & +0.06 [$-$1.14; +1.17] & +2.26* [+0.63; +3.76] & +0.18 [$-$5.02; +5.16] & +0.60 & $-$0.14 [$-$0.98; +0.73] \\
+H17 & +4.60* [+3.26; +6.02] & +4.20* [+2.83; +5.65] & +3.07 [$-$1.33; +7.60] & $-$0.28 & $-$0.63 [$-$1.48; +0.13] \\
+\bottomrule\end{tabular}\end{table}
+
+\begin{table}[H]\centering\scriptsize
+\caption{Primary count and statistical analyses requested by the review (post hoc; \texttt{informes/revision\_panel\_analisis.py}). In brackets, with the hierarchical CI.}\label{tab:s-panel}
+\begin{tabular}{@{}p{8.6cm} p{6.6cm}@{}}\toprule
+Primary count (equal exposure: 11 blocks, 33 cells): pass / rule out +2 / inconclusive & 5 (4) / 15 (9) / 13 \\
+Mean NO with equal exposure, block-bootstrap CI; positive blocks & +0.01 [$-$0.92; +0.97]; 6 of 11 \\
+Mean CP with equal exposure, block-bootstrap CI; positive blocks & +0.96 [+0.34; +1.56]; 8 of 11 \\
+Mean EX with equal exposure, block-bootstrap CI; positive blocks & $-$0.94 [$-$2.55; +0.94]; 3 of 11 \\
+Random effects NO: mean, 90\,\% CI (TOST $\pm$2 pp), $\tau$ & $-$0.01 [$-$0.80; +0.77], $\tau$=1.45; equivalent \\
+Random effects CP: mean, 90\,\% CI (TOST $\pm$2 pp), $\tau$ & +0.95 [+0.38; +1.51], $\tau$=0.98; equivalent \\
+Random effects EX: mean, 90\,\% CI (TOST $\pm$2 pp), $\tau$ & $-$0.88 [$-$2.50; +0.75], $\tau$=2.49; not equivalent \\
+Power of the ``2 of 3'' rule: P(detect) with a true +2 pp on all three sources (median [range]); with +3 pp & 0.33 [0.30; 0.34]; 0.94 \\
+Multiplicity (51 cells, independence assumed): expected passes under the null, image / hierarchical error; observed & 0.56 / 1.13; 6 \\
+P(some block reaches ``2 of 3'' by chance), image / hierarchical error & 0.004 / 0.025 \\
+CI with between-seed variance (Welch's t, df 3.2): H15 NO & +3.28 [$-$0.14; +6.71] \\
+CI with between-seed variance (Welch's t, df 3.7): H15 CP & +2.33 [$-$0.86; +5.52] \\
+CI with between-seed variance (Welch's t, df 2.9): H15 EX & $-$1.00 [$-$3.48; +1.48] \\
+CI with between-seed variance (Welch's t, df 2.2): H9 EX & +2.82 [$-$3.22; +8.87] \\
+CI with between-seed variance (Welch's t, df 3.1): H10 CP & +2.37 [$-$0.55; +5.28] \\
+CI with between-seed variance (Welch's t, df 3.9): H10-s CP & +2.26 [+0.42; +4.11] \\
+H16a NO: with the H15 V1 / with the V1 replicate (other machine, one seed) & +0.92 / +0.76 \\
+H16b NO: with the H15 V1 / with the V1 replicate (other machine, one seed) & +0.37 / +0.21 \\
+H16a CP: with the H15 V1 / with the V1 replicate (other machine, one seed) & $-$0.76 / $-$0.14 \\
+H16b CP: with the H15 V1 / with the V1 replicate (other machine, one seed) & +0.60 / +1.22 \\
+H16a EX: with the H15 V1 / with the V1 replicate (other machine, one seed) & +0.80 / $-$2.55 \\
+H16b EX: with the H15 V1 / with the V1 replicate (other machine, one seed) & $-$0.45 / $-$3.80 \\
+Spearman $\rho$ control--real, 17 blocks (NO; CP; EX) & +0.37 [$-$0.11; +0.75]; +0.24 [$-$0.21; +0.62]; $-$0.05 [$-$0.55; +0.51] \\
+Spearman $\rho$ control--real, equal exposure (NO; CP; EX) & +0.63 [+0.00; +1.00]; +0.25 [$-$0.46; +0.89]; $-$0.05 [$-$0.76; +0.64] \\
+\bottomrule\end{tabular}\end{table}
+
+\begin{table}[H]\centering\scriptsize
+\caption{Cross-family control matrix of the torchvision detectors: V3$-$V1 (pp) of each block on each family's control; in bold, its own control.}\label{tab:s-cruzada-tv}
+\begin{tabular}{@{}l rrrr@{}}\toprule
+Block & Silhouettes & Diffusion & Geometry & Depth \\ \midrule
+H15 Faster R-CNN, silhouettes & \textbf{+14.7} & +2.9 & +20.5 & +7.8 \\
+H16a Faster R-CNN, diffusion & +0.5 & \textbf{+20.4} & +1.4 & +0.6 \\
+H16b Faster R-CNN, depth & +8.6 & +2.7 & +14.1 & \textbf{+9.6} \\
+H17 RetinaNet, silhouettes & \textbf{+6.6} & +1.8 & +8.2 & +3.2 \\
+\bottomrule\end{tabular}\end{table}
+
+\begin{table}[H]\centering\scriptsize
+\caption{Additional controls with the same weights of each block (post hoc analyses; \texttt{informes/controles\_extra.py}). Synthetic CP: silhouettes pasted on CityPersons val images (\texttt{cp\_silueta\_severa}, coverage 0.70--1.00), evaluated with models trained on ExDark: it separates the domain shift from occlusion. Moderate: silhouettes on ExDark test with coverage 0.35--0.70, similar to CityPersons \emph{heavy}. V3$-$V1 (pp) with image CI; * passes. On the right, real CityPersons \emph{heavy} (Table~I of the paper).}\label{tab:s-controles-extra}
+\begin{tabular}{@{}l ll r@{}}\toprule
+Block & Synthetic CP & Moderate (ExDark) & Real CP \emph{heavy} \\
+\midrule
+H3 & +0.18 [$-$0.22; +0.45] & +2.10* [+1.12; +3.05] & $-$0.36 \\
+H4 & +3.01* [+2.05; +4.66] & +24.53* [+22.13; +26.63] & $-$3.94 \\
+H4-Y26 & +5.51* [+4.02; +7.28] & +25.93* [+23.53; +28.19] & $-$4.42 \\
+H8 & +5.59* [+4.39; +7.28] & +28.09* [+25.75; +30.41] & $-$3.47 \\
+H9 & $-$0.11 [$-$0.62; +0.18] & +2.40* [+1.65; +3.11] & +1.23 \\
+H9b & +0.31 [$-$0.38; +0.65] & +7.06* [+5.66; +8.52] & +1.52 \\
+H10 & +1.91 [+1.10; +2.83] & +21.99* [+19.86; +23.89] & +2.37 \\
+H10-s & +3.76* [+2.68; +5.02] & +25.38* [+23.16; +27.41] & +2.26 \\
+H12a & +8.33* [+6.76; +10.65] & +32.13* [+29.78; +34.56] & +0.25 \\
+H12b & +0.90 [+0.32; +1.67] & +8.68* [+7.16; +10.27] & +1.11 \\
+H14 & +2.27* [+1.53; +3.16] & +17.53* [+15.39; +19.51] & $-$0.16 \\
+H15 & +7.70* [+6.29; +9.39] & +33.55* [+31.23; +35.63] & +2.33 \\
+H16a & +0.39 [$-$0.09; +0.69] & +7.62* [+6.20; +9.10] & $-$0.76 \\
+H16b & +5.09* [+3.63; +6.58] & +20.57* [+18.56; +22.49] & +0.60 \\
+H17 & +2.37* [+1.74; +3.35] & +11.58* [+9.88; +13.11] & $-$0.28 \\
+\bottomrule\end{tabular}\end{table}

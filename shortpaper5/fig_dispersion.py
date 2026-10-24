@@ -1,7 +1,7 @@
 """Figura del short paper: ganancia en el control sintetico (eje x) frente a la ganancia en cada fuente de oclusion real
-(eje y), un punto por bloque y fuente (13 bloques x 3 fuentes = 39 celdas), con IC 95 % por imagenes en ambos ejes y los
+(eje y), un punto por bloque y fuente (17 bloques con control x 3 fuentes = 51 celdas; relleno = exposicion igual, vacio = desigual o temprana), con IC 95 % por imagenes en ambos ejes y los
 rho de Spearman con su IC bootstrap de bloques. Lee informes/analisis_final/celdas_completas.csv y revision_sp.json
-(informes/revision_sp_analisis.py); H15 se excluye porque no forma parte de los 13 bloques del recuento.
+(informes/revision_sp_analisis.py). Revision del 22/10: se incluyen los 4 bloques de torchvision (H15-H17).
 Uso: python fig_dispersion.py [es]   (es: etiquetas en espanol con coma decimal -> fig_dispersion_es.png)"""
 import json
 import os
@@ -17,7 +17,7 @@ ES = len(sys.argv) > 1 and sys.argv[1] == 'es'
 AQUI = os.path.dirname(os.path.abspath(__file__))
 AF = os.path.join(os.path.dirname(AQUI), 'informes', 'analisis_final')
 d = pd.read_csv(os.path.join(AF, 'celdas_completas.csv'))
-d = d[~d.bloque.isin(['h7', 'h15'])]
+d = d[d.bloque != 'h7']
 rho = json.load(open(os.path.join(AF, 'revision_sp.json'), encoding='utf-8'))['rho_ic_bloques']
 f2 = (lambda v: ('%+.2f' % v).replace('.', ',').replace('-', '−')) if ES else (lambda v: ('%+.2f' % v).replace('-', '−'))
 ESTILO = {'NO': ('s', '#1f4e9c', 3.4), 'CP': ('^', '#e08a00', 3.8), 'EX': ('D', '#2e7d32', 3.1)}
@@ -32,8 +32,11 @@ for s, (m, c, t) in ESTILO.items():
     g = d[d.fuente == s].set_index('bloque')
     g = g[ctrl.loc[g.index].delta <= XMAX]
     x = ctrl.loc[g.index]
-    ax.errorbar(x.delta, g.delta, xerr=[x.delta - x.ic_lo, x.ic_hi - x.delta], yerr=[g.delta - g.ic_lo, g.ic_hi - g.delta],
-                fmt=m, color=c, ms=t, lw=0.45, alpha=0.85, capsize=0, zorder=3)
+    for igual in (True, False):
+        sel = (g.exposicion == 'igual (epocas fijas)') == igual
+        gg, xx = g[sel], x[sel]
+        ax.errorbar(xx.delta, gg.delta, xerr=[xx.delta - xx.ic_lo, xx.ic_hi - xx.delta], yerr=[gg.delta - gg.ic_lo, gg.ic_hi - gg.delta],
+                    fmt=m, color=c, mfc=c if igual else 'white', mec=c, ms=t, lw=0.45, alpha=0.85, capsize=0, zorder=3)
 ax.set_xlim(0, XMAX)
 ax.set_ylim(-20, 9)
 ax.set_xlabel('Ganancia en el control sintético (pp)' if ES else 'Gain on the synthetic control (pp)', fontsize=6.5)

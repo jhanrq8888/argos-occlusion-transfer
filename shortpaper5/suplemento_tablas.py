@@ -55,29 +55,29 @@ INICIO_POD = {"H15": ("runpod_h15/h15.log", r"inicio H15"), "H16a, H16b": ("runp
 PRED = {  # predicción con dirección y veredicto (es, en)
     "H1--H3": ("V4 y V3 mejoran $\\geq$2 pp a V1 en oclusión (H1, H2) y la mejora se transfiere a la real (H3)",
                "V4 and V3 improve occluded AP by $\\geq$2 pp over V1 (H1, H2) and the gain transfers to real occlusion (H3)",
-               "No se confirman (0 de 3 fuentes en H3)", "Not confirmed (0 of 3 sources in H3)"),
+               "No confirmada (0 de 3 fuentes en H3)", "Not confirmed (0 of 3 sources in H3)"),
     "H4, H5": ("Con siluetas la ganancia se transfiere (H4); menor ganancia sintética y menor brecha (H5)",
                "With silhouettes the gain transfers (H4); smaller synthetic gain and gap (H5)",
-               "H4 refutada (0 de 3); H5 parcial", "H4 refuted (0 of 3); H5 partial"),
-    "H6": ("Sin transferencia al re-entrenar en CityPersons", "No transfer when retraining on CityPersons", "Se confirma", "Confirmed"),
-    "H7": ("Sin transferencia con 20\\,000 imágenes nocturnas", "No transfer with 20,000 night images", "Se confirma", "Confirmed"),
-    "H8": ("Sin transferencia con RT-DETR-l", "No transfer with RT-DETR-l", "Se confirma (0 de 3)", "Confirmed (0 of 3)"),
-    "H9": ("Sin transferencia con oclusores por difusión", "No transfer with diffusion occluders", "Se confirma (1 de 3)", "Confirmed (1 of 3)"),
-    "H9b": ("Ídem con 30 épocas fijas", "Same with 30 fixed epochs", "Se confirma (0 de 3)", "Confirmed (0 of 3)"),
-    "H10": ("Sin transferencia con la geometría de la oclusión real", "No transfer with real-occlusion geometry", "Se confirma (1 de 3)", "Confirmed (1 of 3)"),
+               "H4 no confirmada (0 de 3); H5 parcial", "H4 not confirmed (0 of 3); H5 partial"),
+    "H6": ("Sin transferencia al re-entrenar en CityPersons", "No transfer when retraining on CityPersons", "No detectada (0 de 3)", "Not detected (0 of 3)"),
+    "H7": ("Sin transferencia con 20\\,000 imágenes nocturnas", "No transfer with 20,000 night images", "No detectada (sin control)", "Not detected (no control)"),
+    "H8": ("Sin transferencia con RT-DETR-l", "No transfer with RT-DETR-l", "No detectada (0 de 3)", "Not detected (0 of 3)"),
+    "H9": ("Sin transferencia con oclusores por difusión", "No transfer with diffusion occluders", "No detectada (1 de 3)", "Not detected (1 of 3)"),
+    "H9b": ("Ídem con 30 épocas fijas", "Same with 30 fixed epochs", "No detectada (0 de 3)", "Not detected (0 of 3)"),
+    "H10": ("Sin transferencia con la geometría de la oclusión real", "No transfer with real-occlusion geometry", "No detectada (1 de 3)", "Not detected (1 of 3)"),
     "H11": ("Ganancia $\\geq$2 pp en visibilidad 0,20--0,50 de CityPersons con exposición igual",
             "Gain $\\geq$2 pp at CityPersons visibility 0.20--0.50 with equal exposure", "No se confirma", "Not confirmed"),
     "H12": ("Sin transferencia con YOLOv11m (siluetas, H12a; difusión, H12b)", "No transfer with YOLOv11m (silhouettes, H12a; diffusion, H12b)",
-            "Se confirma (0 de 3 y 0 de 3)", "Confirmed (0 of 3 and 0 of 3)"),
+            "No detectada (0 de 3 y 0 de 3)", "Not detected (0 of 3 and 0 of 3)"),
     "H13": ("AUC(parches) $>$ AUC(siluetas) $>$ AUC(difusión) con DINOv2", "AUC(patches) $>$ AUC(silhouettes) $>$ AUC(diffusion) with DINOv2",
             "Se confirma en parte", "Partially confirmed"),
-    "H14": ("Sin transferencia con orden de profundidad", "No transfer with depth order", "Se confirma (1 de 3)", "Confirmed (1 of 3)"),
+    "H14": ("Sin transferencia con orden de profundidad", "No transfer with depth order", "No detectada (1 de 3)", "Not detected (1 of 3)"),
     "H15": ("Sin transferencia con Faster R-CNN", "No transfer with Faster R-CNN", None, None),
     "H16a, H16b": ("Con Faster R-CNN se transfiere también con difusión (H16a) y con orden de profundidad (H16b)",
                    "With Faster R-CNN transfer also occurs with diffusion (H16a) and depth order (H16b)",
                    "Refutadas (0 de 3 y 0 de 3)", "Refuted (0 of 3 and 0 of 3)"),
-    "H17": ("Sin transferencia con RetinaNet (una etapa, misma red base y receta que H15)",
-            "No transfer with RetinaNet (one-stage, same backbone and recipe as H15)", "Se confirma (0 de 3)", "Confirmed (0 of 3)"),
+    "H17": ("Sin transferencia con RetinaNet (una etapa, misma red base que H15, con su receta de referencia)",
+            "No transfer with RetinaNet (one-stage, same backbone as H15, its own reference recipe)", "No detectada (0 de 3)", "Not detected (0 of 3)"),
 }
 
 
@@ -299,6 +299,118 @@ def tabla_estadistica(es):
     return "\n".join(L)
 
 
+# ------------------------------------------------------------- analisis posteriores pedidos por la revision del 22/10
+def tabla_panel(es):
+    """Lee informes/analisis_final/{revision_panel.json, especificidad.csv, cruzada_torchvision.csv}, que genera
+    informes/revision_panel_analisis.py."""
+    ruta = os.path.join(AF, "revision_panel.json")
+    if not os.path.exists(ruta):
+        return "% revision_panel.json pendiente"
+    r = json.load(open(ruta, encoding="utf-8"))
+    e = pd.read_csv(os.path.join(AF, "especificidad.csv"))
+    n = lambda x, d=2, s=True: num(x, es, d, s)
+    orden = ["H3", "H4", "H4-Y26", "H6", "H7", "H8", "H9", "H9b", "H10", "H10-s", "H11", "H12a", "H12b", "H14", "H15", "H16a", "H16b", "H17"]
+    marca = lambda f: "*" if f.esp_lo > 0 else ("$^-$" if f.esp_hi < 0 else "")
+    L = ["\\begin{table}[H]\\centering\\scriptsize",
+         "\\caption{%s}\\label{tab:s-especificidad}" % (
+             "Especificidad y convención de cajas (análisis posteriores, revisión del 22/10). Especificidad: [V3$-$V1] en las personas ocluidas menos [V3$-$V1] en las personas sin oclusión de la misma fuente (NO: ocluida $-$ sin; CP: \\emph{heavy} $-$ \\emph{bare}; EX: severa $-$ sin), con las mismas imágenes remuestreadas para ambos estratos (1\\,000 réplicas). * IC $>0$ (la ganancia es mayor en las ocluidas); $^-$ IC $<0$. CP \\emph{heavy}: V3$-$V1 puntuando con la caja completa (protocolo de CityPersons) y con la caja visible (\\texttt{bboxVis} de \\texttt{anno\\_val.mat}), IoU $\\geq$ 0,5." if es else
+             "Specificity and box convention (post hoc analyses, review of 22 October). Specificity: [V3$-$V1] on occluded people minus [V3$-$V1] on unoccluded people of the same source (NO: occluded $-$ none; CP: \\emph{heavy} $-$ \\emph{bare}; EX: severe $-$ none), with the same images resampled for both strata (1,000 replicates). * CI $>0$ (the gain is larger for occluded people); $^-$ CI $<0$. CP \\emph{heavy}: V3$-$V1 scored with the full box (CityPersons protocol) and with the visible box (\\texttt{bboxVis} from \\texttt{anno\\_val.mat}), IoU $\\geq$ 0.5."),
+         "\\setlength{\\tabcolsep}{3pt}\\begin{tabular}{@{}l lll rr@{}}\\toprule",
+         ("Bloque & Especificidad NO & Especificidad CP & Especificidad EX & CP caja completa & CP caja visible \\\\" if es else
+          "Block & Specificity NO & Specificity CP & Specificity EX & CP full box & CP visible box \\\\"), "\\midrule"]
+    for b in orden:
+        g = e[e.etiqueta == b].set_index("fuente")
+        if not len(g):
+            continue
+        cel = []
+        for s in ("NO", "CP", "EX"):
+            f = g.loc[s] if s in g.index else None
+            cel.append("---" if f is None else "%s%s %s" % (n(f.especificidad), marca(f), ic(f.esp_lo, f.esp_hi, es)))
+        cpf = n(g.loc["CP"].d_heavy) if "CP" in g.index else "---"
+        cpv = ("%s %s" % (n(g.loc["CPvis"].d_heavy), ic(g.loc["CPvis"].d_heavy_lo, g.loc["CPvis"].d_heavy_hi, es))) if "CPvis" in g.index else "---"
+        L.append("%s & %s & %s & %s & %s & %s \\\\" % (b, cel[0], cel[1], cel[2], cpf, cpv))
+    L += ["\\bottomrule\\end{tabular}\\end{table}", ""]
+    # resumen estadistico
+    rp, mp, eq, po, mu, sp = r["recuento_primario"], r["media_por_fuente_igual"], r["equivalencia_por_fuente"], r["potencia_regla"], r["multiplicidad"], r["spearman"]
+    filas = [(("Recuento primario (exposición igual: %d bloques, %d celdas): pasan / descartan +2 / no concluyentes" if es else
+               "Primary count (equal exposure: %d blocks, %d cells): pass / rule out +2 / inconclusive") % (rp["bloques"], rp["celdas"]),
+              "%d (%d) / %d (%d) / %d" % (rp["pasan"], rp["pasan_jer"], rp["descartan_2pp"], rp["descartan_2pp_jer"], rp["no_concluyentes"]))]
+    for s in ("NO", "CP", "EX"):
+        filas.append((("Media %s con exposición igual, IC bootstrap de bloques; bloques positivos" if es else "Mean %s with equal exposure, block-bootstrap CI; positive blocks") % s,
+                      "%s %s; %d de %d" % (n(mp[s]["media"]), ic(*mp[s]["IC_bloques"], es), mp[s]["positivas"], mp[s]["k"]) if es else
+                      "%s %s; %d of %d" % (n(mp[s]["media"]), ic(*mp[s]["IC_bloques"], es), mp[s]["positivas"], mp[s]["k"])))
+    for s in ("NO", "CP", "EX"):
+        q = eq[s]
+        filas.append((("Efectos aleatorios %s: media, IC 90\\,\\%% (TOST $\\pm$2 pp), $\\tau$" if es else "Random effects %s: mean, 90\\,\\%% CI (TOST $\\pm$2 pp), $\\tau$") % s,
+                      "%s %s, $\\tau$=%s; %s" % (n(q["media"]), ic(*q["IC90"], es), n(q["tau"], 2, False),
+                                                ("equivalente" if q["equivalente_2pp"] else "no equivalente") if es else ("equivalent" if q["equivalente_2pp"] else "not equivalent"))))
+    filas.append((("Potencia de la regla «2 de 3»: P(detectar) con +2 pp verdaderos en las tres fuentes (mediana [rango]); con +3 pp" if es else
+                   "Power of the ``2 of 3'' rule: P(detect) with a true +2 pp on all three sources (median [range]); with +3 pp"),
+                  "%s [%s; %s]; %s" % (n(po["mediana_p_detectar_+2"], 2, False), n(po["rango_+2"][0], 2, False), n(po["rango_+2"][1], 2, False), n(po["mediana_p_detectar_+3"], 2, False))))
+    filas.append((("Multiplicidad (%d celdas, independencia supuesta): pases esperados bajo el nulo, error por imágenes / jerárquico; observados" if es else
+                   "Multiplicity (%d cells, independence assumed): expected passes under the null, image / hierarchical error; observed") % mu["celdas"],
+                  "%s / %s; %d" % (n(mu["pases_esperados_nulo"], 2, False), n(mu["pases_esperados_nulo_jer"], 2, False), mu["pases_observados"])))
+    filas.append((("P(algún bloque llega a «2 de 3» por azar), error por imágenes / jerárquico" if es else "P(some block reaches ``2 of 3'' by chance), image / hierarchical error"),
+                  "%s / %s" % (n(mu["p_algun_bloque_2de3_nulo"], 3, False), n(mu["p_algun_bloque_2de3_nulo_jer"], 3, False))))
+    for f in [x for x in r["ic_semillas"] if x["bloque"] == "H15" or (x["fuente"] in ("CP",) and x["bloque"].startswith("H10")) or (x["bloque"] in ("H9", "H14") and x["fuente"] == "EX")]:
+        if f["bloque"] == "H15" or abs(f["delta"]) >= 2:
+            filas.append((("IC con la varianza entre semillas (t de Welch, gl %s): %s %s" if es else "CI with between-seed variance (Welch's t, df %s): %s %s") % (n(f["gl"], 1, False), f["bloque"], f["fuente"]),
+                          "%s %s" % (n(f["delta"]), ic(*f["IC_t"], es))))
+    for f in r["h16_frente_replica"]:
+        filas.append((("%s %s: con las V1 de H15 / con la réplica de V1 (otra máquina, una semilla)" if es else "%s %s: with the H15 V1 / with the V1 replicate (other machine, one seed)") % (f["bloque"], f["fuente"]),
+                      "%s / %s" % (n(f["delta_V1_H15"]), n(f["delta_V1_replica"]))))
+    for nombre, et in (("17_bloques", ("17 bloques", "17 blocks")), ("exposicion_igual", ("exposición igual", "equal exposure"))):
+        filas.append((("$\\rho$ de Spearman control--real, %s (NO; CP; EX)" if es else "Spearman $\\rho$ control--real, %s (NO; CP; EX)") % et[0 if es else 1],
+                      "; ".join("%s %s" % (n(sp[nombre][s]["rho"]), ic(*sp[nombre][s]["IC95"], es)) for s in ("NO", "CP", "EX"))))
+    L += ["\\begin{table}[H]\\centering\\scriptsize",
+          "\\caption{%s}\\label{tab:s-panel}" % ("Recuento primario y análisis estadísticos pedidos por la revisión (posteriores; \\texttt{informes/revision\\_panel\\_analisis.py}). Entre paréntesis, con el IC jerárquico." if es else
+                                                "Primary count and statistical analyses requested by the review (post hoc; \\texttt{informes/revision\\_panel\\_analisis.py}). In brackets, with the hierarchical CI."),
+          "\\begin{tabular}{@{}p{8.6cm} p{6.6cm}@{}}\\toprule"]
+    L += ["%s & %s \\\\" % f for f in filas]
+    L += ["\\bottomrule\\end{tabular}\\end{table}", ""]
+    # matriz cruzada de torchvision
+    cz = pd.read_csv(os.path.join(AF, "cruzada_torchvision.csv"))
+    ctr = [("silueta_severa", ("Siluetas", "Silhouettes")), ("generativa_severa", ("Difusión", "Diffusion")), ("geometria_severa", ("Geometría", "Geometry")), ("profundidad_severa", ("Profundidad", "Depth"))]
+    nomb = {"H15": "H15 Faster R-CNN, siluetas", "H16a": "H16a Faster R-CNN, difusión", "H16b": "H16b Faster R-CNN, profundidad", "H17": "H17 RetinaNet, siluetas"}
+    nomb_en = {"H15": "H15 Faster R-CNN, silhouettes", "H16a": "H16a Faster R-CNN, diffusion", "H16b": "H16b Faster R-CNN, depth", "H17": "H17 RetinaNet, silhouettes"}
+    L += ["\\begin{table}[H]\\centering\\scriptsize",
+          "\\caption{%s}\\label{tab:s-cruzada-tv}" % ("Matriz cruzada de controles de los detectores de torchvision: V3$-$V1 (pp) de cada bloque en el control de cada familia; en negrita, su propio control." if es else
+                                                     "Cross-family control matrix of the torchvision detectors: V3$-$V1 (pp) of each block on each family's control; in bold, its own control."),
+          "\\begin{tabular}{@{}l rrrr@{}}\\toprule", ("Bloque & " if es else "Block & ") + " & ".join(c[1][0 if es else 1] for c in ctr) + " \\\\ \\midrule"]
+    for b in ("H15", "H16a", "H16b", "H17"):
+        g = cz[cz.bloque == b].set_index("control")
+        cel = []
+        for c, _ in ctr:
+            if c in g.index:
+                v = n(g.loc[c].delta, 1)
+                cel.append("\\textbf{%s}" % v if bool(g.loc[c].propio) else v)
+            else:
+                cel.append("---")
+        L.append("%s & %s \\\\" % ((nomb if es else nomb_en)[b], " & ".join(cel)))
+    L += ["\\bottomrule\\end{tabular}\\end{table}", ""]
+    # controles adicionales (informes/controles_extra.py)
+    rce = os.path.join(AF, "controles_extra.csv")
+    if os.path.exists(rce):
+        ce = pd.read_csv(rce)
+        L += ["\\begin{table}[H]\\centering\\scriptsize",
+              "\\caption{%s}\\label{tab:s-controles-extra}" % (
+                  "Controles adicionales con los mismos pesos de cada bloque (análisis posteriores; \\texttt{informes/controles\\_extra.py}). CP sintético: siluetas pegadas sobre imágenes de CityPersons val (\\texttt{cp\\_silueta\\_severa}, cobertura 0,70--1,00), evaluado con modelos entrenados en ExDark: separa el cambio de dominio de la oclusión. Moderado: siluetas sobre ExDark test con cobertura 0,35--0,70, parecida a la de CityPersons \\emph{heavy}. V3$-$V1 (pp) con IC por imágenes; * pasa. A la derecha, CityPersons \\emph{heavy} real (tabla~I del artículo)." if es else
+                  "Additional controls with the same weights of each block (post hoc analyses; \\texttt{informes/controles\\_extra.py}). Synthetic CP: silhouettes pasted on CityPersons val images (\\texttt{cp\\_silueta\\_severa}, coverage 0.70--1.00), evaluated with models trained on ExDark: it separates the domain shift from occlusion. Moderate: silhouettes on ExDark test with coverage 0.35--0.70, similar to CityPersons \\emph{heavy}. V3$-$V1 (pp) with image CI; * passes. On the right, real CityPersons \\emph{heavy} (Table~I of the paper)."),
+              "\\begin{tabular}{@{}l ll r@{}}\\toprule",
+              ("Bloque & CP sintético & Moderado (ExDark) & CP \\emph{heavy} real \\\\" if es else "Block & Synthetic CP & Moderate (ExDark) & Real CP \\emph{heavy} \\\\"), "\\midrule"]
+        for b in ["H3", "H4", "H4-Y26", "H8", "H9", "H9b", "H10", "H10-s", "H12a", "H12b", "H14", "H15", "H16a", "H16b", "H17"]:
+            g = ce[ce.etiqueta == b].set_index("control")
+            if not len(g):
+                continue
+            cel = []
+            for c in ("cp_silueta_severa", "silueta_moderada"):
+                r = g.loc[c]
+                cel.append("%s%s %s" % (n(r.delta), "*" if (r.delta >= 2 and r.ic_lo > 0) else "", ic(r.ic_lo, r.ic_hi, es)))
+            L.append("%s & %s & %s & %s \\\\" % (b, cel[0], cel[1], n(g.iloc[0].delta_CP)))
+        L += ["\\bottomrule\\end{tabular}\\end{table}"]
+    return "\n".join(L)
+
+
 # -------------------------------------------------------------------------------------------- figura con barras de error
 def figura_ic(es):
     import matplotlib
@@ -347,10 +459,10 @@ def main():
     for es in (True, False):
         vh = None
         if v15:
-            vh = ("Se confirma (%s de 3)" % v15[1] if v15[0].startswith("Sostenida") else v15[0]) if es else \
-                 ("Confirmed (%s of 3)" % v15[1] if v15[0].startswith("Sostenida") else {"Refutada": "Refuted"}.get(v15[0], v15[0]))
+            vh = ("No detectada (%s de 3)" % v15[1] if v15[0].startswith("Sostenida") else "Pasa la regla (%s de 3)" % v15[1]) if es else \
+                 ("Not detected (%s of 3)" % v15[1] if v15[0].startswith("Sostenida") else "Passes the rule (%s of 3)" % v15[1])
         partes = {"hip": tabla_hipotesis(es, vh), "reg": tabla_registro(es), "celdas": tabla_celdas(es), "estad": tabla_estadistica(es),
-                  "cruzada": tabla_cruzada(es), "extra": tabla_extra(es), "vis": tabla_vis(es)}
+                  "cruzada": tabla_cruzada(es), "extra": tabla_extra(es), "vis": tabla_vis(es), "panel": tabla_panel(es)}
         for k, v in partes.items():
             open(os.path.join(AQUI, "tablas_suplemento_%s_%s.tex" % ("es" if es else "en", k)), "w", encoding="utf-8").write(v + "\n")
         figura_ic(es)

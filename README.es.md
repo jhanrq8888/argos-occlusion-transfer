@@ -1,25 +1,25 @@
 # argos-occlusion-transfer
 
-**Las ganancias sobre oclusión sintética no anticipan la robustez a la oclusión real en la detección de personas.** Paquete de replicación de ARGOS-11: experimentos controlados con hipótesis preespecificadas (Universidad Peruana Unión, Juliaca, Perú). [English version](README.md).
+**Mejorar sobre oclusión sintética no basta: aumento de oclusión y oclusión real en la detección de personas.** Paquete de replicación de ARGOS-11: experimentos controlados con hipótesis preespecificadas (Universidad Peruana Unión, Juliaca, Perú). [English version](README.md).
 
-El aumento sintético de oclusión (pegar parches, siluetas u objetos generados sobre las personas al entrenar) es un remedio habitual para detectar personas ocluidas, y su beneficio suele medirse con la misma oclusión artificial. Este repositorio comprueba si ese beneficio llega a la **oclusión real anotada por humanos**. En cada bloque, un modelo base (V1) y uno aumentado (V3) comparten datos, hiperparámetros, aumento base y máquina. Cada bloque tiene un control sintético y tres fuentes de oclusión real (peatones ocluidos de NightOwls, CityPersons *heavy* y un indicador de oclusión sobre ExDark). Su hipótesis, su regla de decisión y su código se fijaron con una huella SHA-256 antes de entrenar.
+El aumento sintético de oclusión (pegar parches, siluetas u objetos generados sobre las personas al entrenar) es un remedio habitual para detectar personas ocluidas, y su beneficio suele medirse con la misma oclusión artificial. Este repositorio comprueba si ese beneficio llega a la **oclusión real anotada por humanos**. En cada bloque, un modelo base (V1) y uno aumentado (V3) comparten datos, hiperparámetros, aumento base y máquina (salvo H16, cuyas V1 son las de H15, de otra máquina). Todos los bloques menos uno tienen un control sintético y tres fuentes de oclusión real (peatones ocluidos de NightOwls, CityPersons *heavy* y un indicador de oclusión sobre ExDark). Su hipótesis, su regla de decisión y su código se fijaron con una huella SHA-256 antes de entrenar.
 
 ## Resultados principales
 
 | | Resultado |
 |---|---|
-| Controles sintéticos que pasan (+2 pp de AP@0.5 con IC del 95 % > 0), detectores de una etapa y *transformers* | **13 de 13** (+2,6 a +60,9 pp) |
-| Celdas de oclusión real que pasan, mismos detectores | **4 de 39**, ninguna a la vez estable entre semillas y propia de las personas ocluidas (con los cuatro bloques de torchvision: 6 de 51) |
-| Celdas reales que descartan una ganancia de +2 pp (unilateral) | 24 de 39 (29 de 51) |
-| Efecto real medio con exposición igual al entrenamiento (21 celdas; 33 con torchvision) | **+0,02 pp** (+0,01) |
-| Transferencia entre oclusiones sintéticas (matriz cruzada de controles) | pasan 13 de 20 celdas |
-| Asociación entre la ganancia sintética y la real (Spearman, 13 bloques) | NO +0,41 [−0,18; +0,85], CP +0,30 [−0,26; +0,71], EX −0,15 [−0,67; +0,54] |
-| Faster R-CNN con siluetas (H15) | **Transfiere en 2 de 3 fuentes**: NightOwls +3,28 [+1,64; +4,79], CityPersons +2,33 [+1,01; +3,69] (ambas también con IC jerárquico); en CityPersons la ganancia es mayor en las personas ocluidas, en NightOwls no |
-| Faster R-CNN con oclusores por difusión / profundidad (H16a / H16b) | **0 de 3** en ambas, aunque los controles suben +20,35 y +9,63 |
-| RetinaNet con siluetas (H17; una etapa, misma red base y receta que H15) | **0 de 3** (control +6,60; todos los estratos reales bajan) |
-| La misma V1 de Faster R-CNN re-entrenada en otra máquina | difiere hasta 3,42 pp en una fuente real, del orden de las ganancias de H15 |
+| Controles sintéticos que pasan (+2 pp de AP@0.5 con IC del 95 % > 0) | **17 de 17** (+2,6 a +60,9 pp) |
+| Recuento primario: exposición igual al entrenamiento, 11 bloques, 33 celdas reales | **pasan 5** (4 con el IC jerárquico), 15 descartan +2 pp y 13 no son concluyentes |
+| Ganancia real media con exposición igual (IC *bootstrap* de bloques) | CityPersons **+0,96** [+0,34; +1,56], NightOwls +0,01 [−0,92; +0,97], ExDark −0,94 [−2,55; +0,94] |
+| Los 17 bloques con control | pasan 6 de 51 celdas reales y 29 descartan +2 pp; sin el indicador de ExDark, 4 de 34 |
+| Especificidad (ganancia en las personas ocluidas menos en las no ocluidas; análisis posterior) | de las 6 celdas que pasan, solo las dos del indicador de ExDark son propias de la oclusión, y ninguna con el IC jerárquico |
+| CityPersons *heavy* puntuado con la caja visible (análisis posterior) | la ganancia baja en casi todos los bloques y no supera +1,3 pp en ninguno |
+| Faster R-CNN con siluetas (H15) | cumple la regla prerregistrada en NightOwls (+3,28) y CityPersons (+2,33), pero con la varianza entre semillas sus IC incluyen el cero, no es propia de la oclusión y con la caja visible CityPersons baja a +0,74 |
+| Faster R-CNN con difusión / profundidad (H16a / H16b); RetinaNet con siluetas (H17) | **0 de 3** cada uno, aunque los controles suben +20,35, +9,63 y +6,60 |
+| Siluetas pegadas en imágenes de CityPersons, modelos entrenados en ExDark (análisis posterior) | pasan 9 de 15 bloques (mediana +2,4) frente a una mediana de +0,25 en la oclusión real de esas imágenes |
+| Control con cobertura 0,35–0,70, como CityPersons *heavy* (análisis posterior) | pasan 15 de 15 (+2,1 a +33,6), sin asociación con la ganancia real |
 
-El aumento siempre se aprende y pasa de una oclusión sintética a otra, pero solo uno de los 18 bloques (Faster R-CNN con siluetas) llega a la oclusión real, en dos fuentes. El mismo detector con otros oclusores y RetinaNet con siluetas no, y dentro de Faster R-CNN el mayor control sintético (+20,4, difusión) no transfiere y uno menor (+14,7, siluetas) sí: la ganancia sintética no anticipa la real. Los datos anotados del dominio ayudaron a las personas muy ocluidas mucho más que cualquier aumento. El trabajo completo está en `shortpaper5/` (short paper y suplemento, en español e inglés).
+El aumento siempre se aprende y pasa de una oclusión sintética a otra, pero pasar un control sintético no basta para afirmar robustez a la oclusión real. El único bloque que cumple la regla no resiste la varianza entre semillas, la especificidad ni la caja visible, y el déficit no se debe solo al cambio de dominio. El trabajo completo está en `shortpaper5/` (short paper y suplemento, en español e inglés); los análisis pedidos por el panel de revisión del 22/10 están en `informes/revision_panel_analisis.py` e `informes/controles_extra.py`.
 
 ## Qué hay en el repositorio
 
@@ -32,7 +32,7 @@ El aumento siempre se aprende y pasa de una oclusión sintética a otra, pero so
 | `CAMBIOS_PROTOCOLO.md`, `protocolo_congelado.json` | Registro de cada congelamiento (fecha, SHA-256 global y motivo) y huellas por archivo del congelamiento vigente |
 | `runs/<bloque>/<corrida>/` | `results.csv`, `args.yaml` y `registro_argos.json` de cada una de las 117 corridas válidas (los pesos no se versionan) |
 | `resultados*/` | Evaluación por corrida (`eval/`), resúmenes de AP y análisis *bootstrap* de cada bloque |
-| `informes/` | Veredictos (`veredicto_*.md`), informes (`reporte_*.md`), tablas consolidadas (`analisis_final/`) y los scripts que las generan |
+| `informes/` | Veredictos (`veredicto_*.md`), informes (`reporte_*.md`), tablas consolidadas (`analisis_final/`) y los scripts que las generan, incluidos los análisis posteriores de la revisión del 22/10 (`revision_panel_analisis.py`, `controles_extra.py`) |
 | `dataset/splits`, `dataset_cp/`, `dataset_no/` | Identificadores de las imágenes de cada partición y muestra (sin imágenes) |
 | `anotacion_anotador_*.csv`, `consenso.csv` | Gradación manual de la oclusión usada en el estudio de fiabilidad (anotadores seudonimizados) |
 | `shortpaper5/` | Short paper y suplemento (LaTeX, PDF y los scripts que generan cada tabla y figura) |
