@@ -71,3 +71,18 @@ Por el límite de 5 páginas no se añadieron «Toward robust pedestrian detecti
 | Título y resumen (8 %) | El título refleja el hallazgo de la dosis; resumen de 186 palabras con cuatro cifras clave, coherente con VI. | Coherente | 8,0 |
 
 **Lectura de la cadena:** problema → vacío → objetivos → método → resultados → conclusión, sin cortes. El positivo y los negativos se juzgan con el mismo criterio, y la conclusión se sigue del modelo mixto y de la réplica. La nota sugerida es del revisor; la decisión final es del docente.
+
+---
+
+## Segunda vuelta (revisión simulada del 29/10, `REVISION_SIMULADA_2.md`)
+
+| N.º | Qué se hizo |
+|---|---|
+| N1 (dosis alta y personas pegadas etiquetadas) | En Discusión se declara la segunda lectura: la dosis alta multiplica hasta por 3,5 las personas pegadas y etiquetadas, como un aumento Copy-Paste [13]. Ambas lecturas coinciden en que la ganancia no es específica de la oclusión. Separarlas queda como trabajo futuro (1). |
+| n1 | Resumen: «Los 20 bloques con control mejoran en él». |
+| n2 | Se mantiene el título elegido por los autores; el resumen matiza el hallazgo. |
+| n3 | «+2 pp ≈ 17 personas por cada 1 000» se acota a Faster R-CNN. |
+| n4 | Limitaciones: los bloques comparten líneas base y el modelo mixto no modela esa dependencia. |
+| n5 | Figura nueva de dosis (`fig_dosis.py`, desde `resultados_h18/resumen_ap.csv`): V3−V1 por dosis en personas ocluidas y sin oclusión, NightOwls y CityPersons. Muestra de un vistazo que la ganancia con dosis alta no es específica. Se recortó texto secundario para mantener 5 páginas. |
+
+**Repositorio público actualizado** el 29/10 (commit e27c00f, escaneo de datos sensibles limpio). Los PDF de cambios marcados no se publican porque contienen los correos de los autores; se entregan aparte.
