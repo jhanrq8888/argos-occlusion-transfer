@@ -14,7 +14,7 @@
 \captionsetup{font=small}
 \title{Material suplementario\\[2pt]\large Mejorar sobre oclusión sintética no basta: aumento de oclusión y oclusión real en la detección de personas}
 \author{Apaza Hilasaca, Condori Quispe, Ramos Quispe (UPeU, Juliaca)}
-\date{20 de octubre de 2026; revisado el 24 de octubre de 2026}
+\date{20 de octubre de 2026; revisado el 28 de octubre de 2026}
 \begin{document}
 \maketitle
 \noindent Todas las tablas de este suplemento las genera \texttt{shortpaper5/suplemento\_tablas.py} a partir de los ficheros de resultados del proyecto (\texttt{informes/analisis\_final/}); ninguna cifra se escribe a mano. Los análisis marcados como posteriores se declararon después de ver los resultados y no deciden ninguna hipótesis.
@@ -24,9 +24,9 @@
 \caption{Correspondencia entre objetivos específicos, método, evidencia y pendientes.}
 \begin{tabular}{@{}p{3.3cm}p{4.6cm}p{5.4cm}p{2.6cm}@{}}\toprule
 \textbf{Objetivo} & \textbf{Método} & \textbf{Evidencia} & \textbf{Pendiente} \\\midrule
-OE1. Degradación con la oclusión & AP@0.5 estratificado con regiones \emph{ignore}, tres fuentes & 0,82 (sin oclusión) a 0,24 (severa), YOLOv11s en ExDark & --- \\
-OE2. Efecto del aumento según el oclusor & V3 frente a V1, control y 3 fuentes reales; parches, siluetas, difusión, geometría real y profundidad & 17 de 17 controles; recuento primario (exposición igual, 33 celdas): pasan 5, 15 descartan +2 pp y 13 no son concluyentes; media +0,96 en CityPersons, +0,01 en NightOwls y $-0{,}94$ en ExDark & Oclusión tomada de imágenes reales \\
-OE3. Dependencia del detector & YOLOv11s, YOLOv11m, YOLO26s, RT-DETR-l, RetinaNet, Faster R-CNN & Mismo patrón en los cinco primeros; Faster R-CNN transfiere con siluetas en NightOwls y CityPersons (H15 refutada), pero no con difusión ni profundidad (H16a y H16b refutadas), y RetinaNet con siluetas no transfiere (H17) & Otro detector de dos etapas u otra red base \\
+OE1. Degradación con la oclusión & AP@0.5 estratificado con regiones \emph{ignore}, tres fuentes & Modelos base entrenados en ExDark con exposición igual (10 bloques), de sin oclusión a ocluidas: ExDark 0,78--0,85 a 0,20--0,31 (severa); NightOwls 0,61--0,69 a 0,15--0,21; CityPersons 0,47--0,65 a 0,08--0,15 (\emph{heavy}) & --- \\
+OE2. Efecto del aumento según el oclusor y la dosis & V3 frente a V1, control y 3 fuentes reales; parches, siluetas, difusión, geometría real y profundidad; tres dosis (H18e) & 20 de 20 controles; modelo mixto (dosis habitual, exposición igual, 12 bloques): NightOwls +0,57, CityPersons +1,06, ExDark $-1{,}11$, todos los límites superiores por debajo de +2; la dosis alta transfiere en dos fuentes (H18e-alta), pero igual en las personas sin oclusión & Curva de dosis con otros detectores; oclusión tomada de imágenes reales \\
+OE3. Dependencia del detector & YOLOv11s, YOLOv11m, YOLO26s, RT-DETR-l, RetinaNet, Faster R-CNN & Mismo patrón en los cinco primeros; Faster R-CNN con siluetas pasa en NightOwls y CityPersons (H15), pero no se replica con 5 semillas (H18a, 1 de 3) ni con difusión o profundidad (H16a, H16b); RetinaNet no transfiere (H17) & Otro detector de dos etapas u otra red base \\
 OE4. Dominio y volumen de datos & Re-entrenar en CityPersons (H6, H11); NightOwls de 2\,000 a 20\,000 imágenes (H7) & El déficit persiste; la ganancia dentro del dominio no se confirmó (H11) & --- \\
 OE5. Mecanismo & \emph{Recall}, falsos positivos, confianza; visibilidad; realismo (H13); matriz cruzada & Los ocluidos sintéticamente siguen siendo distinguibles de los reales; menos \emph{recall} con más confianza & Prueba confirmatoria del mecanismo \\
 OE6--OE7. Módulo de atención; fiabilidad de la anotación & FPS y parámetros; $\kappa$ entre anotadores & Sin ganancia del módulo (H1, H2) y FPS al 82\,\%; $\kappa$ 0,06--0,60 & Prueba en dispositivo embebido \\
@@ -118,6 +118,16 @@ Si el control solo midiera la memoria del oclusor concreto, un modelo ganaría e
 Estos análisis se declararon después de ver los resultados y no cambian ninguna regla ni ningún veredicto prerregistrado. La especificidad compara, en la misma fuente, el cambio en las personas ocluidas con el cambio en las personas sin oclusión; un valor positivo puede deberse a que las visibles empeoran más, por lo que se lee junto al cambio en las ocluidas (tabla~I del artículo). La caja visible separa ver a la persona parcialmente oculta de estimar su extensión completa. La réplica de V1 en otra máquina (una sola semilla) solo acota la variación entre máquinas.
 
 \input{tablas_suplemento_es_panel.tex}
+
+\section{Revisión externa del 27/10: H18, modelo mixto y análisis sin ExDark}
+H18 se registró y congeló (protocolo v3.12, \texttt{PREREGISTRO\_H18.md}) antes de entrenar, en respuesta a la revisión externa: H18a repite H15 con 5 semillas, con V1 y V3 en la misma máquina; H18e cambia solo la dosis de las siluetas (parámetros en \path{informes/analisis_final/configuracion_aumento.yaml}). La predicción de los tres bloques era que la transferencia no se detecta. El modelo mixto (\path{informes/modelo_mixto_m3.py}) y el análisis sin ExDark son posteriores y no deciden hipótesis. El indicador de ExDark se adoptó el 13/09/2026, tras H3 y H4, cuando la anotación manual resultó poco fiable ($\kappa$ 0,06--0,60), y su validez frente a la visibilidad anotada de CityPersons es baja (Spearman 0,24, $\kappa$ 0,24).
+
+\input{tablas_suplemento_es_rev27.tex}
+
+\begin{figure}[H]\centering
+\includegraphics[width=0.7\textwidth]{fig_dispersion_es.png}
+\caption{Ganancia en el control sintético frente a la ganancia en cada fuente real, con IC del 95\,\% por imágenes (17 bloques H3--H17; rellenos: exposición igual; vacíos: desigual o temprana; H3 queda fuera de escala). Banda gris: $\pm2$ pp. $\rho$ de Spearman con IC \emph{bootstrap} de bloques: NO +0,37 [$-$0,11; +0,75], CP +0,24 [$-$0,21; +0,62], EX $-0{,}05$ [$-$0,55; +0,51]; con exposición igual (11), NO +0,63 [0,00; +1,00]. Estaba en el cuerpo del artículo hasta la revisión del 27/10.}
+\end{figure}
 
 \section{Búsqueda bibliográfica}
 Tres búsquedas en Scopus exportadas el 13/10/2026: ecuación principal (A y B, más al menos uno de C, D o E; 155 registros), dos ecuaciones complementarias (8) y oclusión sintética frente a real sin limitarse a personas (71). De ellas salieron los cinco artículos semilla (PRNet++, WALT, MLFFCSP, CamPed y el YOLOX con transferencia de dominio); la búsqueda se apoyó en Scopus AI y en Claude, y la selección la hicieron los autores leyendo los artículos. Cadenas exactas, copiadas del historial de búsquedas de Scopus:

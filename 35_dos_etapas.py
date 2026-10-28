@@ -50,6 +50,10 @@ PROYECTO = os.path.join(RAIZ, "runs", "argos_frcnn")
 RECETA = {"epochs": 30, "batch": 8, "lr": 0.01, "momentum": 0.9, "weight_decay": 1e-4, "warmup_iters": 500,
           "warmup_factor": 1e-3, "hitos": (20, 27), "gamma": 0.1, "imgsz": 640, "workers": 8, "amp": True}
 LR = {"frcnn": 0.01, "retina": 0.005}
+# H18e (PREREGISTRO_H18.md): dosis del aumento de siluetas. "base" es OCLUSION_CFG_V2 sin cambios (p 0,5; 1-3 personas;
+# cobertura 0,30-0,85); "baja" y "alta" solo cambian la probabilidad por imagen, el numero de personas y la cobertura.
+DOSIS = {"base": {}, "baja": {"p": 0.25, "n_min": 1, "n_max": 1, "rango_f": (0.15, 0.40)},
+         "alta": {"p": 1.0, "n_min": 1, "n_max": 6, "rango_f": (0.50, 0.95)}}
 CONF, MAX_DET, NMS = 0.001, 300, 0.5      # NMS de torchvision (0,5, su valor por defecto en ambos detectores)
 
 
@@ -86,16 +90,18 @@ def construir_modelo(pesos_coco=PESOS_COCO, detector="frcnn"):
     return m
 
 
-def oclusion_de(familia):
+def oclusion_de(familia, dosis="base"):
     e07 = _cargar_07()
+    if dosis != "base" and familia != "sil":
+        sys.exit("--dosis solo se define para la familia sil")
     if familia == "sil":
         from argos_lib.siluetas import OclusionSiluetas
-        return OclusionSiluetas(**e07.OCLUSION_CFG_V2)
+        return OclusionSiluetas(**{**e07.OCLUSION_CFG_V2, **DOSIS[dosis]})
     from argos_lib.generativa import OclusionGenerativa
     return OclusionGenerativa(**(e07.OCLUSION_CFG_GEN if familia == "gen" else e07.OCLUSION_CFG_PROF))
 
 
-def dataset_ultralytics(variante, semilla, fraccion=1.0, familia="sil"):
+def dataset_ultralytics(variante, semilla, fraccion=1.0, familia="sil", dosis="base"):
     """Dataset de entrenamiento de Ultralytics con el aumento base del proyecto; en V3, con el generador de la familia."""
     import yaml
     from ultralytics.cfg import get_cfg
@@ -105,7 +111,7 @@ def dataset_ultralytics(variante, semilla, fraccion=1.0, familia="sil"):
     aum = yaml.safe_load(open(os.path.join(RAIZ, "config", "aumento_base.yaml"), encoding="utf-8"))
     cfg = get_cfg(overrides=dict(imgsz=RECETA["imgsz"], seed=semilla, **aum))
     data = check_det_dataset(os.path.join(RAIZ, "dataset", "data_v2.yaml"))
-    ocl = oclusion_de(familia) if variante == "V3" else None
+    ocl = oclusion_de(familia, dosis) if variante == "V3" else None
     return DatasetOclusion(img_path=data["train"], imgsz=RECETA["imgsz"], batch_size=RECETA["batch"], augment=True,
                            hyp=cfg, rect=False, cache=None, single_cls=False, stride=32, pad=0.0,
                            prefix=colorstr("train: "), task="detect", classes=None, data=data, fraction=fraccion,
@@ -135,7 +141,8 @@ def fijar_semilla(s):
     torch.backends.cudnn.benchmark = False
 
 
-def entrenar(variante, semilla, epochs=None, smoke=False, device="cuda", detector="frcnn", familia="sil", proyecto=None):
+def entrenar(variante, semilla, epochs=None, smoke=False, device="cuda", detector="frcnn", familia="sil", proyecto=None,
+             dosis="base"):
     import torch
     from ultralytics.data import build_dataloader
     epochs = 1 if smoke else (epochs or RECETA["epochs"])
@@ -147,7 +154,7 @@ def entrenar(variante, semilla, epochs=None, smoke=False, device="cuda", detecto
         return d
     os.makedirs(os.path.join(d, "weights"), exist_ok=True)
     fijar_semilla(semilla)
-    ds, cfg = dataset_ultralytics(variante, semilla, fraccion=0.05 if smoke else 1.0, familia=familia)
+    ds, cfg = dataset_ultralytics(variante, semilla, fraccion=0.05 if smoke else 1.0, familia=familia, dosis=dosis)
     dl = build_dataloader(ds, RECETA["batch"], 2 if smoke else RECETA["workers"], shuffle=True, rank=-1)
     modelo = construir_modelo(PESOS[detector], detector).to(device)
     params = [p for p in modelo.parameters() if p.requires_grad]
@@ -192,7 +199,7 @@ def entrenar(variante, semilla, epochs=None, smoke=False, device="cuda", detecto
     torch.save(modelo.state_dict(), os.path.join(d, "weights", "last.pth"))
     with open(os.path.join(d, "results.csv"), "w", encoding="utf-8") as fh:
         fh.write("epoch,loss,lr,time\n" + "".join("%d,%s,%s,%s\n" % (f["epoch"], f["loss"], f["lr"], f["time"]) for f in filas))
-    json.dump({"variante": variante, "semilla": semilla, "detector": detector, "familia": familia,
+    json.dump({"variante": variante, "semilla": semilla, "detector": detector, "familia": familia, "dosis": dosis,
                "receta": dict(RECETA, lr=LR[detector]), "oclusion_v3": variante == "V3",
                "torch": torch.__version__, "cuda": torch.version.cuda, "gpu": torch.cuda.get_device_name(0),
                "pesos_coco": os.path.basename(PESOS[detector]), "iteraciones": it},
@@ -245,6 +252,7 @@ def selftest():
     ok.append(r.head.classification_head.num_classes == 2 and r.transform.max_size == 640 and r.score_thresh == CONF)
     ok.append(LR == {"frcnn": 0.01, "retina": 0.005} and RECETA["lr"] == LR["frcnn"])
     ok.append(PROYECTOS[("frcnn", "sil")] == "argos_frcnn")
+    ok.append(DOSIS["base"] == {} and DOSIS["baja"]["p"] < 0.5 < DOSIS["alta"]["p"])
     print("AUTOTEST %s: %d/%d" % ("SUPERADO" if all(ok) else "FALLIDO", sum(ok), len(ok)))
     return all(ok)
 
@@ -258,6 +266,7 @@ def main():
     ap.add_argument("--smoke", action="store_true")
     ap.add_argument("--detector", choices=("frcnn", "retina"), default="frcnn")
     ap.add_argument("--familia", choices=("sil", "gen", "prof"), default="sil")
+    ap.add_argument("--dosis", choices=tuple(DOSIS), default="base", help="dosis del aumento de siluetas (H18e)")
     ap.add_argument("--proyecto", help="carpeta bajo runs/ (por defecto la de detector y familia; la replica de H16 usa argos_frcnn_rep)")
     ap.add_argument("--pesos")
     ap.add_argument("--nombre")
@@ -269,7 +278,7 @@ def main():
         sys.exit(0 if selftest() else 1)
     if a.accion == "entrenar":
         entrenar(a.variante, a.semilla, a.epochs, a.smoke, detector=a.detector, familia=a.familia,
-                 proyecto=os.path.join(RAIZ, "runs", a.proyecto) if a.proyecto else None)
+                 proyecto=os.path.join(RAIZ, "runs", a.proyecto) if a.proyecto else None, dosis=a.dosis)
     elif a.accion == "inferir":
         inferir(a.pesos, a.nombre, a.gt, a.resultados, detector=a.detector)
     else:

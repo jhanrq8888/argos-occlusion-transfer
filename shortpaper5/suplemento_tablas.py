@@ -60,7 +60,7 @@ PRED = {  # predicción con dirección y veredicto (es, en)
                "With silhouettes the gain transfers (H4); smaller synthetic gain and gap (H5)",
                "H4 no confirmada (0 de 3); H5 parcial", "H4 not confirmed (0 of 3); H5 partial"),
     "H6": ("Sin transferencia al re-entrenar en CityPersons", "No transfer when retraining on CityPersons", "No detectada (0 de 3)", "Not detected (0 of 3)"),
-    "H7": ("Sin transferencia con 20\\,000 imágenes nocturnas", "No transfer with 20,000 night images", "No detectada (sin control)", "Not detected (no control)"),
+    "H7": ("Sin transferencia con 20\\,000 imágenes nocturnas", "No transfer with 20,000 night images", "No concluyente (sin control)", "Inconclusive (no control)"),
     "H8": ("Sin transferencia con RT-DETR-l", "No transfer with RT-DETR-l", "No detectada (0 de 3)", "Not detected (0 of 3)"),
     "H9": ("Sin transferencia con oclusores por difusión", "No transfer with diffusion occluders", "No detectada (1 de 3)", "Not detected (1 of 3)"),
     "H9b": ("Ídem con 30 épocas fijas", "Same with 30 fixed epochs", "No detectada (0 de 3)", "Not detected (0 of 3)"),

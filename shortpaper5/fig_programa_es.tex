@@ -1,0 +1,25 @@
+% Diagrama del programa adaptativo (observacion M5 de la revision del 27/10). Se incluye con \input.
+\begin{tikzpicture}[font=\scriptsize, node distance=1.5mm,
+  b/.style={draw, rounded corners=1pt, inner sep=2pt, text width=3.0cm, align=left, fill=gray!8},
+  m/.style={text width=4.5cm, align=left, inner sep=1pt},
+  f/.style={-{Stealth[length=1.6mm]}, thin}]
+\node[b] (a) {H3 parches \hfill 11/09};
+\node[m, right=2mm of a] {El control gana; la oclusión real, no.};
+\node[b, below=of a] (b) {H4, H4-Y26 \hfill 12/09};
+\node[m, right=2mm of b] {¿El oclusor? Siluetas; réplica YOLO26s.};
+\node[b, below=of b] (c) {H6, H7 dominio \hfill 19/09};
+\node[m, right=2mm of c] {¿El dominio? CityPersons; NightOwls.};
+\node[b, below=of c] (d) {H8 RT-DETR-l \hfill 26/09};
+\node[m, right=2mm of d] {¿El detector? Un \emph{transformer}.};
+\node[b, below=of d] (e) {H9, H9b difusión \hfill 03/10};
+\node[m, right=2mm of e] {¿Más realismo? Desde H9b, épocas fijas.};
+\node[b, below=of e] (g) {H10--H14 \hfill 06/10};
+\node[m, right=2mm of g] {Geometría, YOLOv11m, profundidad.};
+\node[b, below=of g] (h) {H15 Faster R-CNN \hfill 20/10};
+\node[m, right=2mm of h] {¿Dos etapas? Pasa la regla (2 de 3).};
+\node[b, below=of h] (i) {H16a, H16b, H17 \hfill 22/10};
+\node[m, right=2mm of i] {¿Se extiende? Otros oclusores; RetinaNet.};
+\node[b, below=of i] (j) {H18a, H18e \hfill 28/10};
+\node[m, right=2mm of j] {No se replica; la dosis alta transfiere.};
+\foreach \x/\y in {a/b, b/c, c/d, d/e, e/g, g/h, h/i, i/j} \draw[f] (\x) -- (\y);
+\end{tikzpicture}

@@ -1,0 +1,337 @@
+{
+ "datos": {
+  "observaciones": 185,
+  "bloques": 20,
+  "por_bloque": {
+   "H10": 3,
+   "H10-s": 3,
+   "H11": 3,
+   "H12a": 3,
+   "H12b": 3,
+   "H14": 3,
+   "H15": 3,
+   "H16a": 3,
+   "H16b": 3,
+   "H17": 3,
+   "H18a": 5,
+   "H18e-alta": 3,
+   "H18e-baja": 3,
+   "H3": 3,
+   "H4": 3,
+   "H4-Y26": 3,
+   "H6": 3,
+   "H8": 3,
+   "H9": 3,
+   "H9b": 3
+  }
+ },
+ "modelo0_igual_dosis_base": {
+  "C(fuente)[CP]": {
+   "est": 1.06,
+   "ic": [
+    0.15,
+    1.96
+   ]
+  },
+  "C(fuente)[EX]": {
+   "est": -1.11,
+   "ic": [
+    -2.01,
+    -0.2
+   ]
+  },
+  "C(fuente)[NO]": {
+   "est": 0.57,
+   "ic": [
+    -0.34,
+    1.48
+   ]
+  },
+  "var_bloque": 0.05,
+  "var_semilla": 0.81,
+  "var_residual": 6.83,
+  "n_obs": 114,
+  "n_bloques": 12,
+  "convergio": false
+ },
+ "modelo0b_todos_dosis_base": {
+  "C(fuente)[CP]": {
+   "est": 0.15,
+   "ic": [
+    -1.38,
+    1.69
+   ]
+  },
+  "C(fuente)[EX]": {
+   "est": -1.44,
+   "ic": [
+    -2.98,
+    0.1
+   ]
+  },
+  "C(fuente)[NO]": {
+   "est": -2.08,
+   "ic": [
+    -3.61,
+    -0.54
+   ]
+  },
+  "var_bloque": 7.67,
+  "var_semilla": 0.0,
+  "var_residual": 10.54,
+  "n_obs": 167,
+  "n_bloques": 18,
+  "convergio": true
+ },
+ "modelo0c_igual_dosis_base_con_control": {
+  "C(fuente)[CP]": {
+   "est": 1.06,
+   "ic": [
+    0.22,
+    1.9
+   ]
+  },
+  "C(fuente)[EX]": {
+   "est": -1.1,
+   "ic": [
+    -1.94,
+    -0.26
+   ]
+  },
+  "C(fuente)[NO]": {
+   "est": 0.57,
+   "ic": [
+    -0.27,
+    1.42
+   ]
+  },
+  "z_control": {
+   "est": 0.16,
+   "ic": [
+    -0.46,
+    0.78
+   ]
+  },
+  "var_bloque": 0.0,
+  "var_semilla": 1.04,
+  "var_residual": 6.79,
+  "n_obs": 114,
+  "n_bloques": 12,
+  "convergio": true
+ },
+ "modelo1_igual": {
+  "C(fuente)[CP]": {
+   "est": 1.27,
+   "ic": [
+    0.25,
+    2.29
+   ]
+  },
+  "C(fuente)[EX]": {
+   "est": -1.07,
+   "ic": [
+    -2.09,
+    -0.05
+   ]
+  },
+  "C(fuente)[NO]": {
+   "est": 1.25,
+   "ic": [
+    0.23,
+    2.27
+   ]
+  },
+  "var_bloque": 1.52,
+  "var_semilla": 0.07,
+  "var_residual": 7.05,
+  "n_obs": 132,
+  "n_bloques": 14,
+  "convergio": false
+ },
+ "modelo1b_todos": {
+  "C(fuente)[CP]": {
+   "est": 0.42,
+   "ic": [
+    -1.08,
+    1.92
+   ]
+  },
+  "C(fuente)[EX]": {
+   "est": -1.36,
+   "ic": [
+    -2.86,
+    0.15
+   ]
+  },
+  "C(fuente)[NO]": {
+   "est": -1.31,
+   "ic": [
+    -2.81,
+    0.19
+   ]
+  },
+  "var_bloque": 8.23,
+  "var_semilla": 0.0,
+  "var_residual": 10.78,
+  "n_obs": 185,
+  "n_bloques": 20,
+  "convergio": true
+ },
+ "modelo2_igual_con_control": {
+  "C(fuente)[CP]": {
+   "est": 1.27,
+   "ic": [
+    0.26,
+    2.28
+   ]
+  },
+  "C(fuente)[EX]": {
+   "est": -1.07,
+   "ic": [
+    -2.08,
+    -0.06
+   ]
+  },
+  "C(fuente)[NO]": {
+   "est": 1.25,
+   "ic": [
+    0.24,
+    2.26
+   ]
+  },
+  "z_control": {
+   "est": 0.54,
+   "ic": [
+    -0.28,
+    1.35
+   ]
+  },
+  "var_bloque": 1.44,
+  "var_semilla": 0.08,
+  "var_residual": 7.04,
+  "n_obs": 132,
+  "n_bloques": 14,
+  "convergio": false
+ },
+ "modelo2b_todos_con_control": {
+  "C(fuente)[CP]": {
+   "est": 0.42,
+   "ic": [
+    -1.11,
+    1.95
+   ]
+  },
+  "C(fuente)[EX]": {
+   "est": -1.36,
+   "ic": [
+    -2.89,
+    0.17
+   ]
+  },
+  "C(fuente)[NO]": {
+   "est": -1.31,
+   "ic": [
+    -2.84,
+    0.22
+   ]
+  },
+  "z_control": {
+   "est": 0.14,
+   "ic": [
+    -1.28,
+    1.55
+   ]
+  },
+  "var_bloque": 8.69,
+  "var_semilla": 0.0,
+  "var_residual": 10.78,
+  "n_obs": 185,
+  "n_bloques": 20,
+  "convergio": true
+ },
+ "recuentos": {
+  "igual_33": {
+   "celdas": 42,
+   "pasan_img": 9,
+   "pasan_jer": 8,
+   "descartan_img": 16,
+   "descartan_jer": 9,
+   "no_concluyentes_img": 17,
+   "no_concluyentes_jer": 25,
+   "pasan_jer_lista": [
+    "H10-CP",
+    "H10-s-CP",
+    "H15-CP",
+    "H15-NO",
+    "H18a-NO",
+    "H18e-alta-CP",
+    "H18e-alta-NO",
+    "H18e-baja-NO"
+   ]
+  },
+  "todos_51": {
+   "celdas": 60,
+   "pasan_img": 10,
+   "pasan_jer": 8,
+   "descartan_img": 30,
+   "descartan_jer": 21,
+   "no_concluyentes_img": 20,
+   "no_concluyentes_jer": 31,
+   "pasan_jer_lista": [
+    "H10-CP",
+    "H10-s-CP",
+    "H15-CP",
+    "H15-NO",
+    "H18a-NO",
+    "H18e-alta-CP",
+    "H18e-alta-NO",
+    "H18e-baja-NO"
+   ]
+  },
+  "igual_dosis_base": {
+   "celdas": 36,
+   "pasan_img": 6,
+   "pasan_jer": 5,
+   "descartan_img": 16,
+   "descartan_jer": 9,
+   "no_concluyentes_img": 14,
+   "no_concluyentes_jer": 22,
+   "pasan_jer_lista": [
+    "H10-CP",
+    "H10-s-CP",
+    "H15-CP",
+    "H15-NO",
+    "H18a-NO"
+   ]
+  },
+  "todos_dosis_base": {
+   "celdas": 54,
+   "pasan_img": 7,
+   "pasan_jer": 5,
+   "descartan_img": 30,
+   "descartan_jer": 21,
+   "no_concluyentes_img": 17,
+   "no_concluyentes_jer": 28,
+   "pasan_jer_lista": [
+    "H10-CP",
+    "H10-s-CP",
+    "H15-CP",
+    "H15-NO",
+    "H18a-NO"
+   ]
+  },
+  "sin_EX": {
+   "bloques_ambas_img": [
+    "H15",
+    "H18e-alta"
+   ],
+   "bloques_ambas_jer": [
+    "H15",
+    "H18e-alta"
+   ],
+   "celdas": 40,
+   "pasan_img": 8,
+   "pasan_jer": 8
+  }
+ }
+}

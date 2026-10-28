@@ -1,0 +1,54 @@
+\begin{table}[H]\centering\small
+\caption{H18 (PREREGISTRO\_H18.md, v3.12): celdas con los dos IC. $\Delta$ = V3 $-$ V1 en AP@0.5 (pp), media de semillas; * pasa (+2 pp con IC $>0$).}
+\begin{tabular}{@{}llrrrrrlll@{}}\toprule
+Bloque & Fuente & $n$ & Semillas & V1 & V3 & $\Delta$ & IC imágenes & IC jerárquico & Veredicto \\\midrule
+H18a & control & 1858 & 5 & 0{,}032 & 0{,}176 & +14{,}44* & [+12{,}77; +16{,}30] & [+12{,}72; +16{,}43]* &  \\
+H18a & NO & 530 & 5 & 0{,}148 & 0{,}191 & +4{,}26* & [+2{,}90; +5{,}49] & [+2{,}21; +6{,}32]* & No detectada \\
+H18a & CP & 733 & 5 & 0{,}145 & 0{,}162 & +1{,}74 & [+0{,}50; +2{,}85] & [$-$0{,}08; +3{,}69] &  \\
+H18a & EX & 101 & 5 & 0{,}304 & 0{,}282 & $-$2{,}20 & [$-$6{,}12; +1{,}63] & [$-$6{,}92; +2{,}86] &  \\
+H18e-baja & control & 1858 & 3 & 0{,}031 & 0{,}060 & +2{,}94* & [+2{,}28; +3{,}55] & [+2{,}02; +3{,}91]* &  \\
+H18e-baja & NO & 530 & 3 & 0{,}142 & 0{,}171 & +2{,}90* & [+1{,}69; +4{,}20] & [+0{,}82; +4{,}93]* & No detectada \\
+H18e-baja & CP & 733 & 3 & 0{,}142 & 0{,}159 & +1{,}74 & [+0{,}42; +2{,}77] & [$-$1{,}10; +4{,}10] &  \\
+H18e-baja & EX & 101 & 3 & 0{,}302 & 0{,}283 & $-$1{,}91 & [$-$5{,}08; +2{,}00] & [$-$6{,}56; +3{,}24] &  \\
+H18e-alta & control & 1858 & 3 & 0{,}031 & 0{,}287 & +25{,}62* & [+23{,}41; +27{,}95] & [+23{,}13; +28{,}15]* &  \\
+H18e-alta & NO & 530 & 3 & 0{,}142 & 0{,}228 & +8{,}59* & [+6{,}12; +10{,}63] & [+5{,}65; +11{,}27]* & Detectada \\
+H18e-alta & CP & 733 & 3 & 0{,}142 & 0{,}180 & +3{,}78* & [+2{,}13; +5{,}33] & [+0{,}87; +6{,}35]* &  \\
+H18e-alta & EX & 101 & 3 & 0{,}302 & 0{,}308 & +0{,}60 & [$-$4{,}10; +5{,}14] & [$-$5{,}23; +6{,}55] &  \\
+\bottomrule\end{tabular}\end{table}
+
+\begin{table}[H]\centering\small
+\caption{Especificidad de H18 (semillas 0--2): $\Delta$ por estrato. Con la dosis alta, la ganancia en las personas sin oclusión es igual o mayor que en las ocluidas.}
+\begin{tabular}{@{}llrrr@{}}\toprule
+Fuente & Estrato & $\Delta$ baja & $\Delta$ habitual & $\Delta$ alta \\\midrule
+NO & sin oclusión & +3{,}17 & +4{,}93 & +8{,}87 \\
+NO & ocluida & +2{,}90 & +5{,}32 & +8{,}59 \\
+CP & sin oclusión (\emph{bare}) & +2{,}00 & +2{,}92 & +5{,}34 \\
+CP & \emph{partial} & +1{,}65 & +4{,}13 & +6{,}41 \\
+CP & \emph{heavy} & +1{,}74 & +2{,}35 & +3{,}78 \\
+EX & global & +0{,}15 & $-$0{,}02 & $-$1{,}98 \\
+EX & sin oclusión & +0{,}03 & $-$0{,}20 & $-$2{,}41 \\
+EX & severa & $-$1{,}91 & $-$1{,}74 & +0{,}60 \\
+\bottomrule\end{tabular}\end{table}
+
+\begin{table}[H]\centering\small
+\caption{Modelo mixto global (REML): $\Delta$ por semilla $\sim$ fuente + bloque + semilla(bloque). Estimación e IC del 95\,\%, en pp. Posterior a la revisión externa; no decide hipótesis.}
+\begin{tabular}{@{}p{4.2cm}llllr@{}}\toprule
+Modelo & NightOwls & CityPersons & ExDark & Control (por DE) & Obs. / bloques \\\midrule
+Primario: dosis habitual, exposición igual & +0{,}57 [$-$0{,}34; +1{,}48] & +1{,}06 [+0{,}15; +1{,}96] & $-$1{,}11 [$-$2{,}01; $-$0{,}20] & --- & 114 / 12 \\
+Primario + ganancia en el control & +0{,}57 [$-$0{,}27; +1{,}42] & +1{,}06 [+0{,}22; +1{,}90] & $-$1{,}10 [$-$1{,}94; $-$0{,}26] & +0{,}16 [$-$0{,}46; +0{,}78] & 114 / 12 \\
+Dosis habitual, todos los bloques & $-$2{,}08 [$-$3{,}61; $-$0{,}54] & +0{,}15 [$-$1{,}38; +1{,}69] & $-$1{,}44 [$-$2{,}98; +0{,}10] & --- & 167 / 18 \\
+Exposición igual, con H18e & +1{,}25 [+0{,}23; +2{,}27] & +1{,}27 [+0{,}25; +2{,}29] & $-$1{,}07 [$-$2{,}09; $-$0{,}05] & --- & 132 / 14 \\
+Todos los bloques, con H18e & $-$1{,}31 [$-$2{,}81; +0{,}19] & +0{,}42 [$-$1{,}08; +1{,}92] & $-$1{,}36 [$-$2{,}86; +0{,}15] & --- & 185 / 20 \\
+\bottomrule\end{tabular}\end{table}
+
+\begin{table}[H]\centering\small
+\caption{Recuentos descriptivos con el IC por imágenes y con el jerárquico (criterio uniforme de semillas).}
+\begin{tabular}{@{}lrrrr@{}}\toprule
+Conjunto & Celdas & Pasan (img./jer.) & Descartan +2 (img./jer.) & No concluyentes (img./jer.) \\\midrule
+Exposición igual, dosis habitual & 36 & 6 / 5 & 16 / 9 & 14 / 22 \\
+Con control, dosis habitual & 54 & 7 / 5 & 30 / 21 & 17 / 28 \\
+Exposición igual, con H18e & 42 & 9 / 8 & 16 / 9 & 17 / 25 \\
+Con control, con H18e & 60 & 10 / 8 & 30 / 21 & 20 / 31 \\
+\bottomrule\end{tabular}\end{table}
+
+\noindent\textbf{Sin el indicador de ExDark.} Exigiendo que pasen NightOwls y CityPersons, detectan transferencia: H15 y H18e-alta (IC por imágenes) y H15 y H18e-alta (IC jerárquico). De 40 celdas sin ExDark, pasan 8 con el IC por imágenes y 8 con el jerárquico.
