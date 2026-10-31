@@ -1,6 +1,6 @@
 # argos-occlusion-transfer
 
-**Mejorar sobre oclusión sintética no basta: la transferencia del aumento de oclusión a la oclusión real depende de la dosis en la detección de personas.** Paquete de replicación de ARGOS-11: experimentos controlados con hipótesis registradas internamente con huella criptográfica (Universidad Peruana Unión, Juliaca, Perú). [English version](README.md).
+**Mejorar sobre oclusión sintética no basta: transferencia del aumento de oclusión a la oclusión real en la detección de personas.** Paquete de replicación de ARGOS-11: experimentos controlados con hipótesis registradas internamente con huella criptográfica (Universidad Peruana Unión, Juliaca, Perú). [English version](README.md).
 
 El aumento sintético de oclusión (pegar parches, siluetas u objetos generados sobre las personas al entrenar) es un remedio habitual para detectar personas ocluidas, y su beneficio suele medirse con la misma oclusión artificial. Este repositorio comprueba si ese beneficio llega a la **oclusión real anotada por humanos**. En cada bloque, un modelo base (V1) y uno aumentado (V3) comparten datos, hiperparámetros, aumento base y máquina (salvo H16, cuyas V1 son las de H15, de otra máquina). Todos los bloques menos uno tienen un control sintético y tres fuentes de oclusión real (peatones ocluidos de NightOwls, CityPersons *heavy* y un indicador de oclusión sobre ExDark). Su hipótesis, su regla de decisión y su código se fijaron con una huella SHA-256 antes de entrenar. 21 bloques, 133 corridas.
 

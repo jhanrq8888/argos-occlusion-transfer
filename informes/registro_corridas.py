@@ -82,6 +82,22 @@ def main():
                           "epocas_entrenadas": ep, "pesos_evaluados": pesos, "epoca_evaluada": eleg,
                           "regla_de_exposicion": regla, "maquina": maq,
                           "horas_gpu": round(float(r[-1].get("time", 0) or 0) / 3600, 2)})
+    # H18 (Faster R-CNN, siluetas, tres dosis; 35_dos_etapas.py) se entreno en RunPod sin results.csv: el tiempo sale
+    # del log de cada corrida (ultima linea "epoca 30/30 ... N s"), con cuatro corridas en paralelo en la misma GPU.
+    import re
+    nombres = {"sil": ("H18a (dosis habitual, 5 semillas)", "H18a"), "baja": ("H18e (dosis baja)", "H18e"),
+               "alta": ("H18e (dosis alta)", "H18e")}
+    for log in sorted(glob.glob(os.path.join(os.path.dirname(RAIZ), "runpod_h18", "h18_*_V*_s*.log"))):
+        dosis, var, sem = os.path.basename(log)[4:-4].split("_")
+        seg = re.findall(r"epoca (\d+)/(\d+) .* (\d+) s", open(log, encoding="utf-8", errors="replace").read())
+        if not seg or seg[-1][0] != seg[-1][1]:
+            continue
+        bloque, hip = nombres[dosis]
+        filas.append({"carpeta": "runpod_h18", "bloque": bloque, "hipotesis": hip,
+                      "corrida": "%s_%s" % (var, sem) if dosis == "sil" else "%s%s_%s" % (var, dosis, sem),
+                      "variante": var, "detector": "Faster R-CNN R50-FPN v2", "semilla": sem.lstrip("s"),
+                      "epocas_entrenadas": int(seg[-1][1]), "pesos_evaluados": "last", "epoca_evaluada": int(seg[-1][1]),
+                      "regla_de_exposicion": "30 epocas fijas", "maquina": NUBE, "horas_gpu": round(int(seg[-1][2]) / 3600, 2)})
     sal = os.path.join(RAIZ, "informes", "analisis_final", "registro_corridas.csv")
     with open(sal, "w", newline="", encoding="utf-8") as fh:
         w = csv.DictWriter(fh, fieldnames=list(filas[0]))

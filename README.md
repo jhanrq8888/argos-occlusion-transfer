@@ -1,6 +1,6 @@
 # argos-occlusion-transfer
 
-**Gains on synthetic occlusion are not enough: transfer of occlusion augmentation to real occlusion depends on the dose in person detection.** Replication package of ARGOS-11: controlled experiments with hypotheses registered internally with a cryptographic hash (Universidad Peruana Unión, Juliaca, Peru). [Versión en español](README.es.md).
+**Gains on synthetic occlusion are not enough: transfer of occlusion augmentation to real occlusion in person detection.** Replication package of ARGOS-11: controlled experiments with hypotheses registered internally with a cryptographic hash (Universidad Peruana Unión, Juliaca, Peru). [Versión en español](README.es.md).
 
 Synthetic occlusion augmentation (pasting patches, silhouettes or generated objects over people during training) is a common remedy for occluded person detection, and its benefit is usually measured on the same kind of artificial occlusion. This repository tests whether that benefit reaches **real, human-annotated occlusion**. In every block a baseline (V1) and an augmented model (V3) share data, hyperparameters, base augmentation and machine (except H16, whose V1 come from H15 on another machine). Every block but one has a synthetic control and three real-occlusion sources (NightOwls occluded pedestrians, CityPersons *heavy* and an ExDark occlusion proxy). Its hypothesis, decision rule and code were frozen with a SHA-256 fingerprint before training. 21 blocks, 133 runs.
 
