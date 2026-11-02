@@ -86,3 +86,68 @@ Por el límite de 5 páginas no se añadieron «Toward robust pedestrian detecti
 | n5 | Figura nueva de dosis (`fig_dosis.py`, desde `resultados_h18/resumen_ap.csv`): V3−V1 por dosis en personas ocluidas y sin oclusión, NightOwls y CityPersons. Muestra de un vistazo que la ganancia con dosis alta no es específica. Se recortó texto secundario para mantener 5 páginas. |
 
 **Repositorio público actualizado** el 29/10 (commit e27c00f, escaneo de datos sensibles limpio). Los PDF de cambios marcados no se publican porque contienen los correos de los autores; se entregan aparte.
+
+## Tercera vuelta (31/10/2026–01/11/2026): re-revisión y cierre de las secciones 4 a 10
+
+Un agente que no vio esta matriz verificó cada observación contra la versión nueva (`RE_REVISION_31oct.md`). Resultado: cambios menores, unos 19,3/20. Las correcciones están en ese archivo.
+
+**Cambios posteriores a la segunda vuelta:**
+
+- **Título (sección 2, elemento 9).** Ya no dice «depende de la dosis», porque afirmaba más de lo probado.
+- **Sección 6.** La figura de dispersión del suplemento se separó en tres paneles, uno por fuente, cada uno con su ρ de Spearman y su IC. Ya no se superponen las 51 celdas.
+- **Sección 8.** Los dos trabajos cercanos (Cygert y Czyżewski, *IEEE Access*, 2020; Saleh et al., IEEE SAMI, 2021) ya están citados en el artículo largo, como se prometió. El short paper no los cita por el límite de 5 páginas.
+- **Sección 9.** El registro de corridas ya incluye las 16 de H18 (133 corridas, 108,7 h).
+- **Sección 9.** Los PDF con control de cambios se regeneraron frente a la versión del 27/10.
+- **Sección 10.3.** Al cambiar la dosis y H18, se actualizaron juntos la Tabla I, la Fig. 2, el resumen y la conclusión.
+
+**M5 (renumerar los bloques como B1–B18): se acepta en parte.**
+
+- **Hecho:**
+  - diagrama del programa (Fig. 1);
+  - resumen de 193 palabras;
+  - análisis posteriores en un solo párrafo;
+  - IC jerárquico en el texto e IC por imágenes solo en la tabla.
+- **No hecho:** la renumeración. Los rótulos H coinciden con las hipótesis registradas con huella en `CAMBIOS_PROTOCOLO.md` y con los nombres de los archivos del repositorio. Renumerar rompería la trazabilidad entre el texto y el pre-registro. La Tabla I nombra cada bloque por su hipótesis y su contenido.
+
+**Nota de la Tabla I.** Se mantiene con las definiciones de veredicto que pidió m3. La potencia de la regla y los criterios ya se trasladaron al texto en la segunda vuelta.
+
+**Pendiente de los autores:** confirmar en el PDF oficial de RENAMU 2023 la cifra de 14 722 cámaras.
+
+### Cierre dentro del short paper (01/11/2026)
+
+El revisor solo verá el short paper de 5 páginas, así que lo que estaba solo en esta matriz o en el artículo largo pasó al texto. Las dos versiones siguen en 5 páginas.
+
+- **Título.** «…no basta: estudio controlado de la transferencia del aumento de oclusión a la oclusión real en la detección de personas». Ahora refleja objeto y diseño (rúbrica, elemento 9).
+- **Sección 8.** Cygert y Czyżewski (2020) y Saleh et al. (2021) se citan en II («El aumento como señal de entrenamiento y como prueba»).
+- **M5 (rótulos).** En III, «Diseño, hipótesis y regla»: «Cada bloque lleva el rótulo de su hipótesis registrada (H3–H18), para rastrearlo hasta el registro».
+- **Nota de la Tabla I.** Las definiciones de veredicto se compactaron. Se conservan porque las pidió m3.
+- **Para mantener las 5 páginas:**
+  - se acortó la nota al pie del suplemento, la línea de datos y código y la cita de YOLOX;
+  - la Tabla I tiene filas más compactas;
+  - la Fig. 2 es algo más pequeña;
+  - dos frases en inglés se igualaron a las españolas.
+
+  No se quitó ninguna cifra ni ningún resultado.
+
+### Verificación final (01/11/2026)
+
+Un agente independiente, sin acceso a esta matriz, verificó la versión final contra todas las secciones del reporte y contra la rúbrica.
+
+**Resultado:** M1–M5 y m1–m3 están atendidas dentro del texto. La rúbrica queda coherente en los 9 elementos, con una nota estimada de 20/20.
+
+**Detalles que señaló y que se corrigieron:**
+- El resumen ya no dice «solo una dosis alta…»: ahora menciona también H15 no replicada y da el rango del modelo mixto (−1,1 a +1,1).
+- OE5 incluía la exhaustividad, que no se informa; se sustituyó por la caja visible, que sí se informa.
+- H17: se precisa «empeora en las tres fuentes reales».
+- El coste se aclara: cada bloque de 3 semillas cuesta 0,5–2,6 h.
+- Se corrigió la doble negación «baja −1,98».
+- Se reformuló la limitación sobre la dependencia entre celdas.
+- Se formula la pregunta de investigación en I.
+- Se igualó el contenido de las versiones en español e inglés.
+- La referencia INDICON tiene ahora su página (1–6).
+- El texto remite a la dispersión por fuente del suplemento.
+- El título se ajustó a 3 renglones: «…: estudio controlado de la transferencia a la oclusión real en la detección de personas».
+
+**Cifra del INEI:** 14 722 cámaras operativas del serenazgo en 2023 (RENAMU 2023). Los autores la confirmaron en la nota oficial del INEI el 01/11/2026.
+
+Ambas versiones tienen 5 páginas, sin citas indefinidas ni líneas desbordadas.
