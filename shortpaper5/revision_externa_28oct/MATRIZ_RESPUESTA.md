@@ -151,3 +151,51 @@ Un agente independiente, sin acceso a esta matriz, verificó la versión final c
 **Cifra del INEI:** 14 722 cámaras operativas del serenazgo en 2023 (RENAMU 2023). Los autores la confirmaron en la nota oficial del INEI el 01/11/2026.
 
 Ambas versiones tienen 5 páginas, sin citas indefinidas ni líneas desbordadas.
+
+### Revisión de estilo (06/11/2026)
+
+Se revisó la prosa con los 26 patrones de la skill `humanizer` (blader/humanizer, basada en la guía de Wikipedia sobre señales de escritura con IA), como lista de comprobación y no de forma automática. Se hicieron 11 cambios, iguales en ES y EN. No cambia ninguna cifra ni ninguna conclusión.
+
+- **Encabezados repetidos en la primera frase.**
+  - La pregunta de investigación queda como pregunta directa.
+  - El párrafo de Exposición ya no repite su título.
+- **Lema repetido:** en la contribución (2), «no basta» pasa a «no garantiza una mejora real».
+- **Tono:**
+  - el cierre de la Discusión y una frase dramática de la Introducción se reescribieron en tono descriptivo;
+  - «añadida tras la revisión externa» pasa a «análisis posterior».
+- **Aperturas repetidas:** en Trabajos relacionados se reescribió la serie de cinco «X et al. que…».
+- **Frases forzadas:** se arreglaron cuatro, en Datos, Limitaciones, Introducción y contribución (3).
+
+Se mantuvieron a propósito:
+- la voz pasiva del Método;
+- los encabezados en negrita al estilo IEEE;
+- los contrastes que expresan un hallazgo;
+- la advertencia sobre la potencia estadística.
+
+Ambas versiones tienen 5 páginas, sin citas indefinidas ni líneas desbordadas.
+
+### Segunda revisión de estilo (09/11/2026)
+
+Auditoría de la prosa en español con la skill `humanizar-es-fiel`, como lista de comprobación. Se hicieron 6 ajustes de claridad, iguales en ES y EN: dos sujetos ambiguos («dependen», «Se adoptó»), una referencia vaga («esos límites»), el dato de coste separado de la contribución (3), la puntuación de una lista de limitaciones y «sostiene» por «se usa en». No cambia ninguna cifra, cita ni conclusión (comprobado antes y después). Ambas versiones tienen 5 páginas.
+
+### Revisión externa adicional (09/11/2026)
+
+Una revisión de otra herramienta de IA sobre `main_es.pdf` señaló afirmaciones más categóricas que las limitaciones del propio texto. Se verificó cada punto contra el manuscrito y las fuentes.
+
+**Corregido (ES y EN):**
+- **SHA-256.** «La huella prueba que nada cambió desde la fecha registrada» pasa a decir que la huella permite comprobar que los archivos no cambiaron respecto de la versión registrada, pero que la fecha la anotó el propio proyecto, sin sello de un tercero.
+- **H15.** «No se replica» pasa a «no vuelve a cumplir la regla con cinco semillas», en el resumen, la nota de la Tabla I, los análisis posteriores y la conclusión. Lo que falla en la réplica es el criterio en dos fuentes: el +1,74 de CityPersons es compatible con el +2,33 de H15.
+- **Modelo mixto.** La conclusión queda condicionada: «bajo el modelo mixto (posterior) se descarta…».
+- **Resumen.** Distingue las dos fuentes de oclusión real anotada del indicador aproximado de ExDark.
+- **Referencia de Ultralytics YOLO11.** Ahora apunta a la página del modelo e indica la versión usada (8.4.143).
+
+**Comprobado sin cambio:**
+- La interpretación de Kassaw et al. está respaldada por su texto completo: las oclusiones sintéticas dan un orden aproximado de los modelos similar al de la oclusión real.
+- El repositorio público es accesible (HTTP 200).
+- Las 42 referencias se verificaron en Crossref el 31/10.
+
+**No se cambió, con motivo:**
+- **Advertencia de potencia en el resumen.** El resumen y la conclusión se apoyan en el modelo mixto, que agrega los bloques y responde a la baja potencia de la regla por bloque. La advertencia sigue en Evaluación.
+- **Simplificar la Tabla I.** El revisor del 27/10 pidió definir ahí los veredictos (m3), y separarla no cabe en 5 páginas. El texto ya explica qué IC usa cada uno.
+
+No cambia ninguna cifra ni cita, y ambas versiones siguen en 5 páginas.

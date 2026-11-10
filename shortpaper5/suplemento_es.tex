@@ -25,7 +25,7 @@
 \begin{tabular}{@{}p{3.3cm}p{4.6cm}p{5.4cm}p{2.6cm}@{}}\toprule
 \textbf{Objetivo} & \textbf{Método} & \textbf{Evidencia} & \textbf{Pendiente} \\\midrule
 OE1. Degradación con la oclusión & AP@0.5 estratificado con regiones \emph{ignore}, tres fuentes & Modelos base entrenados en ExDark con exposición igual (10 bloques), de sin oclusión a ocluidas: ExDark 0,78--0,85 a 0,20--0,31 (severa); NightOwls 0,61--0,69 a 0,15--0,21; CityPersons 0,47--0,65 a 0,08--0,15 (\emph{heavy}) & --- \\
-OE2. Efecto del aumento según el oclusor y la dosis & V3 frente a V1, control y 3 fuentes reales; parches, siluetas, difusión, geometría real y profundidad; tres dosis (H18e) & 20 de 20 controles; modelo mixto (dosis habitual, exposición igual, 12 bloques): NightOwls +0,57, CityPersons +1,06, ExDark $-1{,}11$, todos los límites superiores por debajo de +2; la dosis alta transfiere en dos fuentes (H18e-a), pero igual en las personas sin oclusión & Curva de dosis con otros detectores; oclusión tomada de imágenes reales \\
+OE2. Efecto del aumento según el oclusor y la dosis & V3 frente a V1, control y 3 fuentes reales; parches, siluetas, difusión, geometría real y profundidad; tres dosis (H18e) & 20 de 20 controles; modelo mixto (dosis habitual, exposición igual, 12 bloques): NightOwls +0,54, CityPersons +1,03, ExDark $-1{,}13$, poco compatible con +2 pp (límites al 90\,\% por debajo de +2 en las tres especificaciones); la dosis alta transfiere en dos fuentes (H18e-a), pero igual en las personas sin oclusión & Curva de dosis con otros detectores; oclusión tomada de imágenes reales \\
 OE3. Dependencia del detector & YOLOv11s, YOLOv11m, YOLO26s, RT-DETR-l, RetinaNet, Faster R-CNN & Mismo patrón en los cinco primeros; Faster R-CNN con siluetas pasa en NightOwls y CityPersons (H15), pero no se replica con 5 semillas (H18a, 1 de 3) ni con difusión o profundidad (H16a, H16b); RetinaNet no transfiere (H17) & Otro detector de dos etapas u otra red base \\
 OE4. Dominio y volumen de datos & Re-entrenar en CityPersons (H6, H11); NightOwls de 2\,000 a 20\,000 imágenes (H7) & El déficit persiste; la ganancia dentro del dominio no se confirmó (H11) & --- \\
 OE5. Mecanismo & \emph{Recall}, falsos positivos, confianza; visibilidad; realismo (H13); matriz cruzada & Los ocluidos sintéticamente siguen siendo distinguibles de los reales; menos \emph{recall} con más confianza & Prueba confirmatoria del mecanismo \\
@@ -35,7 +35,7 @@ OE6--OE7. Módulo de atención; fiabilidad de la anotación & FPS y parámetros;
 \noindent\textbf{Variantes del planteamiento original.} El experimento 1 tenía cuatro variantes: V1 (base), V2 (módulo de atención CBAM en el cuello), V3 (aumento de oclusión) y V4 (ambos). H1 (V4 mejora a V1) y H2 (V3 mejora más que V2) no se confirmaron, y H5 (las siluetas reducen la brecha) solo en parte, porque la brecha se cerró por empeorar lo real. El módulo de atención redujo los FPS al 82\,\% (161--184 frente a 144--157) sin ganancia en oclusión real. Desde la iteración 2 la pregunta es la transferencia y solo se comparan V1 y V3.
 
 \section{Hipótesis y prerregistro}
-La huella SHA-256 global del protocolo prueba que ningún fichero congelado cambió después del congelamiento, pero la fecha la registra el propio proyecto (\texttt{CAMBIOS\_PROTOCOLO.md}) y no un tercero. La columna «primera corrida» sale del registro de cada corrida y permite comprobar que el congelamiento es anterior al entrenamiento. Todas las fechas son de 2026.
+La huella SHA-256 global del protocolo permite comprobar que ningún fichero congelado cambió respecto de la versión registrada, pero la fecha de cada congelamiento la registra el propio proyecto (\texttt{CAMBIOS\_PROTOCOLO.md}). El 10/11/2026 se sellaron con OpenTimestamps los registros de hipótesis y \texttt{CAMBIOS\_PROTOCOLO.md} (ficheros \texttt{.ots} en el repositorio; \texttt{informes/sellar\_ots.py}): el sello prueba que existían en esa fecha, no antes de entrenar. La columna «primera corrida» sale del registro de cada corrida y permite comprobar que el congelamiento es anterior al entrenamiento. Todas las fechas son de 2026.
 
 \input{tablas_suplemento_es_hip.tex}
 
@@ -129,6 +129,13 @@ H18 se registró y congeló (protocolo v3.12, \texttt{PREREGISTRO\_H18.md}) ante
 \caption{Ganancia en el control sintético frente a la ganancia en cada fuente real, con IC del 95\,\% por imágenes (17 bloques H3--H17; rellenos: exposición igual; vacíos: desigual o temprana; H3 queda fuera de escala). Un panel por fuente, con su $\rho$ de Spearman e IC \emph{bootstrap} de bloques en el título. Banda gris: $\pm2$ pp. Con exposición igual (11), NO +0,63 [0,00; +1,00]. Estaba en el cuerpo del artículo hasta la revisión del 27/10.}
 \end{figure}
 
+\begin{figure}[H]\centering
+\includegraphics[width=\textwidth]{fig_curvas_es.png}
+\caption{mAP@0.5 de validación por época (ExDark val limpia y con oclusión sintética; CityPersons en H11), media de semillas, de V1 y V3 en cuatro bloques YOLO con épocas fijas; a la derecha, pérdida de entrenamiento de Faster R-CNN en H15 (torchvision no registra el mAP por época), que se estabiliza tras las bajadas de la tasa en las épocas 20 y 27. Entre las épocas 25 y 30, V3 sube 0,24 (H9b), 0,52 (H10-s) y 0,50 pp (H14); H11, entrenado 60 épocas, se estabiliza hacia la época 40 y tampoco transfiere a la oclusión real. No se guardaron pesos intermedios, así que no hay curvas por época sobre la oclusión real (\texttt{fig\_curvas.py}).}\label{fig:s-curvas}
+\end{figure}
+
+\input{tablas_suplemento_es_rev10.tex}
+
 \section{Búsqueda bibliográfica}
 Tres búsquedas en Scopus exportadas el 13/10/2026: ecuación principal (A y B, más al menos uno de C, D o E; 155 registros), dos ecuaciones complementarias (8) y oclusión sintética frente a real sin limitarse a personas (71). De ellas salieron los cinco artículos semilla (PRNet++, WALT, MLFFCSP, CamPed y el YOLOX con transferencia de dominio); la búsqueda se apoyó en Scopus AI y en Claude, y la selección la hicieron los autores leyendo los artículos. Cadenas exactas, copiadas del historial de búsquedas de Scopus:
 
@@ -144,7 +151,7 @@ Tres búsquedas en Scopus exportadas el 13/10/2026: ecuación principal (A y B, 
 \noindent  Después de dos revisiones (20/10/2026) se añadieron, por búsqueda dirigida y tras leer su resumen o su texto, Taori et al. (2020), Pytel et al. (2021), Kortylewski et al. (2020), Wang et al. (2020), Ghiasi et al. (2021) y Geirhos et al. (2020). Todas las referencias se verificaron en Crossref o arXiv.
 
 \section{Licencias, datos y cumplimiento}
-\noindent\textbf{Licencias.} ExDark: imágenes bajo sus términos de uso para investigación académica no comercial (\url{https://github.com/cs-chan/Exclusively-Dark-Image-Dataset}). CityPersons (imágenes de Cityscapes): uso no comercial, citar el conjunto, sin redistribuir (\url{https://www.cityscapes-dataset.com/license/}). NightOwls: uso no comercial, citar el conjunto, sin redistribuir; se permiten derivados abstractos como modelos entrenados (\url{https://www.nightowls-dataset.org}). El proyecto no redistribuye imágenes; publica identificadores, anotaciones derivadas, códigos y pesos.
+\noindent\textbf{Licencias.} ExDark: imágenes bajo sus términos de uso para investigación académica no comercial (\url{https://github.com/cs-chan/Exclusively-Dark-Image-Dataset}). CityPersons (imágenes de Cityscapes): uso no comercial, citar el conjunto, sin redistribuir (\url{https://www.cityscapes-dataset.com/license/}). NightOwls: uso no comercial, citar el conjunto, sin redistribuir; se permiten derivados abstractos como modelos entrenados (\url{https://www.nightowls-dataset.org}). El proyecto no redistribuye imágenes; publica identificadores, anotaciones derivadas y código; los pesos se facilitan a los revisores a pedido.
 
 \noindent\textbf{Material del repositorio.} \path{PREREGISTRO_*.md}, \path{CAMBIOS_PROTOCOLO.md} y \path{protocolo_congelado.json} (hipótesis y huellas); \path{informes/analisis_final/registro_corridas.csv} (corridas); \path{celdas_completas.csv}, \path{bootstrap*.csv}, \path{miss_rate*.csv} y \path{revision_sp.json} (cifras e intervalos); \path{config/} y \path{argos_lib/} (aumento y control); \path{16_oclusion_proxy.py} y \path{gt_test_proxy.json} (indicador de ExDark); \path{17_fiabilidad_anotacion.py} (estudio de $\kappa$, sin nombres de anotadores); \path{31_realismo.py} (H13).
 
@@ -153,11 +160,11 @@ Tres búsquedas en Scopus exportadas el 13/10/2026: ecuación principal (A y B, 
 \begin{tabular}{@{}p{5.2cm}p{11cm}@{}}\toprule
 Bloque & Dónde \\\midrule
 Objetivos y afirmaciones & Introducción; tabla~I del artículo; tabla~\ref{tab:s-hip} \\
-Reproducibilidad computacional & Repositorio público \url{https://github.com/jhanrq8888/argos-occlusion-transfer}; pesos con DOI en Zenodo al publicarse; versiones en la sección 3 \\
+Reproducibilidad computacional & Repositorio público \url{https://github.com/jhanrq8888/argos-occlusion-transfer}; pesos de la evidencia primaria a pedido de los revisores (SHA-256 en \path{informes/analisis_final/pesos_sha256.csv}) y con DOI en Zenodo al publicarse; sellos OpenTimestamps (\texttt{*.ots}); sensibilidad y azar en \path{informes/revision_10nov.py}; celdas con ambos IC en \path{informes/analisis_final/celdas_con_h18.csv}; versiones en la sección 3 \\
 Datos y preprocesamiento & Sección Datos del artículo; tabla de aumento y control; licencias \\
 Separación entrenamiento--prueba & Control con imágenes y oclusores no vistos; validación nunca ocluida salvo \texttt{val\_ocluido} para seleccionar \\
 Selección de modelos & Tabla~\ref{tab:s-registro} (época evaluada de cada corrida); bloques de exposición fija como evidencia primaria \\
-Métricas e incertidumbre & Tablas~\ref{tab:s-celdas} y~\ref{tab:s-estad}; MR$^{-2}$ en la tabla~\ref{tab:s-extra}; AP@0.5:0.95 en \path{informes/analisis_final/ap_estricto.csv} (ninguna de las 21 celdas de los siete primeros bloques supera el umbral) \\
+Métricas e incertidumbre & Tablas~\ref{tab:s-celdas} y~\ref{tab:s-estad}; MR$^{-2}$ en la tabla~\ref{tab:s-extra}; AP@0.5:0.95 en \path{informes/analisis_final/ap_estricto.csv} (ninguna de las 24 celdas reales de los ocho primeros bloques supera el umbral) \\
 Generalización y limitaciones & Discusión del artículo (tres categorías) \\
 \bottomrule\end{tabular}\end{table}
 

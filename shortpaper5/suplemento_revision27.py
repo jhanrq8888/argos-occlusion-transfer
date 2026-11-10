@@ -108,7 +108,7 @@ def main():
             g = lambda f: "%s %s" % (num(x[f]["est"], lang), ic(*x[f]["ic"], lang)) if f in x else "---"
             filas.append(" & ".join([nom, g("C(fuente)[NO]"), g("C(fuente)[CP]"), g("C(fuente)[EX]"), g("z_control"),
                                      "%d / %d" % (x["n_obs"], x["n_bloques"])]))
-        out.append(tabla(t["cap_mm"], t["cab_mm"], filas, "p{4.2cm}llllr"))
+        out.append(tabla(t["cap_mm"], t["cab_mm"], filas, "p{2.8cm}llllr"))
         rc = mm["recuentos"]
         filas = [" & ".join([nom, str(rc[k]["celdas"]), "%d / %d" % (rc[k]["pasan_img"], rc[k]["pasan_jer"]),
                              "%d / %d" % (rc[k]["descartan_img"], rc[k]["descartan_jer"]),
@@ -119,7 +119,12 @@ def main():
         nb = lambda L: t["y"].join(L).replace("H18e-alta", "H18e-high" if lang == "en" else "H18e-alta")
         out.append(t["sinex"] % (nb(s["bloques_ambas_img"]), nb(s["bloques_ambas_jer"]), s["celdas"], s["pasan_img"],
                                  s["pasan_jer"]))
-        open(os.path.join(AQUI, "tablas_suplemento_%s_rev27.tex" % lang), "w", encoding="utf-8").write("".join(out))
+        # rótulos cortos de las dosis, iguales a los del texto (H18e-b/H18e-a en ES, H18e-l/H18e-h en EN)
+        cortos = {"H18e-baja": "H18e-b", "H18e-alta": "H18e-a", "H18e-low": "H18e-l", "H18e-high": "H18e-h"}
+        texto = "".join(out)
+        for largo, corto in cortos.items():
+            texto = texto.replace(largo, corto)
+        open(os.path.join(AQUI, "tablas_suplemento_%s_rev27.tex" % lang), "w", encoding="utf-8").write(texto)
         print(lang, "ok")
 
 

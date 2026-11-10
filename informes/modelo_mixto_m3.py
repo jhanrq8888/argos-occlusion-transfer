@@ -114,9 +114,7 @@ def ajustar(d, con_control=False):
         g = d.groupby("bloque").control.first()
         d["z_control"] = (d.control - g.mean()) / g.std(ddof=1)
         form += " + z_control"
-    with warnings.catch_warnings():
-        warnings.simplefilter("ignore")
-        m = smf.mixedlm(form, d, groups="bloque", re_formula="1", vc_formula={"semilla": "0 + C(semilla)"}).fit(reml=True)
+    m = mejor_ajuste(smf.mixedlm(form, d, groups="bloque", re_formula="1", vc_formula={"semilla": "0 + C(semilla)"}))
     ci = m.conf_int()
     out = {k: {"est": round(float(m.params[k]), 2), "ic": [round(float(ci.loc[k, 0]), 2), round(float(ci.loc[k, 1]), 2)]}
            for k in m.params.index if k.startswith("C(fuente)") or k == "z_control"}
@@ -125,7 +123,25 @@ def ajustar(d, con_control=False):
     out["var_residual"] = round(float(m.scale), 2)
     out["n_obs"], out["n_bloques"] = int(len(d)), int(d.bloque.nunique())
     out["convergio"] = bool(m.converged)
+    out["optimizador"] = m.optimizador
     return out
+
+
+def mejor_ajuste(modelo):
+    """REML con varios optimizadores; devuelve el ajuste convergido de mayor verosimilitud (revisión del 10/11/2026:
+    el BFGS por defecto de statsmodels no convergía en varios modelos y daba IC algo distintos)."""
+    ajustes = []
+    for met in ("bfgs", "lbfgs", "powell", "nm"):
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore")
+            try:
+                m = modelo.fit(reml=True, method=met, maxiter=5000)
+            except Exception:
+                continue
+        m.optimizador = met
+        ajustes.append(m)
+    conv = [m for m in ajustes if m.converged]
+    return max(conv or ajustes, key=lambda m: m.llf)
 
 
 def recuentos(celdas):

@@ -24,7 +24,7 @@
 \begin{tabular}{@{}p{3.3cm}p{4.6cm}p{5.4cm}p{2.6cm}@{}}\toprule
 \textbf{Objective} & \textbf{Method} & \textbf{Evidence} & \textbf{Pending} \\\midrule
 OE1. Degradation under occlusion & Stratified AP@0.5 with \emph{ignore} regions, three sources & Baselines trained on ExDark with equal exposure (10 blocks), unoccluded to occluded: ExDark 0.78--0.85 to 0.20--0.31 (severe); NightOwls 0.61--0.69 to 0.15--0.21; CityPersons 0.47--0.65 to 0.08--0.15 (\emph{heavy}) & --- \\
-OE2. Effect of augmentation by occluder and dose & V3 vs.\ V1, control and 3 real sources; patches, silhouettes, diffusion, real geometry and depth; three doses (H18e) & 20 of 20 controls; mixed model (usual dose, equal exposure, 12 blocks): NightOwls +0.57, CityPersons +1.06, ExDark $-1.11$, all upper limits below +2; the high dose transfers on two sources (H18e-h) but equally for unoccluded people & Dose curve with other detectors; occlusion mined from real images \\
+OE2. Effect of augmentation by occluder and dose & V3 vs.\ V1, control and 3 real sources; patches, silhouettes, diffusion, real geometry and depth; three doses (H18e) & 20 of 20 controls; mixed model (usual dose, equal exposure, 12 blocks): NightOwls +0.54, CityPersons +1.03, ExDark $-1.13$, hardly compatible with +2 pp (90\,\% limits below +2 under all three specifications); the high dose transfers on two sources (H18e-h) but equally for unoccluded people & Dose curve with other detectors; occlusion mined from real images \\
 OE3. Dependence on the detector & YOLOv11s, YOLOv11m, YOLO26s, RT-DETR-l, RetinaNet, Faster R-CNN & Same pattern in the first five; Faster R-CNN with silhouettes passes on NightOwls and CityPersons (H15) but does not replicate with 5 seeds (H18a, 1 of 3), nor with diffusion or depth (H16a, H16b); RetinaNet does not transfer (H17) & Another two-stage detector or backbone \\
 OE4. Domain and data volume & Retraining on CityPersons (H6, H11); NightOwls from 2,000 to 20,000 images (H7) & The deficit persists; the in-domain gain was not confirmed (H11) & --- \\
 OE5. Mechanism & Recall, false positives, confidence; visibility; realism (H13); cross-family matrix & Synthetically occluded people remain distinguishable from real ones; lower recall with higher confidence & Confirmatory test of the mechanism \\
@@ -34,7 +34,7 @@ OE6--OE7. Attention module; annotation reliability & FPS and parameters; inter-a
 \noindent\textbf{Variants of the original design.} Experiment 1 had four variants: V1 (baseline), V2 (CBAM attention module in the neck), V3 (occlusion augmentation) and V4 (both). H1 (V4 improves on V1) and H2 (V3 improves more than V2) were not confirmed, and H5 (silhouettes reduce the gap) only partially, because the gap closed by real occlusion getting worse. The attention module cut FPS to 82\,\% (161--184 versus 144--157) with no gain on real occlusion. From iteration 2 on the question is transfer and only V1 and V3 are compared.
 
 \section{Hypotheses and pre-specification}
-The global SHA-256 fingerprint of the protocol proves that no frozen file changed after the freeze, but the date is recorded by the project itself (\path{CAMBIOS_PROTOCOLO.md}), not by a third party. The ``first run'' column comes from each run's log and shows that every freeze precedes training. All dates are in 2026.
+The global SHA-256 fingerprint of the protocol shows that no frozen file changed from the registered version, but the date of each freeze is recorded by the project itself (\path{CAMBIOS_PROTOCOLO.md}). On 10 November 2026 the hypothesis registers and \path{CAMBIOS_PROTOCOLO.md} were sealed with OpenTimestamps (\texttt{.ots} files in the repository; \path{informes/sellar_ots.py}): the seal proves they existed on that date, not before training. The ``first run'' column comes from each run's log and shows that every freeze precedes training. All dates are in 2026.
 
 \input{tablas_suplemento_en_hip.tex}
 
@@ -128,6 +128,13 @@ H18 was registered and frozen (protocol v3.12, \texttt{PREREGISTRO\_H18.md}) bef
 \caption{Gain on the synthetic control versus gain on each real source, with 95\,\% image-level CIs (17 blocks H3--H17; filled: equal exposure; hollow: unequal or early; H3 is off scale). One panel per source, with its Spearman $\rho$ and block-bootstrap CI in the title. Grey band: $\pm2$ pp. With equal exposure (11), NO +0.63 [0.00; +1.00]. It was in the body of the paper until the review of 27 October.}
 \end{figure}
 
+\begin{figure}[H]\centering
+\includegraphics[width=\textwidth]{fig_curvas.png}
+\caption{Validation mAP@0.5 per epoch (clean and synthetically occluded ExDark val; CityPersons for H11), mean over seeds, of V1 and V3 in four fixed-epoch YOLO blocks; right, training loss of Faster R-CNN in H15 (torchvision does not log per-epoch mAP), which levels off after the learning-rate drops at epochs 20 and 27. Between epochs 25 and 30, V3 rises by 0.24 (H9b), 0.52 (H10-s) and 0.50 pp (H14); H11, trained for 60 epochs, levels off around epoch 40 and does not transfer to real occlusion either. Intermediate weights were not kept, so there are no per-epoch curves on real occlusion (\texttt{fig\_curvas.py}).}\label{fig:s-curvas}
+\end{figure}
+
+\input{tablas_suplemento_en_rev10.tex}
+
 \section{Literature search}
 Three Scopus searches exported on 13 Oct 2026: main equation (A and B, plus at least one of C, D or E; 155 records), two complementary equations (8) and synthetic versus real occlusion without restricting to people (71). They yielded the five seed articles (PRNet++, WALT, MLFFCSP, CamPed and the YOLOX with domain transfer); the search was supported by Scopus AI and Claude, and the authors made the selection by reading the articles. Exact strings, copied from the Scopus search history:
 
@@ -143,7 +150,7 @@ Three Scopus searches exported on 13 Oct 2026: main equation (A and B, plus at l
 \noindent  After two reviews (20 Oct 2026), Taori et al.\ (2020), Pytel et al.\ (2021), Kortylewski et al.\ (2020), Wang et al.\ (2020), Ghiasi et al.\ (2021) and Geirhos et al.\ (2020) were added by targeted search after reading their abstract or text. All references were verified in Crossref or arXiv.
 
 \section{Licences, data and compliance}
-\noindent\textbf{Licences.} ExDark: images under its terms of use for non-commercial academic research (\url{https://github.com/cs-chan/Exclusively-Dark-Image-Dataset}). CityPersons (Cityscapes images): non-commercial use, cite the dataset, no redistribution (\url{https://www.cityscapes-dataset.com/license/}). NightOwls: non-commercial use, cite the dataset, no redistribution; abstract derivatives such as trained models are allowed (\url{https://www.nightowls-dataset.org}). The project does not redistribute images; it publishes identifiers, derived annotations, code and weights.
+\noindent\textbf{Licences.} ExDark: images under its terms of use for non-commercial academic research (\url{https://github.com/cs-chan/Exclusively-Dark-Image-Dataset}). CityPersons (Cityscapes images): non-commercial use, cite the dataset, no redistribution (\url{https://www.cityscapes-dataset.com/license/}). NightOwls: non-commercial use, cite the dataset, no redistribution; abstract derivatives such as trained models are allowed (\url{https://www.nightowls-dataset.org}). The project does not redistribute images; it publishes identifiers, derived annotations and code; the weights are available to reviewers on request.
 
 \noindent\textbf{Repository material.} \path{PREREGISTRO_*.md}, \path{CAMBIOS_PROTOCOLO.md} and \path{protocolo_congelado.json} (hypotheses and fingerprints); \path{informes/analisis_final/registro_corridas.csv} (runs); \path{celdas_completas.csv}, \path{bootstrap*.csv}, \path{miss_rate*.csv} and \path{revision_sp.json} (figures and intervals); \path{config/} and \path{argos_lib/} (augmentation and control); \path{16_oclusion_proxy.py} and \path{gt_test_proxy.json} (ExDark proxy); \path{17_fiabilidad_anotacion.py} ($\kappa$ study, without annotator names); \path{31_realismo.py} (H13).
 
@@ -152,11 +159,11 @@ Three Scopus searches exported on 13 Oct 2026: main equation (A and B, plus at l
 \begin{tabular}{@{}p{5.2cm}p{11cm}@{}}\toprule
 Block & Where \\\midrule
 Objectives and claims & Introduction; Table~I of the paper; Table~\ref{tab:s-hip} \\
-Computational reproducibility & Public repository \url{https://github.com/jhanrq8888/argos-occlusion-transfer}; weights with a DOI on Zenodo upon publication; versions in Section 3 \\
+Computational reproducibility & Public repository \url{https://github.com/jhanrq8888/argos-occlusion-transfer}; weights of the primary evidence on request for reviewers (SHA-256 in \path{informes/analisis_final/pesos_sha256.csv}) and with a DOI on Zenodo upon publication; OpenTimestamps seals (\texttt{*.ots}); sensitivity and chance in \path{informes/revision_10nov.py}; cells with both CIs in \path{informes/analisis_final/celdas_con_h18.csv}; versions in Section 3 \\
 Data and preprocessing & Data section of the paper; augmentation and control table; licences \\
 Train--test separation & Control with unseen images and occluders; validation never occluded except \texttt{val\_ocluido} for selection \\
 Model selection & Table~\ref{tab:s-registro} (evaluated epoch of each run); fixed-exposure blocks as primary evidence \\
-Metrics and uncertainty & Tables~\ref{tab:s-celdas} and~\ref{tab:s-estad}; MR$^{-2}$ in Table~\ref{tab:s-extra}; AP@0.5:0.95 in \path{informes/analisis_final/ap_estricto.csv} (none of the 21 cells of the first seven blocks passes) \\
+Metrics and uncertainty & Tables~\ref{tab:s-celdas} and~\ref{tab:s-estad}; MR$^{-2}$ in Table~\ref{tab:s-extra}; AP@0.5:0.95 in \path{informes/analisis_final/ap_estricto.csv} (none of the 24 real cells of the first eight blocks passes) \\
 Generalisation and limitations & Discussion of the paper (three categories) \\
 \bottomrule\end{tabular}\end{table}
 

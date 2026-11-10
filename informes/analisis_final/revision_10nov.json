@@ -1,0 +1,333 @@
+{
+ "tost_modelo_original": {
+  "dosis_habitual": {
+   "NO": {
+    "est": 0.54,
+    "IC90": [
+     -0.25,
+     1.33
+    ],
+    "equivalente_2pp": true
+   },
+   "CP": {
+    "est": 1.03,
+    "IC90": [
+     0.24,
+     1.82
+    ],
+    "equivalente_2pp": true
+   },
+   "EX": {
+    "est": -1.13,
+    "IC90": [
+     -1.92,
+     -0.34
+    ],
+    "equivalente_2pp": true
+   }
+  },
+  "con_H18e": {
+   "NO": {
+    "est": 1.25,
+    "IC90": [
+     0.39,
+     2.11
+    ],
+    "equivalente_2pp": false
+   },
+   "CP": {
+    "est": 1.27,
+    "IC90": [
+     0.41,
+     2.13
+    ],
+    "equivalente_2pp": false
+   },
+   "EX": {
+    "est": -1.07,
+    "IC90": [
+     -1.93,
+     -0.21
+    ],
+    "equivalente_2pp": true
+   }
+  }
+ },
+ "dosis_habitual": {
+  "mixto_V1_compartida": {
+   "NO": {
+    "est": 0.59,
+    "IC95": [
+     -0.44,
+     1.61
+    ],
+    "IC90": [
+     -0.27,
+     1.44
+    ],
+    "equivalente_2pp": true,
+    "sup90_bajo_2": true
+   },
+   "CP": {
+    "est": 1.08,
+    "IC95": [
+     0.05,
+     2.1
+    ],
+    "IC90": [
+     0.22,
+     1.93
+    ],
+    "equivalente_2pp": true,
+    "sup90_bajo_2": true
+   },
+   "EX": {
+    "est": -1.09,
+    "IC95": [
+     -2.11,
+     -0.06
+    ],
+    "IC90": [
+     -1.94,
+     -0.23
+    ],
+    "equivalente_2pp": true,
+    "sup90_bajo_2": true
+   },
+   "n_obs": 114,
+   "n_bloques": 12,
+   "convergio": true,
+   "optimizador": "nm"
+  },
+  "mixto_original": {
+   "NO": {
+    "est": 0.54,
+    "IC95": [
+     -0.4,
+     1.48
+    ],
+    "IC90": [
+     -0.25,
+     1.33
+    ],
+    "equivalente_2pp": true,
+    "sup90_bajo_2": true
+   },
+   "CP": {
+    "est": 1.03,
+    "IC95": [
+     0.09,
+     1.97
+    ],
+    "IC90": [
+     0.24,
+     1.82
+    ],
+    "equivalente_2pp": true,
+    "sup90_bajo_2": true
+   },
+   "EX": {
+    "est": -1.13,
+    "IC95": [
+     -2.08,
+     -0.19
+    ],
+    "IC90": [
+     -1.92,
+     -0.34
+    ],
+    "equivalente_2pp": true,
+    "sup90_bajo_2": true
+   },
+   "n_obs": 114,
+   "n_bloques": 12,
+   "convergio": true,
+   "optimizador": "powell"
+  },
+  "bootstrap_bloques": {
+   "NO": {
+    "media": 0.37,
+    "IC95": [
+     -0.69,
+     1.52
+    ],
+    "IC90": [
+     -0.53,
+     1.32
+    ],
+    "k": 12
+   },
+   "CP": {
+    "media": 1.02,
+    "IC95": [
+     0.43,
+     1.59
+    ],
+    "IC90": [
+     0.52,
+     1.51
+    ],
+    "k": 12
+   },
+   "EX": {
+    "media": -1.04,
+    "IC95": [
+     -2.56,
+     0.71
+    ],
+    "IC90": [
+     -2.34,
+     0.37
+    ],
+    "k": 12
+   }
+  }
+ },
+ "con_H18e": {
+  "mixto_V1_compartida": {
+   "NO": {
+    "est": 1.13,
+    "IC95": [
+     -0.06,
+     2.33
+    ],
+    "IC90": [
+     0.13,
+     2.14
+    ],
+    "equivalente_2pp": false,
+    "sup90_bajo_2": false
+   },
+   "CP": {
+    "est": 1.15,
+    "IC95": [
+     -0.05,
+     2.35
+    ],
+    "IC90": [
+     0.15,
+     2.15
+    ],
+    "equivalente_2pp": false,
+    "sup90_bajo_2": false
+   },
+   "EX": {
+    "est": -1.18,
+    "IC95": [
+     -2.38,
+     0.01
+    ],
+    "IC90": [
+     -2.19,
+     -0.18
+    ],
+    "equivalente_2pp": false,
+    "sup90_bajo_2": true
+   },
+   "n_obs": 132,
+   "n_bloques": 14,
+   "convergio": true,
+   "optimizador": "nm"
+  },
+  "mixto_original": {
+   "NO": {
+    "est": 1.25,
+    "IC95": [
+     0.23,
+     2.28
+    ],
+    "IC90": [
+     0.39,
+     2.11
+    ],
+    "equivalente_2pp": false,
+    "sup90_bajo_2": false
+   },
+   "CP": {
+    "est": 1.27,
+    "IC95": [
+     0.24,
+     2.29
+    ],
+    "IC90": [
+     0.41,
+     2.13
+    ],
+    "equivalente_2pp": false,
+    "sup90_bajo_2": false
+   },
+   "EX": {
+    "est": -1.07,
+    "IC95": [
+     -2.09,
+     -0.04
+    ],
+    "IC90": [
+     -1.93,
+     -0.21
+    ],
+    "equivalente_2pp": true,
+    "sup90_bajo_2": true
+   },
+   "n_obs": 132,
+   "n_bloques": 14,
+   "convergio": true,
+   "optimizador": "nm"
+  },
+  "bootstrap_bloques": {
+   "NO": {
+    "media": 1.14,
+    "IC95": [
+     -0.23,
+     2.71
+    ],
+    "IC90": [
+     -0.04,
+     2.45
+    ],
+    "k": 14
+   },
+   "CP": {
+    "media": 1.27,
+    "IC95": [
+     0.65,
+     1.91
+    ],
+    "IC90": [
+     0.75,
+     1.81
+    ],
+    "k": 14
+   },
+   "EX": {
+    "media": -0.99,
+    "IC95": [
+     -2.3,
+     0.51
+    ],
+    "IC90": [
+     -2.12,
+     0.26
+    ],
+    "k": 14
+   }
+  }
+ },
+ "azar_dosis_habitual_con_control": {
+  "imagenes": {
+   "esperadas_nulo": 0.58,
+   "observadas": 7
+  },
+  "jerarquico": {
+   "esperadas_nulo": 1.2,
+   "observadas": 5
+  },
+  "celdas": 54
+ },
+ "personas_pegadas_por_imagen_cota": {
+  "baja": 0.125,
+  "habitual": 0.5,
+  "alta": 1.75,
+  "nota": "p x E[personas ocluidas] x prob. de silueta de persona (0,5); cota superior porque no se ocluyen mas personas que las validas"
+ }
+}
