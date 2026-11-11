@@ -1,5 +1,5 @@
 """Figura de bosque del short paper (revisión del 10/11/2026, obs. 1 y 4): estimación global V3 - V1 por fuente con IC del
-90 % (TOST, margen +-2 pp) en tres especificaciones (modelo mixto del texto, con V1 compartidas y bootstrap de bloques),
+90 % (prueba unilateral de no superioridad: limite superior frente a +2 pp) en tres especificaciones (modelo mixto del texto, con V1 compartidas y bootstrap de bloques),
 con la dosis habitual (azul, círculo) y con los bloques de dosis H18e (naranja, rombo). Lee
 informes/analisis_final/revision_10nov.json (informes/revision_10nov.py).
 Uso: python fig_bosque.py [es]   (es: etiquetas en español -> fig_bosque_es.png)"""
