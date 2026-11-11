@@ -36,7 +36,7 @@ for es in (True, False):
     az = d["azar_dosis_habitual_con_control"]
     if es:
         cap = ("Sensibilidad de la estimación global por fuente (análisis posterior, revisión del 10/11/2026): estimación e IC del 90\\,\\%% "
-               "(prueba de equivalencia TOST con margen $\\pm$2 pp). «Con V1 compartidas» añade un componente aleatorio para las V1 que "
+               "(prueba unilateral de no superioridad: límite superior frente a +2 pp). «Con V1 compartidas» añade un componente aleatorio para las V1 que "
                "comparten H9b, H10 y H10-s; H12a y H12b; H15, H16a y H16b; y H18a con H18e. Celdas que pasarían la regla por azar "
                "(efecto 0) en los bloques con control y dosis habitual: %s con el IC por imágenes (observadas %d) y %s con el "
                "jerárquico (observadas %d), de %d. Script: \\texttt{informes/revision\\_10nov.py}."
@@ -45,7 +45,7 @@ for es in (True, False):
         cab = "Especificación & NO & CP & EX \\\\"
     else:
         cap = ("Sensitivity of the global estimate per source (post hoc analysis, review of 10 November 2026): estimate and 90\\,\\%% CI "
-               "(TOST equivalence test, $\\pm$2 pp margin). ``With shared V1'' adds a random component for the V1 shared by H9b, H10 "
+               "(one-sided non-superiority test: upper limit against +2 pp). ``With shared V1'' adds a random component for the V1 shared by H9b, H10 "
                "and H10-s; H12a and H12b; H15, H16a and H16b; and H18a with H18e. Cells that would pass the rule by chance (zero effect) "
                "in the usual-dose blocks with a control: %s with the image CI (%d observed) and %s with the hierarchical CI (%d observed), "
                "out of %d. Script: \\texttt{informes/revision\\_10nov.py}."

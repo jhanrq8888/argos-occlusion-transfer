@@ -72,6 +72,8 @@ PATRONES = [
     "PREREGISTRO_H16_H17.md", "retinanet_resnet50_fpn_v2_coco.pth",
     # v3.12 (H18: E14, replica de H15 con 5 semillas y dosis del aumento de siluetas)
     "PREREGISTRO_H18.md",
+    # v3.13 (H19: E15, RT-DETR-l con 30 epocas fijas; reporte de seguimiento del 11/11/2026, obs. 12)
+    "PREREGISTRO_H19.md",
     "argos_lib/*.py", "0?_*.py", "1?_*.py", "2?_*.py", "3?_*.py",
 ]
 SALIDA = "protocolo_congelado.json"

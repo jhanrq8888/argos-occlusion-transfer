@@ -1,0 +1,73 @@
+\noindent\textbf{Lo registrado y lo reportado (obs. 14).} El programa empezó con H1, H2 y H5 (\texttt{PROTOCOLO.md}, 11/09/2026, y \texttt{PROTOCOLO\_v2.md}): H1 predecía que YOLOv11s con un módulo de atención CBAM y aumento (V4) superaría a V1 en ExDark ocluido sin perder más del 10\,\%% de FPS, y no se sostuvo (V4$-$V1 $-$3,29 pp en la oclusión severa); H2, que el aumento aportaría más que CBAM (V3$-$V1 frente a V2$-$V1), y no se sostuvo ($-$2,43 frente a +0,18 pp); H5, que la ganancia sintética de las siluetas sería menor que la de los parches, y se sostuvo. Sus 14 corridas (variantes V2 y V4 y dos controles) están entre las 133 (tabla de corridas) y su veredicto, en \texttt{informes/veredictos\_H1\_H7.md}. La celda registrada de H11 era la visibilidad 0,20--0,50 de CityPersons ($n=432$): +1,44 [$-$0,64; +3,34] (no confirmada); la tabla I da \emph{heavy} para comparar con los demás bloques. H13 predecía AUC(parches) $>$ AUC(siluetas) $>$ AUC(difusión) con DINOv2: se cumplió la primera diferencia (+0,043 [+0,031; +0,057]) y no la segunda (+0,015 [$-$0,003; +0,034]), de ahí «parcialmente confirmada».
+
+\noindent\textbf{H19 (obs. 12).} Para cerrar la alternativa del detector \emph{transformer}, el 11/11/2026 se registró un bloque RT-DETR-l con 30 épocas fijas y V1 y V3 en la misma máquina (\texttt{PREREGISTRO\_H19.md}, congelamiento v3.13, sellado con OpenTimestamps antes de entrenar). No se ejecutó por falta de presupuesto para la GPU alquilada, y así queda declarado en \texttt{CAMBIOS\_PROTOCOLO.md}; RT-DETR-l solo tiene el bloque H8, con exposición desigual (V1 en 28--31 épocas, V3 en 51--77).
+
+\begin{table}[H]\centering\footnotesize
+\caption{IC por celda con la varianza entre semillas (reporte de seguimiento del 11/11/2026, obs. 11; análisis posterior). Celdas reales de la evidencia primaria: V3$-$V1 (pp), IC del 95\,\% jerárquico (semillas e imágenes, el de la tabla I) y de la $t$ de Welch con los AP por semilla de V1 y V3 (gl: grados de libertad de Welch). Con 3 semillas, el \emph{bootstrap} jerárquico solo tiene 10 remuestreos distintos de semillas y subestima la varianza entre ellas; Welch con 2--4 gl es, a su vez, inestable, así que ninguno de los dos es exacto y ambos son sensibilidad: la regla registrada usa el IC por imágenes y su veredicto no cambia. * pasa (+2 pp e IC $>0$); $^\ddagger$ descarta +2 pp. En las 36 celdas de dosis habitual pasan 6 (imágenes), 5 (jerárquico) y 3 (Welch), y descartan +2 pp 9 (jerárquico) y 11 (Welch). Ancho medio del IC: 4,39, 6,81 y 7,30 pp. H18e usa las V1 de las semillas 0--2. Script: \texttt{informes/revision\_11nov.py}; datos: \texttt{ic\_welch\_celdas.csv}.}\label{tab:s-welch}
+\begin{tabular}{@{}llrllr@{}}\toprule
+Bloque & Fuente & $\Delta$ & IC jerárquico & IC de Welch & gl \\\midrule
+H9b & NO & +0{,}01 & [$-$1{,}60; +1{,}82]$^\ddagger$ & [$-$1{,}82; +1{,}83]$^\ddagger$ & 3{,}0 \\
+H9b & CP & +1{,}52 & [$-$0{,}02; +3{,}39] & [$-$0{,}79; +3{,}84] & 3{,}5 \\
+H9b & EX & $-$3{,}03 & [$-$8{,}85; +2{,}89] & [$-$8{,}75; +2{,}70] & 3{,}4 \\
+H11 & NO & +1{,}95 & [$-$0{,}16; +4{,}66] & [$-$1{,}90; +5{,}81] & 2{,}9 \\
+H11 & CP & +1{,}31 & [$-$0{,}85; +3{,}46] & [$-$1{,}31; +3{,}92] & 2{,}5 \\
+H11 & EX & $-$2{,}44 & [$-$7{,}34; +3{,}23] & [$-$6{,}20; +1{,}32]$^\ddagger$ & 3{,}8 \\
+H10 & NO & $-$2{,}05 & [$-$4{,}62; +0{,}29]$^\ddagger$ & [$-$7{,}02; +2{,}93] & 2{,}2 \\
+H10 & CP & +2{,}37 & [+0{,}63; +4{,}61]* & [$-$0{,}55; +5{,}28] & 3{,}1 \\
+H10 & EX & $-$4{,}88 & [$-$11{,}58; +1{,}03]$^\ddagger$ & [$-$11{,}31; +1{,}55]$^\ddagger$ & 4{,}0 \\
+H10-s & NO & $-$1{,}12 & [$-$2{,}58; +0{,}49]$^\ddagger$ & [$-$2{,}17; $-$0{,}06]$^\ddagger$ & 4{,}0 \\
+H10-s & CP & +2{,}26 & [+0{,}72; +4{,}04]* & [+0{,}42; +4{,}11]* & 3{,}9 \\
+H10-s & EX & $-$3{,}50 & [$-$9{,}63; +1{,}86]$^\ddagger$ & [$-$9{,}22; +2{,}23] & 3{,}4 \\
+H12a & NO & $-$0{,}39 & [$-$3{,}92; +2{,}77] & [$-$8{,}17; +7{,}40] & 2{,}1 \\
+H12a & CP & +0{,}25 & [$-$1{,}32; +2{,}12] & [$-$2{,}03; +2{,}52] & 3{,}9 \\
+H12a & EX & +3{,}04 & [$-$2{,}63; +8{,}31] & [+0{,}46; +5{,}63]* & 3{,}4 \\
+H12b & NO & +0{,}78 & [$-$3{,}21; +4{,}28] & [$-$5{,}80; +7{,}35] & 3{,}2 \\
+H12b & CP & +1{,}11 & [$-$0{,}47; +2{,}89] & [$-$1{,}07; +3{,}29] & 3{,}2 \\
+H12b & EX & $-$0{,}56 & [$-$5{,}77; +5{,}06] & [$-$6{,}20; +5{,}07] & 2{,}4 \\
+H14 & NO & $-$1{,}50 & [$-$3{,}40; +0{,}26]$^\ddagger$ & [$-$4{,}25; +1{,}25]$^\ddagger$ & 2{,}1 \\
+H14 & CP & $-$0{,}16 & [$-$1{,}85; +1{,}31]$^\ddagger$ & [$-$2{,}07; +1{,}74]$^\ddagger$ & 3{,}2 \\
+H14 & EX & +5{,}49 & [$-$0{,}35; +11{,}14] & [$-$1{,}36; +12{,}34] & 2{,}7 \\
+H15 & NO & +3{,}28 & [+0{,}67; +5{,}81]* & [$-$0{,}14; +6{,}71] & 3{,}2 \\
+H15 & CP & +2{,}33 & [+0{,}13; +4{,}92]* & [$-$0{,}86; +5{,}52] & 3{,}7 \\
+H15 & EX & $-$1{,}00 & [$-$6{,}71; +4{,}04] & [$-$3{,}48; +1{,}48]$^\ddagger$ & 2{,}9 \\
+H16a & NO & +0{,}92 & [$-$1{,}65; +3{,}58] & [$-$2{,}66; +4{,}50] & 3{,}9 \\
+H16a & CP & $-$0{,}76 & [$-$2{,}58; +1{,}16]$^\ddagger$ & [$-$3{,}24; +1{,}73]$^\ddagger$ & 2{,}5 \\
+H16a & EX & +0{,}80 & [$-$5{,}12; +6{,}34] & [$-$3{,}65; +5{,}25] & 2{,}3 \\
+H16b & NO & +0{,}37 & [$-$2{,}12; +2{,}61] & [$-$3{,}27; +4{,}00] & 2{,}5 \\
+H16b & CP & +0{,}60 & [$-$1{,}58; +2{,}79] & [$-$1{,}80; +3{,}00] & 3{,}9 \\
+H16b & EX & $-$0{,}45 & [$-$6{,}72; +5{,}63] & [$-$2{,}21; +1{,}31]$^\ddagger$ & 3{,}5 \\
+H17 & NO & $-$2{,}11 & [$-$7{,}25; +2{,}77] & [$-$10{,}23; +6{,}02] & 3{,}8 \\
+H17 & CP & $-$0{,}28 & [$-$2{,}14; +1{,}50]$^\ddagger$ & [$-$2{,}71; +2{,}14] & 4{,}0 \\
+H17 & EX & $-$3{,}77 & [$-$9{,}89; +2{,}78] & [$-$9{,}43; +1{,}90]$^\ddagger$ & 3{,}6 \\
+H18a & NO & +4{,}26 & [+2{,}21; +6{,}32]* & [+2{,}63; +5{,}89]* & 7{,}6 \\
+H18a & CP & +1{,}74 & [$-$0{,}08; +3{,}69] & [$-$0{,}19; +3{,}68] & 6{,}4 \\
+H18a & EX & $-$2{,}20 & [$-$6{,}92; +2{,}86] & [$-$4{,}82; +0{,}43]$^\ddagger$ & 6{,}1 \\
+\midrule
+H18e-b & NO & +2{,}90 & [+0{,}82; +4{,}93]* & [+0{,}58; +5{,}22]* & 3{,}5 \\
+H18e-b & CP & +1{,}74 & [$-$1{,}10; +4{,}10] & [$-$2{,}58; +6{,}06] & 2{,}9 \\
+H18e-b & EX & $-$1{,}91 & [$-$6{,}56; +3{,}24] & [$-$4{,}93; +1{,}11]$^\ddagger$ & 3{,}6 \\
+H18e-a & NO & +8{,}59 & [+5{,}65; +11{,}27]* & [+6{,}61; +10{,}56]* & 3{,}9 \\
+H18e-a & CP & +3{,}78 & [+0{,}87; +6{,}35]* & [$-$0{,}85; +8{,}41] & 2{,}4 \\
+H18e-a & EX & +0{,}60 & [$-$5{,}23; +6{,}55] & [$-$3{,}89; +5{,}10] & 3{,}5 \\
+\bottomrule\end{tabular}\end{table}
+\begin{table}[H]\centering\footnotesize
+\caption{Especificidad en tres escalas (obs. 17; análisis posterior): Faster R-CNN con siluetas, AP@0.5 de V1 y V3 (media de semillas) en personas ocluidas y sin oclusión, diferencia en pp (la del texto), cambio relativo del AP y cambio relativo de la tasa de fallos (1$-$AP). En pp, la dosis alta mejora igual a ocluidos y no ocluidos; en escala relativa, más a los ocluidos (su AP base es mucho menor); en tasa de fallos, menos. La lectura de «no específica» depende, por tanto, de la escala; el texto usa la diferencia en pp. Datos: \texttt{especificidad\_escalas.csv} (incluye la diferencia en logit).}\label{tab:s-escalas}
+\begin{tabular}{@{}lllrrrrr@{}}\toprule
+Bloque & Fuente & Personas & AP V1 & AP V3 & pp & Relativo (\%) & Tasa de fallos (\%) \\\midrule
+H15 & NO & ocluidas & 0,15 & 0,18 & +3{,}28 & +21{,}9 & $-$3{,}9 \\
+H15 & NO & sin oclusión & 0,63 & 0,68 & +4{,}37 & +6{,}9 & $-$11{,}8 \\
+H15 & CP & ocluidas & 0,15 & 0,17 & +2{,}33 & +15{,}4 & $-$2{,}7 \\
+H15 & CP & sin oclusión & 0,65 & 0,66 & +0{,}88 & +1{,}4 & $-$2{,}5 \\
+H18a & NO & ocluidas & 0,15 & 0,19 & +4{,}26 & +28{,}7 & $-$5{,}0 \\
+H18a & NO & sin oclusión & 0,63 & 0,68 & +4{,}25 & +6{,}7 & $-$11{,}6 \\
+H18a & CP & ocluidas & 0,14 & 0,16 & +1{,}74 & +12{,}0 & $-$2{,}0 \\
+H18a & CP & sin oclusión & 0,63 & 0,65 & +2{,}53 & +4{,}0 & $-$6{,}8 \\
+H18e-b & NO & ocluidas & 0,14 & 0,17 & +2{,}90 & +20{,}4 & $-$3{,}4 \\
+H18e-b & NO & sin oclusión & 0,63 & 0,66 & +3{,}17 & +5{,}1 & $-$8{,}5 \\
+H18e-b & CP & ocluidas & 0,14 & 0,16 & +1{,}74 & +12{,}3 & $-$2{,}0 \\
+H18e-b & CP & sin oclusión & 0,63 & 0,65 & +2{,}00 & +3{,}2 & $-$5{,}4 \\
+H18e-a & NO & ocluidas & 0,14 & 0,23 & +8{,}59 & +60{,}3 & $-$10{,}0 \\
+H18e-a & NO & sin oclusión & 0,63 & 0,72 & +8{,}87 & +14{,}1 & $-$23{,}8 \\
+H18e-a & CP & ocluidas & 0,14 & 0,18 & +3{,}78 & +26{,}6 & $-$4{,}4 \\
+H18e-a & CP & sin oclusión & 0,63 & 0,68 & +5{,}34 & +8{,}5 & $-$14{,}3 \\
+\bottomrule\end{tabular}\end{table}
