@@ -64,7 +64,7 @@ The augmentation is always learned, but passing a synthetic control is not enoug
 
 ## Notes
 
-- **No images, weights or third-party annotations** are included: ExDark, CityPersons/Cityscapes and NightOwls allow non-commercial research use and forbid redistribution. The weights of the primary evidence (H9b–H18, 67 runs) are on Zenodo: [10.5281/zenodo.24120199](https://doi.org/10.5281/zenodo.24120199) (CC BY-NC 4.0); their SHA-256 are in `informes/analisis_final/pesos_sha256.csv`.
+- **No images, weights or third-party annotations** are included: ExDark, CityPersons/Cityscapes and NightOwls allow non-commercial research use and forbid redistribution. The weights of the primary evidence (H9b–H18, 67 runs) are on Zenodo: [10.5281/zenodo.24120199](https://doi.org/10.5281/zenodo.24120199) (CC BY-NC 4.0); their SHA-256 are in `informes/analisis_final/pesos_sha256.csv`. The hypothesis register, the frozen protocol and their OpenTimestamps seals (`*.ots`) are deposited on Zenodo: [10.5281/zenodo.24122872](https://doi.org/10.5281/zenodo.24122872).
 - Comments and reports are written in Spanish; the short paper and supplement are available in English and Spanish.
 - The programme is adaptive: H9b–H18 were designed after seeing earlier results (H18 after an external review), and each was frozen before training its own block. The augmentation parameters of every block are in `informes/analisis_final/configuracion_aumento.yaml`.
 

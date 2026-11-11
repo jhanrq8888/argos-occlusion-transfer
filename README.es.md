@@ -67,7 +67,7 @@ El aumento siempre se aprende, pero pasar un control sintético no basta para af
 
 ## Notas
 
-- **No se incluyen imágenes, pesos ni anotaciones de terceros.** ExDark, CityPersons/Cityscapes y NightOwls permiten el uso de investigación no comercial y prohíben redistribuir sus datos. Los pesos de la evidencia primaria (H9b–H18, 67 corridas) están en Zenodo: [10.5281/zenodo.24120199](https://doi.org/10.5281/zenodo.24120199) (CC BY-NC 4.0); su SHA-256, en `informes/analisis_final/pesos_sha256.csv`.
+- **No se incluyen imágenes, pesos ni anotaciones de terceros.** ExDark, CityPersons/Cityscapes y NightOwls permiten el uso de investigación no comercial y prohíben redistribuir sus datos. Los pesos de la evidencia primaria (H9b–H18, 67 corridas) están en Zenodo: [10.5281/zenodo.24120199](https://doi.org/10.5281/zenodo.24120199) (CC BY-NC 4.0); su SHA-256, en `informes/analisis_final/pesos_sha256.csv`. El registro de hipótesis, el protocolo congelado y sus sellos OpenTimestamps (`*.ots`) están depositados en Zenodo: [10.5281/zenodo.24122872](https://doi.org/10.5281/zenodo.24122872).
 - Los comentarios y los informes están en español; el short paper y el suplemento están en español e inglés.
 - El programa es adaptativo: H9b–H18 se diseñaron después de ver resultados anteriores (H18, tras una revisión externa), y cada una se congeló antes de entrenar su propio bloque. Los parámetros del aumento de cada bloque están en `informes/analisis_final/configuracion_aumento.yaml`.
 
