@@ -38,7 +38,8 @@ FICHEROS = ["CAMBIOS_PROTOCOLO.md", "protocolo_congelado.json"] + sorted(
 if __name__ == "__main__":
     os.chdir(RAIZ)
     if "--upgrade" in sys.argv:
-        args = parse_ots_args(["upgrade"] + [f + ".ots" for f in FICHEROS if os.path.exists(f + ".ots")])
+        # completa todos los sellos de la raiz, tambien los de versiones anteriores conservadas con otro nombre
+        args = parse_ots_args(["upgrade"] + sorted(glob.glob("*.ots")))
     else:
         args = parse_ots_args(["stamp"] + [f for f in FICHEROS if not os.path.exists(f + ".ots")])
     args.cmd_func(args)
