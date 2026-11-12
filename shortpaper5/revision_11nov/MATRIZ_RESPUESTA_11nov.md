@@ -9,6 +9,8 @@
 - Suplemento: 14 páginas, con dos tablas nuevas (`tab:s-welch` y `tab:s-escalas`) y una nota sobre lo registrado.
 - El artículo largo se alineó en los mismos puntos.
 
+**Corrección del depósito del registro (11/11/2026).** Al revisar los artefactos se vio que la versión 1 del registro en Zenodo (10.5281/zenodo.24122872) incluía, en `CAMBIOS_PROTOCOLO.md`, los nombres de pila de dos anotadores del piloto. Se publicó la versión 2 ([10.5281/zenodo.24148406](https://doi.org/10.5281/zenodo.24148406)) con «A-B», igual que en el repositorio público, y se pidió a Zenodo que retire los archivos de la versión 1. El paper, el suplemento, el artículo y los README citan ahora la versión 2. El `CAMBIOS_PROTOCOLO.md` seudonimizado tiene su propio sello OpenTimestamps del 11/11/2026; los demás ficheros y sellos son idénticos.
+
 **Análisis nuevos.** Todos son posteriores y están declarados en `CAMBIOS_PROTOCOLO.md`; ninguno cambia una regla ni un veredicto registrado.
 - `informes/revision_11nov.py`: IC de Welch por celda y especificidad en tres escalas. Salidas: `ic_welch_celdas.csv`, `especificidad_escalas.csv` y `revision_11nov.json`.
 - `shortpaper5/fig_dosis.py`: Fig. 2 con IC de Welch.
